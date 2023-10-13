@@ -25,7 +25,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     width: 40%;
-    padding: 40 20px; // 양쪽에 패딩 추가
+    padding: 40 20px; 
   }
 `;
 
