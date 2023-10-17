@@ -22,22 +22,25 @@ const Introduce = () => {
         </IntroDescription>
       </IntroSection>
       <FeatureSection>
-        <Feature
-          image={feature_image1}
-          description={{
-            title: "로드맵 작성",
-            detail:
-              "신입생부터 재학생까지, 당신의 학기별 로드맵을 \n 직접 작성해보세요.",
-          }}
-        />
-        <Feature
-          image={feature_image2}
-          description={{
-            title: "학점 대시보드",
-            detail:
-              "이수 학점과 전공별로 학점을 얼만큼 채웠는지 \n 한눈에 볼수 있어요.",
-          }}
-        />
+        <FeatureTitle>Feature</FeatureTitle>
+        <FeatureWrapper>
+          <Feature
+            image={feature_image1}
+            description={{
+              title: "로드맵 작성",
+              detail:
+                "신입생부터 재학생까지, 당신의 학기별 로드맵을 \n 직접 작성해보세요.",
+            }}
+          />
+          <Feature
+            image={feature_image2}
+            description={{
+              title: "학점 대시보드",
+              detail:
+                "이수 학점과 전공별로 학점을 얼만큼 채웠는지 \n 한눈에 볼수 있어요.",
+            }}
+          />
+        </FeatureWrapper>
       </FeatureSection>
     </>
   );
@@ -83,20 +86,30 @@ const IntroDescription = styled.div`
     color: #ff6262;
   }
 `;
+const FeatureTitle = styled.div`
+  width: 100%;
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+const FeatureWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
 
 const FeatureSection = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   width: 70%;
   margin: 50px auto;
   border: 1px solid grey;
 
   @media (max-width: 768px) {
-    flex-direction: column;
     width: 100%;
     padding: 40px 20px;
-    justify-content: center;
   }
 `;
 export default Introduce;
