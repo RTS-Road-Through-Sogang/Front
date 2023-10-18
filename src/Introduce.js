@@ -42,6 +42,12 @@ const Introduce = () => {
           />
         </FeatureWrapper>
       </FeatureSection>
+      <StartSection>
+        <BeginPrompt>그럼, 시작해 볼까요 ?</BeginPrompt>
+        <StyledButton>
+          <span>시작하기</span>
+        </StyledButton>
+      </StartSection>
     </>
   );
 };
@@ -110,6 +116,43 @@ const FeatureSection = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     padding: 40px 20px;
+  }
+`;
+const StartSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const BeginPrompt = styled.div`
+  font-size: 1.3em;
+  position: relative;
+  color: black;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  line-height: 3;
+`;
+
+const StyledButton = styled.button`
+  cursor: pointer;
+  width: 30vw;
+  height: 8vh;
+  border-radius: 60px;
+  border: 2px solid #ff6262;
+  background: #ff6262;
+
+  @media (max-width: 768px) {
+    width: 50vw;
+    height: 7vh;
+  }
+  span {
+    color: #fff;
+    text-align: center;
+    font-family: Noto Sans;
+    font-size: 1.3rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
   }
 `;
 export default Introduce;
