@@ -3,14 +3,6 @@ import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-// interface ITest {
-//   width: number;
-//   ex_width: Number;
-// }
-// interface Color {
-//   bgColor: string;
-// }
-
 const curri = ["서강인성"];
 
 const curri1 = [
