@@ -8,6 +8,11 @@ import Feature from "./Feature";
 const Introduce = () => {
   return (
     <>
+      <MainSection>
+        <MainImageWrapper>
+          <Image src={intro_image} alt="Intro" />
+        </MainImageWrapper>
+      </MainSection>
       <IntroSection>
         <IntroImageWrapper>
           <Image src={intro_image} alt="Intro" />
@@ -52,6 +57,17 @@ const Introduce = () => {
   );
 };
 
+const MainSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  padding-bottom: 20px;
+`;
+const MainImageWrapper = styled.div`
+  width: 40%;
+`;
+
 const IntroSection = styled.div`
   display: flex;
   align-items: center;
@@ -74,7 +90,7 @@ const IntroImageWrapper = styled.div`
 `;
 
 const Image = styled.img`
-  width: 60%;
+  max-width: 60%;
   object-fit: cover;
   opacity: 0.3;
 `;
