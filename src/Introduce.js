@@ -12,6 +12,7 @@ const Introduce = () => {
         <MainImageWrapper>
           <Image src={intro_image} alt="Intro" />
         </MainImageWrapper>
+        <MainText>RTS</MainText>
       </MainSection>
       <IntroSection>
         <IntroImageWrapper>
@@ -61,9 +62,20 @@ const MainSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 70vh;
-  padding-bottom: 20px;
+  height: 100vh;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
+
+const MainText = styled.div`
+  font-size: 5em;
+  color: white;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // 텍스트에 약간의 그림자를 추가하여 가독성을 높임
+`;
+
 const MainImageWrapper = styled.div`
   width: 40%;
 `;
