@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import intro_image from "./images/main.jpeg";
+import main_image from "./images/milestone.jpg";
+import intro_image from "./images/intro_imag2.png";
 import feature_image1 from "./images/main.jpeg";
 import feature_image2 from "./images/main.jpeg";
 import Feature from "./Feature";
@@ -10,9 +11,10 @@ const Introduce = () => {
     <>
       <MainSection>
         <MainImageWrapper>
-          <Image src={intro_image} alt="Intro" />
+          <MainImage src={main_image} alt="Main" />
         </MainImageWrapper>
-        <MainText>RTS</MainText>
+        <MainText>RTS, Road Through Sogang</MainText>
+        <SubText>당신을 도와줄 로드맵</SubText>
       </MainSection>
       <IntroSection>
         <IntroImageWrapper>
@@ -60,26 +62,43 @@ const Introduce = () => {
 
 const MainSection = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
-
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
+  width: 70%;
+  margin: 0 auto;
 `;
 
 const MainText = styled.div`
-  font-size: 5em;
+  font-size: 4em;
   color: white;
   font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // 텍스트에 약간의 그림자를 추가하여 가독성을 높임
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 10%;
+  left: 10%;
+`;
+
+const SubText = styled.div`
+  font-size: 2.5em;
+  color: white;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 40%;
+  left: 10%;
 `;
 
 const MainImageWrapper = styled.div`
-  width: 40%;
+  width: 100%;
 `;
 
+const MainImage = styled.img`
+  max-width: 100%;
+  object-fit: cover;
+`;
 const IntroSection = styled.div`
   display: flex;
   align-items: center;
