@@ -1,52 +1,67 @@
 import React, { useState } from "react";
 import loginimage from "./images/login.jpg";
 import styled, { createGlobalStyle } from "styled-components";
-import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { faEye } from "@fortawesome/free-regular-svg-icons";
+import { faEyeSlash, faEye } from "@fortawesome/free-regular-svg-icons";
+import { faPlay } from "@fortawesome/free-solid-svg-icons"; // solid 아이콘 패키지에서 import
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
 import InputField from "./InputField";
 
-const Login = () => {
-  const navigate = useNavigate();
-  const goToSign = () => {
-    navigate("/signin");
-  };
+const SignUp = () => {
   const [showPswd, setShowPswd] = useState(false);
   const togglePswdVisibility = () => {
     setShowPswd(!showPswd);
   };
+
   return (
     <>
       <GlobalStyles />
       <MainSection>
         <MainImage src={loginimage} alt="Main" />
         <LoginForm>
-          <LoginText>로그인</LoginText>
-          <InputField name="username" placeholder="이메일을 입력하세요" />
-
+          <LoginText>회원가입하기</LoginText>
+          <InputField name="username" placeholder="이름을 입력하세요" />
+          <InputField name="username" placeholder="학번을 입력하세요" />
           <PasswordWrapper>
             <Input
               type={showPswd ? "text" : "password"}
               placeholder="비밀번호를 입력하세요"
+            />
+            <StyledIcon
               icon={showPswd ? faEye : faEyeSlash}
               onClick={togglePswdVisibility}
             />
           </PasswordWrapper>
-          <CheckboxWrapper>
-            <CheckboxInput id="check_btn" />
-            <CheckboxLabel htmlFor="check_btn">로그인 상태 유지</CheckboxLabel>
-          </CheckboxWrapper>
+          <PasswordWrapper>
+            <Input
+              type={showPswd ? "text" : "password"}
+              placeholder="비밀번호 재확인"
+            />
+            <StyledIcon
+              icon={showPswd ? faEye : faEyeSlash}
+              onClick={togglePswdVisibility}
+            />
+          </PasswordWrapper>
+          <SelectWrapper>
+            <StyledSelect>
+              <option value="" disabled selected>
+                본전공을 선택하세요
+              </option>
+              <option value="경제학과">경제학과</option>
+              <option value="경영학과">경영학과</option>
+              <option value="컴퓨터공학과">컴퓨터공학과</option>
+            </StyledSelect>
+            <FontAwesomeIcon
+              icon={faPlay}
+              rotation={270}
+              style={{ color: "#ff8484" }}
+            />
+          </SelectWrapper>
+          <InputField name="username" placeholder="이메일을 입력하세요" />
+
           <StyledButton>
-            <span>로그인</span>
+            <span>회원가입하기</span>
           </StyledButton>
-          <GreyLine />
-          <Other>
-            <GoSignUpText>회원이 아니신가요?</GoSignUpText>
-            <OtherButton>
-              <span onClick={goToSign}>회원가입하기</span>
-            </OtherButton>
-          </Other>
         </LoginForm>
       </MainSection>
     </>
@@ -126,61 +141,6 @@ const StyledIcon = styled(FontAwesomeIcon)`
   cursor: pointer;
 `;
 
-const CheckboxWrapper = styled.div`
-  margin-top: 10px;
-  position: relative;
-`;
-const CheckboxLabel = styled.label`
-  position: relative;
-  padding-left: 30px; // 체크박스 크기 + 간격
-  cursor: pointer;
-  font-size: 14px;
-  color: #7a7a7a;
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    border: 2px solid #ababab;
-    border-radius: 4px;
-    background-color: #fff;
-  }
-
-  &::after {
-    content: "\\2713"; // 체크 표시
-    font-size: 23px;
-    color: #ff6262; // 체크 색상
-    text-align: center;
-    line-height: 20px;
-    position: absolute;
-    left: 1%;
-    top: 60%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    opacity: 0;
-  }
-`;
-
-const CheckboxInput = styled.input.attrs({ type: "checkbox" })`
-  opacity: 0;
-  position: absolute;
-  width: 0;
-  height: 0;
-
-  &:checked + ${CheckboxLabel}::before {
-    border-color: #ff6262;
-  }
-
-  &:checked + ${CheckboxLabel}::after {
-    opacity: 1;
-  }
-`;
-
 const StyledButton = styled.button`
   cursor: pointer;
   width: 20.5vw;
@@ -205,39 +165,31 @@ const StyledButton = styled.button`
     line-height: normal;
   }
 `;
-const GreyLine = styled.div`
-  width: 100%;
-  border-top: 2px solid #ababab;
-  margin-bottom: 20px;
-`;
-
-const Other = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const OtherButton = styled.button`
-  cursor: pointer;
-  width: 10vw;
-  height: 4.5vh;
-  border-radius: 60px;
-  border: 2px solid #ff6262;
-  background: #ff6262;
-  margin-left: 30px;
-
-  span {
-    color: #fff;
-    text-align: center;
-    font-family: Noto Sans;
-    font-size: 0.8rem;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-  }
-`;
 
 const GoSignUpText = styled.div`
   color: #7a7a7a;
 `;
-export default Login;
+
+const StyledSelect = styled.select`
+  padding: 13px;
+  border-radius: 10px;
+  border: 1px solid #ababab;
+  background: #fff;
+  width: 98.5%;
+  appearance: none;
+  padding-right: 30px;
+`;
+
+const SelectWrapper = styled.div`
+  position: relative;
+  width: 98.5%;
+
+  & svg {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+`;
+
+export default SignUp;
