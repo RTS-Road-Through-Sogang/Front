@@ -4,8 +4,14 @@ import styled, { createGlobalStyle } from "styled-components";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
+import InputField from "./InputField";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const goToSign = () => {
+    navigate("/signin");
+  };
   const [showPswd, setShowPswd] = useState(false);
   const togglePswdVisibility = () => {
     setShowPswd(!showPswd);
@@ -17,14 +23,12 @@ const Login = () => {
         <MainImage src={loginimage} alt="Main" />
         <LoginForm>
           <LoginText>로그인</LoginText>
+          <InputField name="username" placeholder="이메일을 입력하세요" />
 
-          <Input type="text" placeholder="이메일을 입력하세요" />
           <PasswordWrapper>
             <Input
               type={showPswd ? "text" : "password"}
               placeholder="비밀번호를 입력하세요"
-            />
-            <StyledIcon
               icon={showPswd ? faEye : faEyeSlash}
               onClick={togglePswdVisibility}
             />
@@ -40,7 +44,7 @@ const Login = () => {
           <Other>
             <GoSignUpText>회원이 아니신가요?</GoSignUpText>
             <OtherButton>
-              <span>회원가입하기</span>
+              <span onClick={goToSign}>회원가입하기</span>
             </OtherButton>
           </Other>
         </LoginForm>
