@@ -38,7 +38,7 @@ const Login = () => {
           </StyledButton>
           <GreyLine />
           <Other>
-            회원이 아니신가요?
+            <GoSignUpText>회원이 아니신가요?</GoSignUpText>
             <OtherButton>
               <span>회원가입하기</span>
             </OtherButton>
@@ -131,6 +131,7 @@ const CheckboxLabel = styled.label`
   padding-left: 30px; // 체크박스 크기 + 간격
   cursor: pointer;
   font-size: 14px;
+  color: #7a7a7a;
 
   &::before {
     content: "";
@@ -230,5 +231,9 @@ const OtherButton = styled.button`
     font-weight: 700;
     line-height: normal;
   }
+`;
+
+const GoSignUpText = styled.div`
+  color: #7a7a7a;
 `;
 export default Login;
