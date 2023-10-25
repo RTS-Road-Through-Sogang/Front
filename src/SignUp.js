@@ -58,7 +58,7 @@ const SignUp = () => {
             />
           </SelectWrapper>
           <InputField name="username" placeholder="이메일을 입력하세요" />
-
+          <Verify>이메일 인증 키 발송</Verify>
           <StyledButton>
             <span>회원가입하기</span>
           </StyledButton>
@@ -166,8 +166,11 @@ const StyledButton = styled.button`
   }
 `;
 
-const GoSignUpText = styled.div`
+const Verify = styled.div`
+  text-align: center;
+  text-decoration: underline;
   color: #7a7a7a;
+  cursor: pointer;
 `;
 
 const StyledSelect = styled.select`
