@@ -59,7 +59,7 @@ const Modal = ({ isVisible, closeModal }) => {
         setCode(newCode);
         return;
       }
-      // 현재 입력란에 값이 없다면 이전 입력란의 값을 지우고 포커스를 옮깁니다.
+
       if (index > 0) {
         newCode[index - 1] = "";
         refs[index - 1].current.focus();
@@ -142,14 +142,14 @@ const CodeInput = styled.input`
   height: 40px;
   font-size: 1.5rem;
   text-align: center;
-  border: none; // 모든 테두리 제거
-  border-bottom: 1px solid #ababab; // 하단 테두리만 추가
-  border-radius: 0; // 반올림된 모서리 제거
-  outline: none; // 포커스 시 기본 윤곽선 제거
-  background: transparent; // 배경색을 투명하게 설정
+  border: none;
+  border-bottom: 1px solid #ababab;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
 
   &:focus {
-    border-bottom-color: #ff6262; // 포커스 시 하단 테두리 색상 변경
+    border-bottom-color: #ff6262;
   }
 `;
 
