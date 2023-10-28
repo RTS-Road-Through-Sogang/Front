@@ -18,7 +18,7 @@ const Modal = ({ isVisible, closeModal }) => {
   const handleInputChange = (index, e) => {
     const value = e.target.value;
 
-    if (value === "" || /^[0-9]$/.test(value)) {
+    if (/^[0-9]$/.test(value)) {
       setCode((prevCode) => {
         const newCode = [...prevCode];
         newCode[index] = value;
@@ -53,17 +53,12 @@ const Modal = ({ isVisible, closeModal }) => {
       e.preventDefault();
       const newCode = [...code];
 
-      // 현재 입력란에 값이 있다면 그 값을 지웁니다.
       if (code[index]) {
+        // 현재 입력란에 값이 있으면, 현재 입력란의 값만 지웁니다.
         newCode[index] = "";
-        setCode(newCode);
-        return;
-      }
-
-      if (index > 0) {
+      } else if (index > 0) {
         newCode[index - 1] = "";
         refs[index - 1].current.focus();
-        setCode(newCode);
       }
 
       setCode(newCode);
