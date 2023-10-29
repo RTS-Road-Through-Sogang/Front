@@ -1,105 +1,86 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import InputField from "./InputField";
+import styled from "styled-components";
 
 const Modal = ({ isVisible, closeModal }) => {
-  const [code, setCode] = useState(Array(6).fill(""));
-  const initialRefs = Array(6)
-    .fill()
-    .map(() => React.createRef());
-  const [refs, setRefs] = useState(initialRefs);
+  console.log(typeof closeModal);
+  const [code, setCode] = useState([...new Array(6).fill("")]);
+  const refs = new Array(6).fill().map(() => React.createRef());
 
-  useEffect(() => {
-    setRefs(initialRefs);
-  }, []);
+  const changeRef = (idx, isLeft) => {
+    if (isLeft && idx > 0) {
+      refs[idx - 1].current.focus();
+    } else if (!isLeft && idx < 5) {
+      refs[idx + 1].current.focus();
+    }
+  };
 
-  const handleInputChange = (index, e) => {
+  const handleOnChange = (e, idx) => {
     const value = e.target.value;
+    console.log("change");
 
-    if (value === "" || /^[0-9]$/.test(value)) {
-      setCode((prevCode) => {
-        const newCode = [...prevCode];
-        newCode[index] = value;
-
+    if (/^[0-9]$/.test(value)) {
+      setCode((prev) => {
+        const newCode = [...prev];
+        newCode[idx] = value;
         return newCode;
       });
 
-      setTimeout(() => {
-        if (value && index < 5) {
-          refs[index + 1].current.focus();
-        } else if (!value && index > 0) {
-          refs[index - 1].current.focus();
-        }
-      });
+      changeRef(idx, false);
     }
   };
 
-  const handleFocus = (e) => {
-    // 빈 입력란이 첫 번째 위치를 찾습니다.
-    const firstEmptyIndex = code.findIndex((c) => !c);
+  const handleKeyDown = (e, idx) => {
+    const { key } = e;
 
-    // 첫 번째 빈 입력란이 있으면 해당 위치로 포커스 이동, 아니면 마지막 입력란으로 포커스
-    if (firstEmptyIndex !== -1) {
-      refs[firstEmptyIndex].current.focus();
-    } else {
-      refs[5].current.focus();
-    }
-  };
-
-  const handleKeyDown = (index, e) => {
-    if (e.key === "Backspace") {
+    if (key === "Backspace") {
       e.preventDefault();
-      const newCode = [...code];
+      const value = e.target.value;
 
-      // 현재 입력란에 값이 있다면 그 값을 지웁니다.
-      if (code[index]) {
-        newCode[index] = "";
-        setCode(newCode);
+      if (value) {
+        setCode((prev) => {
+          const newCode = [...prev];
+          newCode[idx] = "";
+          return newCode;
+        });
         return;
       }
 
-      if (index > 0) {
-        newCode[index - 1] = "";
-        refs[index - 1].current.focus();
-        setCode(newCode);
-      }
-
-      setCode(newCode);
+      changeRef(idx, true);
     }
   };
 
-  if (!isVisible) return null;
-
-  return (
+  return isVisible ? (
     <ModalOverlay>
       <ModalWrapper>
         <CloseIcon onClick={closeModal}>
           <FontAwesomeIcon icon={faTimes} />
         </CloseIcon>
+
         <ModalContent>
           <h2>인증번호 입력</h2>
           <VerifyText>아래 이메일로 6자리 숫자가 발송되었습니다 !</VerifyText>
           <VerifyText>인증 코드를 입력하세요.</VerifyText>
+
           <CodeInputWrapper>
-            {code.map((_, index) => (
+            {code.map((value, idx) => (
               <CodeInput
-                key={index}
-                value={code[index]}
-                onChange={(e) => handleInputChange(index, e)}
-                onFocus={handleFocus}
-                onKeyDown={(e) => handleKeyDown(index, e)}
-                ref={refs[index]}
-                maxLength="1"
+                key={`input_${idx}`}
+                value={value}
+                ref={refs[idx]}
+                onChange={(e) => handleOnChange(e, idx)}
+                onKeyDown={(e) => handleKeyDown(e, idx)}
+                maxLength={1}
               />
             ))}
           </CodeInputWrapper>
-          <CloseButton onClick={closeModal}>확인</CloseButton>
+
+          <CloseButton>확인</CloseButton>
         </ModalContent>
       </ModalWrapper>
     </ModalOverlay>
-  );
+  ) : null;
 };
 
 const ModalOverlay = styled.div`
