@@ -6,9 +6,24 @@ import { faPlay } from "@fortawesome/free-solid-svg-icons"; // solid 아이콘 �
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputField from "./InputField";
+import Modal from "./Modal";
 
 const SignUp = () => {
   const [showPswd, setShowPswd] = useState(false);
+  const [showConfirmPswd, setShowConfirmPswd] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const toggleConfirmPswdVisibility = () => {
+    setShowConfirmPswd(!showConfirmPswd);
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   const togglePswdVisibility = () => {
     setShowPswd(!showPswd);
   };
@@ -34,17 +49,17 @@ const SignUp = () => {
           </PasswordWrapper>
           <PasswordWrapper>
             <Input
-              type={showPswd ? "text" : "password"}
+              type={showConfirmPswd ? "text" : "password"}
               placeholder="비밀번호 재확인"
             />
             <StyledIcon
-              icon={showPswd ? faEye : faEyeSlash}
-              onClick={togglePswdVisibility}
+              icon={showConfirmPswd ? faEye : faEyeSlash}
+              onClick={toggleConfirmPswdVisibility}
             />
           </PasswordWrapper>
           <SelectWrapper>
-            <StyledSelect>
-              <option value="" disabled selected>
+            <StyledSelect defaultValue="">
+              <option value="" disabled>
                 본전공을 선택하세요
               </option>
               <option value="경제학과">경제학과</option>
@@ -58,7 +73,9 @@ const SignUp = () => {
             />
           </SelectWrapper>
           <InputField name="username" placeholder="이메일을 입력하세요" />
-          <Verify>이메일 인증 키 발송</Verify>
+          <Verify onClick={openModal}>이메일 인증 키 발송</Verify>
+          <Modal isVisible={showModal} closeModal={closeModal} />
+
           <StyledButton>
             <span>회원가입하기</span>
           </StyledButton>
@@ -71,7 +88,7 @@ const SignUp = () => {
 const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
-    padding: 0;
+
     
   }
 `;
@@ -108,7 +125,7 @@ const LoginForm = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 20px;
+  padding: 45px;
   background: rgba(255, 255, 255, 0.8);
 
   display: flex;
