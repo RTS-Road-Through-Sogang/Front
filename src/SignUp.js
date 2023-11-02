@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import loginimage from "./images/login.jpg";
 import styled, { createGlobalStyle } from "styled-components";
 import { faEyeSlash, faEye } from "@fortawesome/free-regular-svg-icons";
-import { faPlay } from "@fortawesome/free-solid-svg-icons"; // solid 아이콘 패키지에서 import
+import { faPlay } from "@fortawesome/free-solid-svg-icons"; 
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputField from "./InputField";
