@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import loginimage from "./images/login.jpg";
 import styled, { createGlobalStyle } from "styled-components";
 import { faEyeSlash, faEye } from "@fortawesome/free-regular-svg-icons";
-import { faPlay } from "@fortawesome/free-solid-svg-icons"; 
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputField from "./InputField";
@@ -88,8 +88,6 @@ const SignUp = () => {
 const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
-
-    
   }
 `;
 const MainSection = styled.div`
