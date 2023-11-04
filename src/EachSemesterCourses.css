@@ -1,0 +1,26 @@
+.courses-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.btn {
+  height: 3em;
+  min-width: 9em;
+  padding: 0 1.5em;
+  margin: 2em 0.6em 0 0.6em;
+  color: #ababab;
+  text-align: center;
+  font-family: Noto Sans KR;
+  font-size: 0.7em;
+  font-weight: 700;
+  border: 2px solid rgba(0, 0, 0, 0);
+  border-radius: 60px;
+  cursor: pointer;
+  filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.1));
+
+  &.active {
+    color: #ff6262;
+    border: 2px solid #ff6262;
+    background-color: #fff;
+  }
+}
