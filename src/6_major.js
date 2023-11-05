@@ -10,19 +10,7 @@ const accessToken =
   
 const url = `http://ec2-54-180-25-161.ap-northeast-2.compute.amazonaws.com/roadmaps/commondutylecturelists/`;
 
-const express = require("express");
-const cors = require("cors"); // cors 설정을 편안하게 하는 패키지
-const app = express();
 
-// ...
-
-app.use(
-  cors({
-    origin: url, // 접근 권한을 부여하는 도메인
-    credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
-    optionsSuccessStatus: 200, // 응답 상태 200으로 설정
-  })
-);
 
 const curri = ["서강인성"];
 
