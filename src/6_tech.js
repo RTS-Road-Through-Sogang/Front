@@ -118,6 +118,7 @@ const SelectContainer = ({
     <>
       <SelectBox onClick={onClick} isClicked={isClicked}>
         {name}
+        <HoverBox>교수: ㅇㅇㅇ<br></br>과제: 많음<br></br>성적: 깐깐함</HoverBox>
       </SelectBox>
     </>
   );
@@ -188,8 +189,11 @@ const Selecttech = () => {
                       ex_select={ex_select}
                       setSelectEX={setSelectEX}
                     />
+                    
                   ))}
+                  
                 </XSmaillBox>
+                
               </SmallBox>
             </TitleText>
           </Title>
@@ -457,11 +461,11 @@ const ProgressBar = styled.div`
 `;
 
 const Progress = styled.div`
-  width: ${(props: ITest) => props.width}%;
+  width: ${(props) => props.width}%;
   height: 30px;
   padding: 0;
   text-align: center;
-  background-color: ${(props: Color) => props.bgColor};
+  background-color: ${(props) => props.bgColor};
   color: #111;
 `;
 
@@ -505,6 +509,7 @@ const TitleText = styled.div`
 const SmallBox = styled.div`
   width: auto%;
   margin-top: 3%;
+  positon :relative;
 `;
 const XSmaillBox = styled.div``;
 const SelectBox = styled.button`
@@ -522,6 +527,27 @@ const SelectBox = styled.button`
     !isClicked ? "0.2rem solid #EFEFEF" : "0.2rem solid #FF6262"};
   color: ${({ isClicked }) => (!isClicked ? "#B3B3B3" : "#FF6262")};
   font-weight: ${({ isClicked }) => (!isClicked ? 500 : 700)};
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.08);
+`;
+
+const HoverBox = styled.div`
+  opacity: 0;
+  position: absolute;
+  border: 0.2rem solid #ff6262;
+  margin-top: 1%;
+  color: #ff6262;
+  font-weight: 700;
+
+  border-radius: 20px;
+  padding: 0.5% 1%;
+  margin-left: -1%;
+  background-color: white;
+  ${SelectBox}:hover & {
+    opacity: 100%;
+   
+    transition: 0.5s ease-out;
+
+  }
 `;
 
 const TotalBar = styled.div`
@@ -587,7 +613,7 @@ const MiniBar = styled.div`
   margin: 3% auto;
 `;
 const Mini = styled.div`
-  width: ${(props: ITest) => props.width}%;
+  width: ${(props) => props.width}%;
   height: 30px;
   padding: 0;
   text-align: center;
@@ -621,5 +647,7 @@ const Next = styled.div`
   color: #ff6262;
   font-weight: 700;
 `;
+
+
 
 export default Selecttech;
