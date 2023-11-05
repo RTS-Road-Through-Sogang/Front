@@ -72,7 +72,11 @@ const SignUp = () => {
               style={{ color: "#ff8484" }}
             />
           </SelectWrapper>
-          <InputField name="username" placeholder="이메일을 입력하세요" />
+          <EmailInputWrapper>
+            <EmailInput name="email" placeholder="이메일을 입력하세요" />
+            <EmailDomainLabel>@sogang.ac.kr</EmailDomainLabel>
+          </EmailInputWrapper>
+
           <Verify onClick={openModal}>이메일 인증 키 발송</Verify>
           <Modal isVisible={showModal} closeModal={closeModal} />
 
@@ -208,6 +212,29 @@ const SelectWrapper = styled.div`
     right: 10px;
     transform: translateY(-50%);
   }
+`;
+
+const EmailInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid #ababab;
+  border-radius: 10px;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.8);
+`;
+
+const EmailDomainLabel = styled.span`
+  padding: 13px;
+  pointer-events: none;
+  color: #707070;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 0 10px 10px 0;
+`;
+
+const EmailInput = styled(Input)`
+  flex-grow: 1; /* input 필드가 가능한 영역을 모두 차지하도록 함 */
+  border-radius: 10px 0 0 10px;
+  border: none;
 `;
 
 export default SignUp;
