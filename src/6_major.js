@@ -2,6 +2,27 @@ import { useEffect, useState, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+
+
+const accessToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5NjkzNTU3LCJpYXQiOjE2OTkwODg3NTcsImp0aSI6IjQwNWNmOGFjZWJlMzQzNjRhNjkzOWZlZWU1ZmFiYjM0IiwidXNlcl9pZCI6Mn0.jQmNDcfmO_L5eHGxnxLRloQb_KFFm9pR93rfkxXQux8";
+  
+const url = `http://ec2-54-180-25-161.ap-northeast-2.compute.amazonaws.com/roadmaps/commondutylecturelists/`;
+
+const express = require("express");
+const cors = require("cors"); // cors 설정을 편안하게 하는 패키지
+const app = express();
+
+// ...
+
+app.use(
+  cors({
+    origin: url, // 접근 권한을 부여하는 도메인
+    credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
+    optionsSuccessStatus: 200, // 응답 상태 200으로 설정
+  })
+);
 
 const curri = ["서강인성"];
 
@@ -127,6 +148,19 @@ const SelecMajor = () => {
   const [select2, setSelect2] = useState([]);
   const [select3, setSelect3] = useState([]);
   const [select4, setSelect4] = useState([]);
+
+axios
+  .get(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+  .then((Response) => {
+    console.log(Response.data);
+  })
+  .catch((Error) => {
+    console.log(Error);
+  });
 
   return (
     <>

@@ -129,8 +129,8 @@ const SelectContainer = ({
 const SelectSub = () => {
   const maxItem = 5;
   let availableItem = 4;
-    const c = 175 - (55 / maxItem) * (maxItem - availableItem);
-    const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
+  const c = 175 - (55 / maxItem) * (maxItem - availableItem);
+  const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c2})`;
 
   const maxSelect = [4, 1, 1, 3, 2];
@@ -160,15 +160,15 @@ const SelectSub = () => {
     175 + (55 / maxSelect[2]) * (maxSelect[2] - len[2]),
     175 + (55 / maxSelect[3]) * (maxSelect[3] - len[3]),
     175 + (55 / maxSelect[4]) * (maxSelect[4] - len[4]),
-    ];
-    
-    const c_select2 = [
-      54 + (146 / maxSelect[0]) * (maxSelect[0] - len[0]),
-      54 + (146 / maxSelect[1]) * (maxSelect[1] - len[1]),
-      54 + (146 / maxSelect[2]) * (maxSelect[2] - len[2]),
-      54 + (146 / maxSelect[3]) * (maxSelect[3] - len[3]),
-      54 + (146 / maxSelect[4]) * (maxSelect[4] - len[4]),
-    ];
+  ];
+
+  const c_select2 = [
+    54 + (146 / maxSelect[0]) * (maxSelect[0] - len[0]),
+    54 + (146 / maxSelect[1]) * (maxSelect[1] - len[1]),
+    54 + (146 / maxSelect[2]) * (maxSelect[2] - len[2]),
+    54 + (146 / maxSelect[3]) * (maxSelect[3] - len[3]),
+    54 + (146 / maxSelect[4]) * (maxSelect[4] - len[4]),
+  ];
 
   return (
     <>
@@ -536,7 +536,6 @@ const SelectBox = styled.button`
   font-weight: ${({ isClicked }) => (!isClicked ? 500 : 700)};
 `;
 
-
 const HoverBox = styled.div`
   opacity: 0;
   position: absolute;
@@ -619,7 +618,7 @@ const MiniBar = styled.div`
   margin: 3% auto;
 `;
 const Mini = styled.div`
-  width: ${(props: ITest) => props.width}%;
+  width: ${(props) => props.width}%;
   height: 30px;
   padding: 0;
   text-align: center;

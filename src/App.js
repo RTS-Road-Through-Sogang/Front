@@ -9,12 +9,12 @@ import SelectSearch from "./6_search";
 import SelecMajor from "./6_major";
 import SelectSub from "./6_submajor";
 
-
-
 function App() {
   return (
+    <div>
     <BrowserRouter>
       <Header />
+
 
       <Routes>
         <Route path="/intro" element={<Introduce />} />
@@ -24,7 +24,7 @@ function App() {
       </Routes>
     </BrowserRouter>
 
-      <SelectSub/>
+
     </div>
 
   );
