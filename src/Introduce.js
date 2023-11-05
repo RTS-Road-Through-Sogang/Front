@@ -5,8 +5,13 @@ import intro_image from "./images/intro_imag2.png";
 import feature_image1 from "./images/main.jpeg";
 import feature_image2 from "./images/main.jpeg";
 import Feature from "./Feature";
+import { useNavigate } from "react-router-dom";
 
 const Introduce = () => {
+  const navigate = useNavigate();
+  const goToSign = () => {
+    navigate("/login");
+  };
   return (
     <>
       <MainSection>
@@ -52,7 +57,7 @@ const Introduce = () => {
       </FeatureSection>
       <StartSection>
         <BeginPrompt>그럼, 시작해 볼까요 ?</BeginPrompt>
-        <StyledButton>
+        <StyledButton onClick={goToSign}>
           <span>시작하기</span>
         </StyledButton>
       </StartSection>
