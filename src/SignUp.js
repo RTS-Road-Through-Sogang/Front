@@ -12,6 +12,7 @@ const SignUp = () => {
   const [showPswd, setShowPswd] = useState(false);
   const [showConfirmPswd, setShowConfirmPswd] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [email, setEmail] = useState("");
   const toggleConfirmPswdVisibility = () => {
     setShowConfirmPswd(!showConfirmPswd);
   };
@@ -26,6 +27,15 @@ const SignUp = () => {
 
   const togglePswdVisibility = () => {
     setShowPswd(!showPswd);
+  };
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  //추후 인증과정 로직 처리 필요
+  const handleVerifyCode = (code) => {
+    // code 처리 로직
+    console.log(code);
   };
 
   return (
@@ -73,12 +83,21 @@ const SignUp = () => {
             />
           </SelectWrapper>
           <EmailInputWrapper>
-            <EmailInput name="email" placeholder="이메일을 입력하세요" />
+            <EmailInput
+              name="email"
+              placeholder="이메일을 입력하세요"
+              onChange={handleEmailChange}
+              value={email}
+            />
             <EmailDomainLabel>@sogang.ac.kr</EmailDomainLabel>
           </EmailInputWrapper>
 
           <Verify onClick={openModal}>이메일 인증 키 발송</Verify>
-          <Modal isVisible={showModal} closeModal={closeModal} />
+          <Modal
+            isVisible={showModal}
+            closeModal={closeModal}
+            email={email + "@sogang.ac.kr"}
+          />
 
           <StyledButton>
             <span>회원가입하기</span>
