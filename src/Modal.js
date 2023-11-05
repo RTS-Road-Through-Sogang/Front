@@ -1,13 +1,15 @@
+// 인증번호 재전송 글자 추가해야함
+// 인증번호 성공했을때만 확인 버튼이 팝업 창이 뜨면서 모달이 닫혀야함.
+
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+import App from "./App";
 
-const Modal = ({ isVisible, closeModal }) => {
-  console.log(typeof closeModal);
+const Modal = ({ isVisible, closeModal, email }) => {
   const [code, setCode] = useState([...new Array(6).fill("")]);
   const refs = new Array(6).fill().map(() => React.createRef());
-
   const changeRef = (idx, isLeft) => {
     if (isLeft && idx > 0) {
       refs[idx - 1].current.focus();
@@ -18,7 +20,6 @@ const Modal = ({ isVisible, closeModal }) => {
 
   const handleOnChange = (e, idx) => {
     const value = e.target.value;
-    console.log("change");
 
     if (/^[0-9]$/.test(value)) {
       setCode((prev) => {
@@ -54,13 +55,15 @@ const Modal = ({ isVisible, closeModal }) => {
   return isVisible ? (
     <ModalOverlay>
       <ModalWrapper>
-        <CloseIcon onClick={closeModal}>
-          <FontAwesomeIcon icon={faTimes} />
-        </CloseIcon>
-
         <ModalContent>
-          <h2>인증번호 입력</h2>
+          <ModalHeader>
+            <Title>인증번호 입력</Title>
+            <CloseIcon onClick={closeModal}>
+              <FontAwesomeIcon icon={faTimes} />
+            </CloseIcon>
+          </ModalHeader>
           <VerifyText>아래 이메일로 6자리 숫자가 발송되었습니다 !</VerifyText>
+          <VerifyText fontColor="#ff6262">{email}</VerifyText>
           <VerifyText>인증 코드를 입력하세요.</VerifyText>
 
           <CodeInputWrapper>
@@ -75,13 +78,26 @@ const Modal = ({ isVisible, closeModal }) => {
               />
             ))}
           </CodeInputWrapper>
+          <VerifyText fontSize="0.9rem">
+            이메일을 받지 못하셨나요?
+            <ResendLink> 이메일 재전송하기</ResendLink>
+          </VerifyText>
 
-          <CloseButton>확인</CloseButton>
+          <CloseButton onClick={closeModal}>확인</CloseButton>
         </ModalContent>
       </ModalWrapper>
     </ModalOverlay>
   ) : null;
 };
+const ModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+`;
+const Title = styled.h2`
+  margin: 0; // 기본 마진 제거
+`;
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -111,7 +127,9 @@ const ModalContent = styled.div`
 
 const VerifyText = styled.div`
   text-align: center;
-  color: #7a7a7a;
+  color: ${(props) => props.fontColor || "#7a7a7a"};
+  font-size: ${(props) => props.fontSize || "1rem"};
+  margin-top: 15px;
 `;
 const CodeInputWrapper = styled.div`
   display: flex;
@@ -143,11 +161,24 @@ const CloseButton = styled.button`
   cursor: pointer;
   align-self: center;
 `;
+const ResendLink = styled.span`
+  color: #7a7a7a;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 15px; /* 적당한 상단 마진을 줘서 구분감을 줌 */
+
+  &:hover {
+    text-decoration: none; /* 마우스 오버시 밑줄 제거 */
+    color: #585858; /* 마우스 오버시 글씨 색 변경 */
+  }
+`;
 
 const CloseIcon = styled.div`
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: -1px;
+  right: 10px;
   cursor: pointer;
 
   & > svg {

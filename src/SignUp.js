@@ -2,15 +2,40 @@ import React, { useState } from "react";
 import loginimage from "./images/login.jpg";
 import styled, { createGlobalStyle } from "styled-components";
 import { faEyeSlash, faEye } from "@fortawesome/free-regular-svg-icons";
-import { faPlay } from "@fortawesome/free-solid-svg-icons"; // solid 아이콘 패키지에서 import
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputField from "./InputField";
+import Modal from "./Modal";
 
 const SignUp = () => {
   const [showPswd, setShowPswd] = useState(false);
+  const [showConfirmPswd, setShowConfirmPswd] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [email, setEmail] = useState("");
+  const toggleConfirmPswdVisibility = () => {
+    setShowConfirmPswd(!showConfirmPswd);
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   const togglePswdVisibility = () => {
     setShowPswd(!showPswd);
+  };
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  //추후 인증과정 로직 처리 필요
+  const handleVerifyCode = (code) => {
+    // code 처리 로직
+    console.log(code);
   };
 
   return (
@@ -34,17 +59,17 @@ const SignUp = () => {
           </PasswordWrapper>
           <PasswordWrapper>
             <Input
-              type={showPswd ? "text" : "password"}
+              type={showConfirmPswd ? "text" : "password"}
               placeholder="비밀번호 재확인"
             />
             <StyledIcon
-              icon={showPswd ? faEye : faEyeSlash}
-              onClick={togglePswdVisibility}
+              icon={showConfirmPswd ? faEye : faEyeSlash}
+              onClick={toggleConfirmPswdVisibility}
             />
           </PasswordWrapper>
           <SelectWrapper>
-            <StyledSelect>
-              <option value="" disabled selected>
+            <StyledSelect defaultValue="">
+              <option value="" disabled>
                 본전공을 선택하세요
               </option>
               <option value="경제학과">경제학과</option>
@@ -57,8 +82,23 @@ const SignUp = () => {
               style={{ color: "#ff8484" }}
             />
           </SelectWrapper>
-          <InputField name="username" placeholder="이메일을 입력하세요" />
-          <Verify>이메일 인증 키 발송</Verify>
+          <EmailInputWrapper>
+            <EmailInput
+              name="email"
+              placeholder="이메일을 입력하세요"
+              onChange={handleEmailChange}
+              value={email}
+            />
+            <EmailDomainLabel>@sogang.ac.kr</EmailDomainLabel>
+          </EmailInputWrapper>
+
+          <Verify onClick={openModal}>이메일 인증 키 발송</Verify>
+          <Modal
+            isVisible={showModal}
+            closeModal={closeModal}
+            email={email + "@sogang.ac.kr"}
+          />
+
           <StyledButton>
             <span>회원가입하기</span>
           </StyledButton>
@@ -71,8 +111,6 @@ const SignUp = () => {
 const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
-    padding: 0;
-    
   }
 `;
 const MainSection = styled.div`
@@ -108,7 +146,7 @@ const LoginForm = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 20px;
+  padding: 45px;
   background: rgba(255, 255, 255, 0.8);
 
   display: flex;
@@ -193,6 +231,29 @@ const SelectWrapper = styled.div`
     right: 10px;
     transform: translateY(-50%);
   }
+`;
+
+const EmailInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid #ababab;
+  border-radius: 10px;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.8);
+`;
+
+const EmailDomainLabel = styled.span`
+  padding: 13px;
+  pointer-events: none;
+  color: #707070;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 0 10px 10px 0;
+`;
+
+const EmailInput = styled(Input)`
+  flex-grow: 1; /* input 필드가 가능한 영역을 모두 차지하도록 함 */
+  border-radius: 10px 0 0 10px;
+  border: none;
 `;
 
 export default SignUp;
