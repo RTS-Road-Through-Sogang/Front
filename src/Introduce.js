@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import main_image from "./images/milestone.jpg";
 //import main_image from "./images/123.jpg";
@@ -15,12 +15,26 @@ const Introduce = () => {
   };
   const title = "Road Through Sogang";
   const highlightIndices = [0, 5, 13];
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // 컴포넌트 언마운트 시 리스너 제거
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // 빈 배열을 전달하여 컴포넌트 마운트 시에만 실행되도록 합니다.
   return (
     <>
       <GlobalStyles />
       <MainSection>
         <MainImageWrapper>
-          <MainImage src={main_image} alt="Main" />
+          <MainImage src={main_image} alt="Main" scale={1 + scrollY / 1000} />
         </MainImageWrapper>
         <MainText>
           {title.split("").map((char, index) =>
@@ -29,7 +43,7 @@ const Introduce = () => {
             ) : (
               <AnimatedSpan
                 key={index}
-                delay={index * 0.08} // 각 글자에 약간의 지연을 줘서 순차적으로 나타나게 함
+                delay={index * 0.1} // 각 글자에 약간의 지연을 줘서 순차적으로 나타나게 함
                 highlight={highlightIndices.includes(index)} // 'R', 'T', 'S'는 하이라이트 색상을 적용
               >
                 {char}
@@ -113,7 +127,7 @@ const MainSection = styled.div`
 const AnimatedSpan = styled.span`
   display: inline-block; // 각 span이 별도의 블록으로 처리되도록 설정
   opacity: 0; // 초기 상태를 불투명으로 설정
-  animation: fadeInRight 0.5s ease forwards; // 애니메이션 적용
+  animation: fadeInRight 1.3s ease forwards; // 애니메이션 적용
   animation-delay: ${(props) => props.delay}s; // 지연 시간을 prop으로 설정
   color: ${(props) =>
     props.highlight ? "#ff6262" : "white"}; // 조건부 스타일링
@@ -147,13 +161,16 @@ const MainImageWrapper = styled.div`
 const MainImage = styled.img`
   max-width: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease-out;
+  transform: scale(${(props) => props.scale});
 `;
+
 const IntroSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 80%;
-  margin: 50px auto;
+  margin: 150px auto;
   border: 1px solid grey;
 
   @media (max-width: 768px) {
