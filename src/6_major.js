@@ -4,16 +4,54 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-
 const accessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5NjkzNTU3LCJpYXQiOjE2OTkwODg3NTcsImp0aSI6IjQwNWNmOGFjZWJlMzQzNjRhNjkzOWZlZWU1ZmFiYjM0IiwidXNlcl9pZCI6Mn0.jQmNDcfmO_L5eHGxnxLRloQb_KFFm9pR93rfkxXQux8";
-  
-const url = `http://ec2-54-180-25-161.ap-northeast-2.compute.amazonaws.com/roadmaps/commondutylecturelists/`;
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5ODUyNDA1LCJpYXQiOjE2OTkyNDc2MDUsImp0aSI6IjNhZWRlOTgyN2ZhZjQ2MDJiM2NkNmYzYWFiNzBhNWFjIiwidXNlcl9pZCI6Mn0.kOLNBScfJc69xE8LSKgtcqGncmq80Bhm417mVCk7ALM";
 
+const url = `http://ec2-54-180-25-161.ap-northeast-2.compute.amazonaws.com/roadmaps/usermajortracks/`;
 
-
-const curri = ["서강인성"];
-
+const curri = {
+  name: "이우찬",
+  major: {
+    title: "경제",
+  },
+  major_tracks: [
+    {
+      ECO_tracks: [
+        {
+          title: "다전공 1전공",
+          major: 3,
+          student_year: {
+            student_year: 21,
+          },
+        },
+        {
+          title: "단일전공",
+          major: 3,
+          student_year: {
+            student_year: 21,
+          },
+        },
+        {
+          title: "Honors Program",
+          major: 3,
+          student_year: {
+            student_year: 21,
+          },
+        },
+      ],
+    },
+    {
+      second_major: [
+        {
+          major: "컴퓨터공학",
+        },
+        {
+          major: "경영",
+        },
+      ],
+    },
+  ],
+};
 const curri1 = [
   {
     id: 1,
@@ -101,12 +139,12 @@ const curri5 = [
   },
 ];
 
-const SelectContainer = ({ id, name, setSelect, select }) => {
-  const [isClicked, setisClicked] = useState(false);
+const SelectContainer = ({ id, title, setSelect, select }) => {
+  const [isclicked, setisclicked] = useState(false);
 
   const onClick = () => {
-    setisClicked(!isClicked);
-    if (isClicked) {
+    setisclicked(!isclicked);
+    if (isclicked) {
       const filtered = select.filter((item) => item != id);
       setSelect(filtered);
     } else {
@@ -116,8 +154,30 @@ const SelectContainer = ({ id, name, setSelect, select }) => {
 
   return (
     <>
-      <SelectBox onClick={onClick} isClicked={isClicked}>
-        {name}
+      <SelectBox onClick={onClick} isclicked={isclicked}>
+        {title}
+      </SelectBox>
+    </>
+  );
+};
+
+const SelectContainer2 = ({ id, major, setSelect, select }) => {
+  const [isclicked, setisclicked] = useState(false);
+
+  const onClick = () => {
+    setisclicked(!isclicked);
+    if (isclicked) {
+      const filtered = select.filter((item) => item != id);
+      setSelect(filtered);
+    } else {
+      setSelect([...select, id]);
+    }
+  };
+
+  return (
+    <>
+      <SelectBox onClick={onClick} isclicked={isclicked}>
+        {major}
       </SelectBox>
     </>
   );
@@ -133,27 +193,28 @@ const SelecMajor = () => {
 
   const [select, setSelect] = useState([]);
   const [select1, setSelect1] = useState([]);
-  const [select2, setSelect2] = useState([]);
-  const [select3, setSelect3] = useState([]);
-  const [select4, setSelect4] = useState([]);
 
-axios
-  .get(url, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
-  .then((Response) => {
-    console.log(Response.data);
-  })
-  .catch((Error) => {
-    console.log(Error);
-  });
+  const ax = async () => {
+    try {
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log(res.data);
+      console.log("rtrt");
+    } catch (err) {
+      console.log("getPost error: ", err);
+    }
+  };
+  useEffect(() => {
+    ax();
+  }, []);
 
   return (
     <>
       <ProgressBar>
-        <Progress width={100 - (availableItem * 100) / maxItem} bgColor={bg} />
+        <Progress width={100 - (availableItem * 100) / maxItem} bgcolor={bg} />
       </ProgressBar>
       <BigTitles>
         <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} /> 나의
@@ -172,7 +233,7 @@ axios
               루트 선택
               <SmallBox>
                 <XSmaillBox>
-                  {curri1.map((item) => (
+                  {curri.major_tracks[0].ECO_tracks.map((item) => (
                     <SelectContainer
                       {...item}
                       setSelect={setSelect}
@@ -192,52 +253,15 @@ axios
             </Icon>
             <TitleText>
               부전공 선택
-              <SmallTitle>인문 대학</SmallTitle>
               <SmallBox>
                 <XSmaillBox>
-                  {curri2.map((item) => (
-                    <SelectContainer
+                  {curri.major_tracks[1].second_major.map((item) => (
+                    <SelectContainer2
                       {...item}
-                      setSelect={setSelect1}
-                      select={select1}
+                      setSelect={setSelect}
+                      select={select}
                     />
-                  ))}{" "}
-                </XSmaillBox>
-              </SmallBox>
-              <SmallTitle>사회과학 대학</SmallTitle>
-              <SmallBox>
-                <XSmaillBox>
-                  {curri2.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect1}
-                      select={select1}
-                    />
-                  ))}{" "}
-                </XSmaillBox>
-              </SmallBox>
-              <SmallTitle>상경 대학</SmallTitle>
-              <SmallBox>
-                <XSmaillBox>
-                  {curri2.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect1}
-                      select={select1}
-                    />
-                  ))}{" "}
-                </XSmaillBox>
-              </SmallBox>
-              <SmallTitle>공과 대학</SmallTitle>
-              <SmallBox>
-                <XSmaillBox>
-                  {curri2.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect1}
-                      select={select1}
-                    />
-                  ))}{" "}
+                  ))}
                 </XSmaillBox>
               </SmallBox>
             </TitleText>
@@ -264,7 +288,7 @@ const Progress = styled.div`
   height: 30px;
   padding: 0;
   text-align: center;
-  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) => props.bgcolor};
   color: #111;
 `;
 
@@ -315,11 +339,11 @@ const SelectBox = styled.button`
   border-radius: 60px;
   display: inline-block;
 
-  background-color: ${({ isClicked }) => (!isClicked ? "#EFEFEF" : "white")};
-  border: ${({ isClicked }) =>
-    !isClicked ? "0.2rem solid #EFEFEF" : "0.2rem solid #FF6262"};
-  color: ${({ isClicked }) => (!isClicked ? "#B3B3B3" : "#FF6262")};
-  font-weight: ${({ isClicked }) => (!isClicked ? 500 : 700)};
+  background-color: ${({ isclicked }) => (!isclicked ? "#EFEFEF" : "white")};
+  border: ${({ isclicked }) =>
+    !isclicked ? "0.2rem solid #EFEFEF" : "0.2rem solid #FF6262"};
+  color: ${({ isclicked }) => (!isclicked ? "#B3B3B3" : "#FF6262")};
+  font-weight: ${({ isclicked }) => (!isclicked ? 500 : 700)};
 `;
 
 const SmallTitle = styled.div`

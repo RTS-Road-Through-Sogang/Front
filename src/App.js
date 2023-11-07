@@ -11,20 +11,11 @@ import SelectSub from "./6_submajor";
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Header />
 
-        <Routes>
-          <Route path="/intro" element={<Introduce />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/roadmap" element={<Roadmap />} />
-        </Routes>
-      </BrowserRouter>
+    <div>
+      <SelecMajor />
+    </div>
 
-      <SelectSub />
-    </>
   );
 }
 
