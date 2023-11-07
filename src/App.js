@@ -11,9 +11,11 @@ import SelectSub from "./6_submajor";
 
 function App() {
   return (
+
     <div>
       <SelecMajor />
     </div>
+
   );
 }
 

@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import loginimage from "./images/login.jpg";
 import styled, { createGlobalStyle } from "styled-components";
 import { faEyeSlash, faEye } from "@fortawesome/free-regular-svg-icons";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputField from "./InputField";
 import Modal from "./Modal";
@@ -12,7 +10,62 @@ const SignUp = () => {
   const [showPswd, setShowPswd] = useState(false);
   const [showConfirmPswd, setShowConfirmPswd] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  const [name, setName] = useState("");
+  const [studentid, setStudentid] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [major, setMajor] = useState("");
   const [email, setEmail] = useState("");
+  const [verifycode, setVerifycode] = useState("");
+  const [errors, setError] = useState({
+    name: "",
+    studentid: "",
+    password: "",
+    passwordConfirm: "",
+    major: "",
+    email: "",
+    verifycode: "",
+  });
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    let newErrors = {
+      ...errors,
+      name: "",
+      studentid: "",
+      password: "",
+      passwordConfirm: "",
+      major: "",
+      email: "",
+      verifycode: "",
+    };
+
+    if (!name.trim()) {
+      newErrors.name = "이름을 입력하세요";
+    }
+    if (!studentid.trim()) {
+      newErrors.studentid = "학번을 입력하세요";
+    }
+    if (!password.trim()) {
+      newErrors.password = "비밀번호를 입력하세요";
+    }
+    if (!passwordConfirm.trim()) {
+      newErrors.passwordConfirm = "비밀번호확인란을 입력하세요";
+    }
+    if (password !== passwordConfirm) {
+      newErrors.passwordConfirm =
+        "비밀번호와 비밀번호 확인이 일치하지 않습니다!";
+    }
+    if (major === "") {
+      alert("전공을 선택하세요!");
+    }
+    if (!email.trim()) {
+      newErrors.email = "이메일을 입력하세요";
+    }
+    setError(newErrors);
+    console.log(newErrors);
+  };
+
   const toggleConfirmPswdVisibility = () => {
     setShowConfirmPswd(!showConfirmPswd);
   };
@@ -28,15 +81,6 @@ const SignUp = () => {
   const togglePswdVisibility = () => {
     setShowPswd(!showPswd);
   };
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  //추후 인증과정 로직 처리 필요
-  const handleVerifyCode = (code) => {
-    // code 처리 로직
-    console.log(code);
-  };
 
   return (
     <>
@@ -45,30 +89,57 @@ const SignUp = () => {
         <MainImage src={loginimage} alt="Main" />
         <LoginForm>
           <LoginText>회원가입하기</LoginText>
-          <InputField name="username" placeholder="이름을 입력하세요" />
-          <InputField name="username" placeholder="학번을 입력하세요" />
+          <InputField
+            name="username"
+            placeholder="이름을 입력하세요"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
+
+          <InputField
+            name="studentid"
+            placeholder="학번8자리를 입력하세요 ex) 20201234"
+            value={studentid}
+            onChange={(e) => setStudentid(e.target.value)}
+          />
+          {errors.studentid && <ErrorMessage>{errors.studentid}</ErrorMessage>}
+
           <PasswordWrapper>
             <Input
               type={showPswd ? "text" : "password"}
               placeholder="비밀번호를 입력하세요"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <StyledIcon
               icon={showPswd ? faEye : faEyeSlash}
               onClick={togglePswdVisibility}
             />
           </PasswordWrapper>
+          {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+
           <PasswordWrapper>
             <Input
               type={showConfirmPswd ? "text" : "password"}
               placeholder="비밀번호 재확인"
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
             />
             <StyledIcon
               icon={showConfirmPswd ? faEye : faEyeSlash}
               onClick={toggleConfirmPswdVisibility}
             />
           </PasswordWrapper>
+          {errors.passwordConfirm && (
+            <ErrorMessage>{errors.passwordConfirm}</ErrorMessage>
+          )}
+
           <SelectWrapper>
-            <StyledSelect defaultValue="">
+            <StyledSelect
+              value={major}
+              onChange={(e) => setMajor(e.target.value)}
+            >
               <option value="" disabled>
                 본전공을 선택하세요
               </option>
@@ -76,21 +147,17 @@ const SignUp = () => {
               <option value="경영학과">경영학과</option>
               <option value="컴퓨터공학과">컴퓨터공학과</option>
             </StyledSelect>
-            <FontAwesomeIcon
-              icon={faPlay}
-              rotation={270}
-              style={{ color: "#ff8484" }}
-            />
           </SelectWrapper>
           <EmailInputWrapper>
             <EmailInput
               name="email"
               placeholder="이메일을 입력하세요"
-              onChange={handleEmailChange}
               value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <EmailDomainLabel>@sogang.ac.kr</EmailDomainLabel>
           </EmailInputWrapper>
+          {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
 
           <Verify onClick={openModal}>이메일 인증 키 발송</Verify>
           <Modal
@@ -99,7 +166,7 @@ const SignUp = () => {
             email={email + "@sogang.ac.kr"}
           />
 
-          <StyledButton>
+          <StyledButton type="submit" onClick={handleSignup}>
             <span>회원가입하기</span>
           </StyledButton>
         </LoginForm>
@@ -223,7 +290,7 @@ const StyledSelect = styled.select`
 
 const SelectWrapper = styled.div`
   position: relative;
-  width: 98.5%;
+  width: 89%%;
 
   & svg {
     position: absolute;
@@ -235,6 +302,7 @@ const SelectWrapper = styled.div`
 
 const EmailInputWrapper = styled.div`
   display: flex;
+  width: 98.5%;
   align-items: center;
   border: 1px solid #ababab;
   border-radius: 10px;
@@ -254,6 +322,12 @@ const EmailInput = styled(Input)`
   flex-grow: 1; /* input 필드가 가능한 영역을 모두 차지하도록 함 */
   border-radius: 10px 0 0 10px;
   border: none;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 0.8rem;
+  margin-left: 1rem;
 `;
 
 export default SignUp;
