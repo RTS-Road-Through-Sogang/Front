@@ -5,8 +5,11 @@ import { faEyeSlash, faEye } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputField from "./InputField";
 import Modal from "./Modal";
+import { useNavigate } from "react-router-dom";
+const BASE_URL = `http://ec2-54-180-25-161.ap-northeast-2.compute.amazonaws.com/`;
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [showPswd, setShowPswd] = useState(false);
   const [showConfirmPswd, setShowConfirmPswd] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -18,6 +21,7 @@ const SignUp = () => {
   const [major, setMajor] = useState("");
   const [email, setEmail] = useState("");
   const [verifycode, setVerifycode] = useState("");
+
   const [errors, setError] = useState({
     name: "",
     studentid: "",
@@ -26,6 +30,7 @@ const SignUp = () => {
     major: "",
     email: "",
     verifycode: "",
+    message: "",
   });
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -63,9 +68,38 @@ const SignUp = () => {
       newErrors.email = "이메일을 입력하세요";
     }
     setError(newErrors);
-    console.log(newErrors);
+    try {
+      const response = await fetch(`${BASE_URL}/users/signup/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          name: name,
+          studentnumber: studentid,
+          major: major,
+        }),
+      });
+      const data = await response.json();
+      if (data.message === "Signup Success") {
+        alert("회원가입 성공");
+        navigate("/roadmap");
+      } else {
+        setError((prevErrors) => ({
+          ...prevErrors,
+          message: data.message || "회원 가입 실패!",
+        }));
+      }
+    } catch (error) {
+      console.error(error);
+      setError((prevErrors) => ({
+        ...prevErrors,
+        message: "서버와의 통신에 실패했습니다.",
+      }));
+    }
   };
-
   const toggleConfirmPswdVisibility = () => {
     setShowConfirmPswd(!showConfirmPswd);
   };
@@ -143,8 +177,8 @@ const SignUp = () => {
               <option value="" disabled>
                 본전공을 선택하세요
               </option>
-              <option value="경제학과">경제학과</option>
-              <option value="경영학과">경영학과</option>
+              <option value="경제">경제학과</option>
+              <option value="경영">경영학과</option>
               <option value="컴퓨터공학과">컴퓨터공학과</option>
             </StyledSelect>
           </SelectWrapper>
