@@ -1,4 +1,3 @@
-// 인증번호 재전송 글자 추가해야함
 // 인증번호 성공했을때만 확인 버튼이 팝업 창이 뜨면서 모달이 닫혀야함.
 
 import React, { useState } from "react";
@@ -9,7 +8,10 @@ import App from "./App";
 
 const Modal = ({ isVisible, closeModal, email }) => {
   const [code, setCode] = useState([...new Array(6).fill("")]);
+  const [verified, setVerified] = useState(false); // 인증 성공 여부 상태
+  const [verifyMessage, setVerifyMessage] = useState("");
   const refs = new Array(6).fill().map(() => React.createRef());
+
   const changeRef = (idx, isLeft) => {
     if (isLeft && idx > 0) {
       refs[idx - 1].current.focus();
@@ -52,6 +54,23 @@ const Modal = ({ isVisible, closeModal, email }) => {
     }
   };
 
+  const handleVerifyClick = async () => {
+    const enteredCode = code.join("");
+    // 백엔드에서 제공하는 인증 코드와 비교하는 로직 필요
+    // 예시: const backendCode = "123456"; // API 호출로 얻어야 함
+    // const isMatch = enteredCode === backendCode;
+    const isMatch = true; // API 호출 결과를 받으면 여기에 적용
+
+    if (isMatch) {
+      setVerified(true);
+      setVerifyMessage("이메일 인증이 성공되었습니다");
+      closeModal(); // 인증 성공시 모달 닫기
+    } else {
+      setVerified(false);
+      setVerifyMessage("올바른 인증번호를 입력하세요");
+    }
+  };
+
   return isVisible ? (
     <ModalOverlay>
       <ModalWrapper>
@@ -81,6 +100,12 @@ const Modal = ({ isVisible, closeModal, email }) => {
           <VerifyText fontSize="0.9rem">
             이메일을 받지 못하셨나요?
             <ResendLink> 이메일 재전송하기</ResendLink>
+          </VerifyText>
+          <VerifyText
+            fontSize="0.8rem"
+            fontColor={verified ? "#32CD32" : "#FF6347"}
+          >
+            {verifyMessage}
           </VerifyText>
 
           <CloseButton onClick={closeModal}>확인</CloseButton>
