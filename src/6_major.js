@@ -4,11 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-const accessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5ODUyNDA1LCJpYXQiOjE2OTkyNDc2MDUsImp0aSI6IjNhZWRlOTgyN2ZhZjQ2MDJiM2NkNmYzYWFiNzBhNWFjIiwidXNlcl9pZCI6Mn0.kOLNBScfJc69xE8LSKgtcqGncmq80Bhm417mVCk7ALM";
-
-const url = `http://ec2-54-180-25-161.ap-northeast-2.compute.amazonaws.com/roadmaps/usermajortracks/`;
-
 const curri = {
   name: "이우찬",
   major: {
@@ -207,10 +202,22 @@ const SelecMajor = () => {
       console.log("getPost error: ", err);
     }
   };
-  useEffect(() => {
-    ax();
-  }, []);
-
+  axios
+    .get(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => {
+      // 요청이 성공하면 이 곳에서 응답을 처리합니다.
+      console.log("yes");
+      console.log(response.data);
+    })
+    .catch((error) => {
+      // 요청이 실패하면 이 곳에서 에러를 처리합니다.
+      console.log("no");
+      console.error(error);
+    });
   return (
     <>
       <ProgressBar>
