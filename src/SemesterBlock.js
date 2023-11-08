@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCheck } from "@fortawesome/free-soSemesterCoursed-svg-icons";
 
 const SemesterBlock = ({ text }) => {
   return (
@@ -10,9 +8,6 @@ const SemesterBlock = ({ text }) => {
         <span>{text.number}</span>
       </SemesterTop>
       <SemesterBottom>
-        {/* <SemesterCheck>
-          <FontAwesomeIcon icon={faCheck} />
-        </SemesterCheck> */}
         <SemesterCourses>
           <SemesterCourse>{text.course1}</SemesterCourse>
           <SemesterCourse>{text.course2}</SemesterCourse>
