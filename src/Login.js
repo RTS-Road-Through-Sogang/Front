@@ -10,7 +10,7 @@ import InputField from "./InputField";
 const Login = () => {
   const navigate = useNavigate();
   const goToSign = () => {
-    navigate("/signin");
+    navigate("/signup");
   };
   const [showPswd, setShowPswd] = useState(false);
   const togglePswdVisibility = () => {
