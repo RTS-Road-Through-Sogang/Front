@@ -5,8 +5,11 @@ import { faEyeSlash, faEye } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputField from "./InputField";
 import Modal from "./Modal";
+import { useNavigate } from "react-router-dom";
+const BASE_URL = `http://ec2-13-124-144-89.ap-northeast-2.compute.amazonaws.com`;
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [showPswd, setShowPswd] = useState(false);
   const [showConfirmPswd, setShowConfirmPswd] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +20,8 @@ const SignUp = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [major, setMajor] = useState("");
   const [email, setEmail] = useState("");
-  const [verifycode, setVerifycode] = useState("");
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+
   const [errors, setError] = useState({
     name: "",
     studentid: "",
@@ -25,7 +29,7 @@ const SignUp = () => {
     passwordConfirm: "",
     major: "",
     email: "",
-    verifycode: "",
+    message: "",
   });
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -37,7 +41,6 @@ const SignUp = () => {
       passwordConfirm: "",
       major: "",
       email: "",
-      verifycode: "",
     };
 
     if (!name.trim()) {
@@ -50,7 +53,7 @@ const SignUp = () => {
       newErrors.password = "비밀번호를 입력하세요";
     }
     if (!passwordConfirm.trim()) {
-      newErrors.passwordConfirm = "비밀번호확인란을 입력하세요";
+      newErrors.passwordConfirm = "비밀번호 확인란을 입력하세요";
     }
     if (password !== passwordConfirm) {
       newErrors.passwordConfirm =
@@ -62,10 +65,43 @@ const SignUp = () => {
     if (!email.trim()) {
       newErrors.email = "이메일을 입력하세요";
     }
+    if (!isEmailVerified) {
+      alert("이메일 인증을 완료해주세요.");
+      return;
+    }
     setError(newErrors);
-    console.log(newErrors);
+    try {
+      const response = await fetch(`${BASE_URL}/users/signup/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          student_number: studentid,
+          major: major,
+          password: password,
+          email: email,
+        }),
+      });
+      const data = await response.json();
+      if (data.message === "signup completed") {
+        alert("회원가입 성공");
+        navigate("/roadmap");
+      } else {
+        setError((prevErrors) => ({
+          ...prevErrors,
+          message: data.message || "회원 가입 실패!",
+        }));
+      }
+    } catch (error) {
+      console.error(error);
+      setError((prevErrors) => ({
+        ...prevErrors,
+        message: "서버와의 통신에 실패했습니다.",
+      }));
+    }
   };
-
   const toggleConfirmPswdVisibility = () => {
     setShowConfirmPswd(!showConfirmPswd);
   };
@@ -81,7 +117,20 @@ const SignUp = () => {
   const togglePswdVisibility = () => {
     setShowPswd(!showPswd);
   };
-
+  const sendVerificationEmail = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/users/verify_email/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email + "@sogang.ac.kr" }),
+      });
+      const data = await response.json();
+    } catch (error) {
+      alert("인증번호 발송에 실패했습니다.");
+    }
+  };
   return (
     <>
       <GlobalStyles />
@@ -122,7 +171,7 @@ const SignUp = () => {
           <PasswordWrapper>
             <Input
               type={showConfirmPswd ? "text" : "password"}
-              placeholder="비밀번호 재확인"
+              placeholder="비밀번호를 다시한번 입력해주세요"
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
             />
@@ -143,15 +192,15 @@ const SignUp = () => {
               <option value="" disabled>
                 본전공을 선택하세요
               </option>
-              <option value="경제학과">경제학과</option>
-              <option value="경영학과">경영학과</option>
+              <option value="경제">경제학과</option>
+              <option value="경영">경영학과</option>
               <option value="컴퓨터공학과">컴퓨터공학과</option>
             </StyledSelect>
           </SelectWrapper>
           <EmailInputWrapper>
             <EmailInput
               name="email"
-              placeholder="이메일을 입력하세요"
+              placeholder="서강대학교 email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -159,11 +208,27 @@ const SignUp = () => {
           </EmailInputWrapper>
           {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
 
-          <Verify onClick={openModal}>이메일 인증 키 발송</Verify>
+          <Verify
+            onClick={() => {
+              if (email.includes("@")) {
+                setError((prevErrors) => ({
+                  ...prevErrors,
+                  email:
+                    "올바른 이메일 형식이 아닙니다! @sogang.ac.kr 도메인은 자동으로 추가됩니다.",
+                }));
+              } else {
+                openModal();
+                sendVerificationEmail();
+              }
+            }}
+          >
+            이메일 인증 키 발송
+          </Verify>
           <Modal
             isVisible={showModal}
             closeModal={closeModal}
             email={email + "@sogang.ac.kr"}
+            onVerified={(verified) => setIsEmailVerified(verified)}
           />
 
           <StyledButton type="submit" onClick={handleSignup}>

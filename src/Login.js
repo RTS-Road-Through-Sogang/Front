@@ -6,16 +6,60 @@ import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import InputField from "./InputField";
-
+const BASE_URL = `http://ec2-13-124-144-89.ap-northeast-2.compute.amazonaws.com`;
 const Login = () => {
   const navigate = useNavigate();
   const goToSign = () => {
-    navigate("/signin");
+    navigate("/signup");
   };
+  const [studentnumber, setStudentNumber] = useState("");
+  const [password, setPassword] = useState("");
   const [showPswd, setShowPswd] = useState(false);
+  const [continuelogin, setContinueLogin] = useState(false);
+  const [verifyMessage, setVerifyMessage] = useState("");
   const togglePswdVisibility = () => {
     setShowPswd(!showPswd);
   };
+
+  const handleLogin = async () => {
+    if (!studentnumber.trim()) {
+      setVerifyMessage("아이디를 입력하세요");
+      return;
+    }
+    if (!password.trim()) {
+      setVerifyMessage("비밀번호를 입력하세요");
+      return;
+    }
+    try {
+      const response = await fetch(`${BASE_URL}/users/login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          student_number: studentnumber,
+          password: password,
+        }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("accessToken", data.access);
+        navigate("/roadmap");
+      } else {
+        setVerifyMessage(data.message || "아이디, 비밀번호를 확인해주세요.");
+      }
+    } catch (error) {
+      setVerifyMessage(
+        "로그인 시도 중 오류가 발생했습니다. 다시 시도해주세요."
+      );
+      console.error(error);
+    }
+  };
+  const handleCheckboxChange = () => {
+    setContinueLogin(!continuelogin);
+  };
+
   return (
     <>
       <GlobalStyles />
@@ -23,21 +67,37 @@ const Login = () => {
         <MainImage src={loginimage} alt="Main" />
         <LoginForm>
           <LoginText>로그인</LoginText>
-          <InputField name="username" placeholder="이메일을 입력하세요" />
+          <InputField
+            name="username"
+            placeholder="학번을 입력하세요"
+            value={studentnumber}
+            onChange={(e) => setStudentNumber(e.target.value)}
+          />
 
           <PasswordWrapper>
             <Input
               type={showPswd ? "text" : "password"}
               placeholder="비밀번호를 입력하세요"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <StyledIcon
               icon={showPswd ? faEye : faEyeSlash}
               onClick={togglePswdVisibility}
             />
           </PasswordWrapper>
+          <VerifyText fontSize="0.8rem" fontColor={"#FF6347"}>
+            {verifyMessage}
+          </VerifyText>
           <CheckboxWrapper>
-            <CheckboxInput id="check_btn" />
+            <CheckboxInput
+              id="check_btn"
+              checked={continuelogin}
+              onChange={handleCheckboxChange}
+            />
             <CheckboxLabel htmlFor="check_btn">로그인 상태 유지</CheckboxLabel>
           </CheckboxWrapper>
-          <StyledButton>
+          <StyledButton type="submit" onClick={handleLogin}>
             <span>로그인</span>
           </StyledButton>
           <GreyLine />
@@ -125,6 +185,12 @@ const StyledIcon = styled(FontAwesomeIcon)`
   right: 10px;
   cursor: pointer;
 `;
+const VerifyText = styled.div`
+  text-align: center;
+  color: ${(props) => props.fontColor || "#7a7a7a"};
+  font-size: ${(props) => props.fontSize || "1rem"};
+  margin-top: 15px;
+`;
 
 const CheckboxWrapper = styled.div`
   margin-top: 10px;
@@ -183,7 +249,7 @@ const CheckboxInput = styled.input.attrs({ type: "checkbox" })`
 
 const StyledButton = styled.button`
   cursor: pointer;
-  width: 20.5vw;
+  widht: 100%;
   height: 6vh;
   border-radius: 60px;
   border: 2px solid #ff6262;
@@ -219,7 +285,7 @@ const Other = styled.div`
 
 const OtherButton = styled.button`
   cursor: pointer;
-  width: 10vw;
+  width: 48%;
   height: 4.5vh;
   border-radius: 60px;
   border: 2px solid #ff6262;
