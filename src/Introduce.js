@@ -3,6 +3,9 @@ import styled, { createGlobalStyle } from "styled-components";
 import main_image from "./images/milestone.jpg";
 //import main_image from "./images/123.jpg";
 
+import background_image from "./images/backgrouond.jpg";
+import sign_image from "./images/sign.jpg";
+import intro_image from "./images/intro_image1.jpg";
 import feature_image1 from "./images/main.jpeg";
 import feature_image2 from "./images/main.jpeg";
 import Feature from "./Feature";
@@ -34,7 +37,7 @@ const Introduce = () => {
       <GlobalStyles />
       <MainSection>
         <MainImageWrapper>
-          <MainImage src={main_image} alt="Main" scale={1 + scrollY / 1000} />
+          <MainImage src={sign_image} alt="Main" />
         </MainImageWrapper>
         <MainText>
           {title.split("").map((char, index) =>
@@ -142,16 +145,6 @@ const MainText = styled.div`
   position: absolute;
   top: 10%;
   left: 25.5%;
-`;
-
-const SubText = styled.div`
-  font-size: 2.5em;
-  color: white;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  position: absolute;
-  top: 40%;
-  left: 10%;
 `;
 
 const MainImageWrapper = styled.div`

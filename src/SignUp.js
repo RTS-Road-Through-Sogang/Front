@@ -118,18 +118,9 @@ const SignUp = () => {
   const togglePswdVisibility = () => {
     setShowPswd(!showPswd);
   };
-  const sendVerificationEmail = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/users/verify_email/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: email + "@sogang.ac.kr" }),
-      });
-      const data = await response.json();
-    } catch (error) {
-      alert("인증번호 발송에 실패했습니다.");
+  const sendVerificationEmail = () => {
+    if (!email.includes("@") && email.trim()) {
+      openModal();
     }
   };
   return (
@@ -217,8 +208,13 @@ const SignUp = () => {
                   email:
                     "올바른 이메일 형식이 아닙니다! @sogang.ac.kr 도메인은 자동으로 추가됩니다.",
                 }));
+              } else if (!email.trim()) {
+                setError((prevErrors) => ({
+                  ...prevErrors,
+                  email: "이메일을 입력하세요",
+                }));
+                return;
               } else {
-                openModal();
                 sendVerificationEmail();
               }
             }}
