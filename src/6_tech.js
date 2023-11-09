@@ -5,96 +5,113 @@ import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const curri = ["서강인성"];
 
-const curri1 = [
+const curr = [
   {
-    id: 1,
-    name: "성찰과성장",
+    track: "단일전공",
+    "이수 학점": 16,
   },
   {
-    id: 2,
-    name: "알바트로스세미나",
+    category_detail: "필수",
+    category_point: 13,
+    lectures: [
+      {
+        id: 2,
+        title: "미적분학II",
+        code: "STS2006",
+        point: 3,
+        eta: "",
+        semester_one: 3,
+        semester_two: 3,
+        teamplay: 1,
+        grade_recommend: 1,
+        season_open: true,
+        teach: false,
+        advance: false,
+        former: null,
+        category21: 11,
+        category22: 11,
+        category23: 11,
+        category24: null,
+        tech: null,
+      },
+      {
+        id: 3,
+        title: "일반물리실험I",
+        code: "PHY1101",
+        point: 1,
+        eta: "",
+        semester_one: 3,
+        semester_two: 3,
+        teamplay: 1,
+        grade_recommend: 1,
+        season_open: true,
+        teach: false,
+        advance: false,
+        former: null,
+        category21: 11,
+        category22: 11,
+        category23: 11,
+        category24: null,
+        tech: null,
+      },
+      // 나머지 강의들도 포함
+    ],
   },
   {
-    id: 3,
-    name: "어쩌고저쩌고",
-  },
-  {
-    id: 4,
-    name: "어쩌고저쩌고",
-  },
-  {
-    id: 5,
-    name: "어쩌고저쩌고",
-  },
-  {
-    id: 6,
-    name: "어쩌고저쩌고",
-  },
-];
-
-const curri2 = [
-  {
-    id: 7,
-    name: "자연계 글쓰기",
-  },
-  {
-    id: 8,
-    name: "인문계 글쓰기",
-  },
-];
-
-const curri3 = [
-  {
-    id: 9,
-    name: "영어글로벌의사소통1",
-  },
-  {
-    id: 10,
-    name: "영어글로벌의사소통2",
-  },
-];
-
-const curri4 = [
-  {
-    id: 11,
-    name: "영어글로벌의사소통1",
-  },
-  {
-    id: 12,
-    name: "영어글로벌의사소통2",
-  },
-  {
-    id: 13,
-    name: "000000",
-  },
-  {
-    id: 14,
-    name: "33333",
-  },
-];
-
-const curri5 = [
-  {
-    id: 15,
-    name: "컴퓨팅사고력",
-  },
-  {
-    id: 16,
-    name: "영어글로벌의사소통2",
-  },
-  {
-    id: 17,
-    name: "000000",
-  },
-  {
-    id: 18,
-    name: "33333",
+    category_detail: "선택",
+    category_point: 3,
+    lectures: [
+      {
+        id: 7,
+        title: "집합론",
+        code: "MAT2010",
+        point: 3,
+        eta: "",
+        semester_one: 3,
+        semester_two: 3,
+        teamplay: 1,
+        grade_recommend: 1,
+        season_open: true,
+        teach: false,
+        advance: false,
+        former: null,
+        category21: 12,
+        category22: 12,
+        category23: 12,
+        category24: null,
+        tech: null,
+      },
+      {
+        id: 8,
+        title: "선형대수학",
+        code: "MAT2110",
+        point: 3,
+        eta: "",
+        semester_one: 3,
+        semester_two: 3,
+        teamplay: 1,
+        grade_recommend: 1,
+        season_open: true,
+        teach: false,
+        advance: false,
+        former: null,
+        category21: 12,
+        category22: 12,
+        category23: 12,
+        category24: null,
+        tech: null,
+      },
+      // 나머지 강의들도 포함
+    ],
   },
 ];
 
 const SelectContainer = ({
   id,
-  name,
+  title,
+  point,
+  code,
+  season_open,
   setSelect,
   select,
   ex_select,
@@ -107,18 +124,32 @@ const SelectContainer = ({
 
     setisClicked(!isClicked);
     if (isClicked) {
-      const filtered = select.filter((item) => item != id);
+      const filtered = select.filter(
+        (item) => item[0] != id && item[1] != point
+      );
+   
       setSelect(filtered);
     } else {
-      setSelect([...select, id]);
+      setSelect([...select, [id, point]]);
     }
   };
+  let season="";
+   if (season_open === true) {
+     season="O"
+  }
+   else {
+     season="X"
+  }
 
   return (
     <>
       <SelectBox onClick={onClick} isClicked={isClicked}>
-        {name}
-        <HoverBox>교수: ㅇㅇㅇ<br></br>과제: 많음<br></br>성적: 깐깐함</HoverBox>
+        {title}
+        <HoverBox>
+          과목 코드: {code}
+          <br></br>학점: {point}학점
+          <br></br>계절: {season}
+        </HoverBox>
       </SelectBox>
     </>
   );
@@ -130,33 +161,43 @@ const Selecttech = () => {
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c})`;
 
-  const maxSelect = [4, 1, 1, 3, 2];
+  const maxSelect = curr.map((item) => item.category_point);
 
-  const [select, setSelect] = useState([]);
   const [select1, setSelect1] = useState([]);
   const [select2, setSelect2] = useState([]);
   const [select3, setSelect3] = useState([]);
   const [select4, setSelect4] = useState([]);
-  const [ex_select, setSelectEX] = useState([]);
+
   const [ex_select1, setSelectEX1] = useState([]);
   const [ex_select2, setSelectEX2] = useState([]);
   const [ex_select3, setSelectEX3] = useState([]);
   const [ex_select4, setSelectEX4] = useState([]);
 
-  const len = [
-    select.length,
-    select1.length,
-    select2.length,
-    select3.length,
-    select4.length,
-  ];
+  const select = [select1, select2, select3, select4];
+  const setSelect = [setSelect1, setSelect2, setSelect3, setSelect4];
+  const ex_select = [ex_select1, ex_select2, ex_select3, ex_select4];
+  const setSelectEX = [setSelectEX1, setSelectEX2, setSelectEX3, setSelectEX4];
 
+  const len = [select1.length, select2.length, select3.length, select4.length];
+  
   const c_select = [
-    94 + (100 / maxSelect[0]) * (maxSelect[0] - len[0]),
-    94 + (100 / maxSelect[1]) * (maxSelect[1] - len[1]),
-    94 + (100 / maxSelect[2]) * (maxSelect[2] - len[2]),
-    94 + (100 / maxSelect[3]) * (maxSelect[3] - len[3]),
-    94 + (100 / maxSelect[4]) * (maxSelect[4] - len[4]),
+    94 +
+      (100 / maxSelect[0]) *
+        (maxSelect[0] -
+          select1.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[1]) *
+        (maxSelect[1] -
+          select2.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[2]) *
+        (maxSelect[2] -
+          select3.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[3]) *
+        (maxSelect[3] -
+          select4.reduce((total, currentRow) => total + currentRow[1], 0)),
+    
   ];
 
   return (
@@ -170,132 +211,37 @@ const Selecttech = () => {
       </BigTitles>
       <BigBox>
         <LeftBox>
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              서강인성
-              <SmallBox>
-                <XSmaillBox>
-                  {curri1.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect}
-                      select={select}
-                      ex_select={ex_select}
-                      setSelectEX={setSelectEX}
-                    />
-                    
-                  ))}
-                  
-                </XSmaillBox>
-                
-              </SmallBox>
-            </TitleText>
-          </Title>
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              글쓰기
-              <SmallBox>
-                <XSmaillBox>
-                  {curri2.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect1}
-                      select={select1}
-                      ex_select={ex_select1}
-                      setSelectEX={setSelectEX1}
-                    />
-                  ))}{" "}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
-
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              글로벌 영어
-              <SmallBox>
-                <XSmaillBox>
-                  {curri3.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect2}
-                      select={select2}
-                      ex_select={ex_select2}
-                      setSelectEX={setSelectEX2}
-                    />
-                  ))}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
-
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              전공진로탐색
-              <SmallBox>
-                <XSmaillBox>
-                  {curri4.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect3}
-                      select={select3}
-                      ex_select={ex_select3}
-                      setSelectEX={setSelectEX3}
-                    />
-                  ))}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
-
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              소프트웨어
-              <SmallBox>
-                <XSmaillBox>
-                  {curri5.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect4}
-                      select={select4}
-                      ex_select={ex_select4}
-                      setSelectEX={setSelectEX4}
-                    />
-                  ))}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
+          {curr &&
+            curr.map(
+              (item, index) =>
+                item.category_detail !== undefined && (
+                  <Title>
+                    <Icon>
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        style={{ color: "#FF6262", fontSize: "1.7rem" }}
+                      />
+                    </Icon>
+                    <TitleText>
+                      {item.category_detail}
+                      <SmallBox>
+                        <XSmaillBox>
+                          {item.lectures &&
+                            item.lectures.map((lecture) => (
+                              <SelectContainer
+                                {...lecture}
+                                setSelect={setSelect[index]}
+                                select={select[index]}
+                                ex_select={ex_select[index]}
+                                setSelectEX={setSelectEX[index]}
+                              />
+                            ))}
+                        </XSmaillBox>
+                      </SmallBox>
+                    </TitleText>
+                  </Title>
+                )
+            )}
         </LeftBox>
         <RightBox>
           <TotalBar>
@@ -350,96 +296,55 @@ const Selecttech = () => {
 
           <SelectBar>
             <SecondBar>
-              <Bar>
-                <BarText>서강인성</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={(len[0] * 100) / maxSelect[0]}
-                    bgColor={`rgb(255, ${c_select[0]}, ${c_select[0]})`}
-                    ex_width={(ex_select.length * 100) / maxSelect[0]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[0]) * (maxSelect[0] - ex_select.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[0]) * (maxSelect[0] - ex_select.length)
-                    })`}
-                  />
-                </MiniBar>
-              </Bar>
-              <Bar>
-                <BarText>글쓰기</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={(len[1] * 100) / maxSelect[1]}
-                    bgColor={`rgb(255, ${c_select[1]}, ${c_select[1]})`}
-                    ex_width={(ex_select1.length * 100) / maxSelect[1]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[1]) * (maxSelect[1] - ex_select1.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[1]) * (maxSelect[1] - ex_select1.length)
-                    })`}
-                  />
-                </MiniBar>
-              </Bar>
-              <Bar>
-                <BarText>글로벌영어</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={(len[2] * 100) / maxSelect[2]}
-                    bgColor={`rgb(255, ${c_select[2]}, ${c_select[2]})`}
-                    ex_width={(ex_select2.length * 100) / maxSelect[2]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[2]) * (maxSelect[2] - ex_select2.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[2]) * (maxSelect[2] - ex_select2.length)
-                    })`}
-                  />
-                </MiniBar>
-              </Bar>
-              <Bar>
-                <BarText>전공진로탐색</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={(len[3] * 100) / maxSelect[3]}
-                    bgColor={`rgb(255, ${c_select[3]}, ${c_select[3]})`}
-                    ex_width={(ex_select3.length * 100) / maxSelect[3]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[3]) * (maxSelect[3] - ex_select3.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[3]) * (maxSelect[3] - ex_select3.length)
-                    })`}
-                  />
-                </MiniBar>
-              </Bar>
-              <Bar>
-                <BarText>소프트웨어</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={(len[4] * 100) / maxSelect[4]}
-                    bgColor={`rgb(255, ${c_select[4]}, ${c_select[4]})`}
-                    ex_width={(ex_select4.length * 100) / maxSelect[4]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[4]) * (maxSelect[4] - ex_select4.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[4]) * (maxSelect[4] - ex_select4.length)
-                    })`}
-                  />
-                </MiniBar>
-              </Bar>
+              {curr &&
+                curr.map(
+                  (item, index) =>
+                    item.category_detail !== undefined && (
+                      <Bar>
+                        <BarText>{item.category_detail}</BarText>
+                        <MiniBar>
+                          <Mini
+                            width={
+                              (select[index].reduce(
+                                (total, currentRow) => total + currentRow[1],
+                                0
+                              ) *
+                                100) /
+                              maxSelect[index]
+                            }
+                            bgColor={`rgb(255, ${c_select[index]}, ${c_select[index]})`}
+                            ex_width={
+                              (ex_select[index].reduce(
+                                (total, currentRow) => total + currentRow[1],
+                                0
+                              ) *
+                                100) /
+                              maxSelect[index]
+                            }
+                            ex_bg={`rgb(255, ${
+                              94 +
+                              (100 / maxSelect[index]) *
+                                (maxSelect[index] -
+                                  ex_select[index].reduce(
+                                    (total, currentRow) =>
+                                      total + currentRow[1],
+                                    0
+                                  ))
+                            }, ${
+                              94 +
+                              (100 / maxSelect[index]) *
+                                (maxSelect[index] -
+                                  ex_select[index].reduce(
+                                    (total, currentRow) =>
+                                      total + currentRow[1],
+                                    0
+                                  ))
+                            })`}
+                          />
+                        </MiniBar>
+                      </Bar>
+                    )
+                )}
             </SecondBar>
           </SelectBar>
           <Save>임시저장</Save>
@@ -509,7 +414,7 @@ const TitleText = styled.div`
 const SmallBox = styled.div`
   width: auto%;
   margin-top: 3%;
-  positon :relative;
+  positon: relative;
 `;
 const XSmaillBox = styled.div``;
 const SelectBox = styled.button`
@@ -528,10 +433,11 @@ const SelectBox = styled.button`
   color: ${({ isClicked }) => (!isClicked ? "#B3B3B3" : "#FF6262")};
   font-weight: ${({ isClicked }) => (!isClicked ? 500 : 700)};
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.08);
+  
 `;
 
 const HoverBox = styled.div`
-  opacity: 0;
+  display: none;
   position: absolute;
   border: 0.2rem solid #ff6262;
   margin-top: 1%;
@@ -543,10 +449,7 @@ const HoverBox = styled.div`
   margin-left: -1%;
   background-color: white;
   ${SelectBox}:hover & {
-    opacity: 100%;
-   
-    transition: 0.5s ease-out;
-
+    display: block;
   }
 `;
 
@@ -647,7 +550,5 @@ const Next = styled.div`
   color: #ff6262;
   font-weight: 700;
 `;
-
-
 
 export default Selecttech;

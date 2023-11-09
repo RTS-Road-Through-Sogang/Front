@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import main_image from "./images/milestone.jpg";
 //import main_image from "./images/123.jpg";
+
 import background_image from "./images/backgrouond.jpg";
 import sign_image from "./images/sign.jpg";
 import intro_image from "./images/intro_image1.jpg";
@@ -56,7 +57,7 @@ const Introduce = () => {
       </MainSection>
       <IntroSection>
         <IntroImageWrapper>
-          <Image src={intro_image} alt="Intro" />
+          <Image src={feature_image1} alt="Intro" />
         </IntroImageWrapper>
         <IntroDescription>
           복수전공, 부전공... 학교 생활은 항상 선택의 연속입니다.

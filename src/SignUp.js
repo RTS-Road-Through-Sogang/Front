@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputField from "./InputField";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
-const BASE_URL = `http://ec2-13-124-144-89.ap-northeast-2.compute.amazonaws.com`;
+
+export const BASE_URL = process.env.BASE_URL;
 
 const SignUp = () => {
   const navigate = useNavigate();
