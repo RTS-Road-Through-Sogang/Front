@@ -106,96 +106,12 @@ const curr = [
   },
 ];
 
-const curri1 = [
-  {
-    id: 1,
-    name: "성찰과성장",
-  },
-  {
-    id: 2,
-    name: "알바트로스세미나",
-  },
-  {
-    id: 3,
-    name: "어쩌고저쩌고",
-  },
-  {
-    id: 4,
-    name: "어쩌고저쩌고",
-  },
-  {
-    id: 5,
-    name: "어쩌고저쩌고",
-  },
-  {
-    id: 6,
-    name: "어쩌고저쩌고",
-  },
-];
-
-const curri2 = [
-  {
-    id: 7,
-    name: "자연계 글쓰기",
-  },
-  {
-    id: 8,
-    name: "인문계 글쓰기",
-  },
-];
-
-const curri3 = [
-  {
-    id: 9,
-    name: "영어글로벌의사소통1",
-  },
-  {
-    id: 10,
-    name: "영어글로벌의사소통2",
-  },
-];
-
-const curri4 = [
-  {
-    id: 11,
-    name: "영어글로벌의사소통1",
-  },
-  {
-    id: 12,
-    name: "영어글로벌의사소통2",
-  },
-  {
-    id: 13,
-    name: "000000",
-  },
-  {
-    id: 14,
-    name: "33333",
-  },
-];
-
-const curri5 = [
-  {
-    id: 15,
-    name: "컴퓨팅사고력",
-  },
-  {
-    id: 16,
-    name: "영어글로벌의사소통2",
-  },
-  {
-    id: 17,
-    name: "000000",
-  },
-  {
-    id: 18,
-    name: "33333",
-  },
-];
-
 const SelectContainer = ({
   id,
   title,
+  point,
+  code,
+  season_open,
   setSelect,
   select,
   ex_select,
@@ -208,18 +124,32 @@ const SelectContainer = ({
 
     setisClicked(!isClicked);
     if (isClicked) {
-      const filtered = select.filter((item) => item != id);
+      const filtered = select.filter(
+        (item) => item[0] != id && item[1] != point
+      );
+   
       setSelect(filtered);
     } else {
-      setSelect([...select, id]);
+      setSelect([...select, [id, point]]);
     }
   };
+  let season="";
+   if (season_open === true) {
+     season="O"
+  }
+   else {
+     season="X"
+  }
 
   return (
     <>
       <SelectBox onClick={onClick} isClicked={isClicked}>
         {title}
-        <HoverBox>교수: ㅇㅇㅇ<br></br>과제: 많음<br></br>성적: 깐깐함</HoverBox>
+        <HoverBox>
+          과목 코드: {code}
+          <br></br>학점: {point}학점
+          <br></br>계절: {season}
+        </HoverBox>
       </SelectBox>
     </>
   );
@@ -231,34 +161,43 @@ const Selecttech = () => {
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c})`;
 
-  const maxSelect = [4, 1, 1, 3, 2];
+  const maxSelect = curr.map((item) => item.category_point);
 
-  const [select, setSelect] = useState([]);
   const [select1, setSelect1] = useState([]);
   const [select2, setSelect2] = useState([]);
   const [select3, setSelect3] = useState([]);
   const [select4, setSelect4] = useState([]);
-  const [ex_select, setSelectEX] = useState([]);
+
   const [ex_select1, setSelectEX1] = useState([]);
   const [ex_select2, setSelectEX2] = useState([]);
   const [ex_select3, setSelectEX3] = useState([]);
   const [ex_select4, setSelectEX4] = useState([]);
 
-  const len = [
-    select.length,
-    select1.length,
-    select2.length,
-    select3.length,
-    select4.length,
-  ];
+  const select = [select1, select2, select3, select4];
+  const setSelect = [setSelect1, setSelect2, setSelect3, setSelect4];
+  const ex_select = [ex_select1, ex_select2, ex_select3, ex_select4];
+  const setSelectEX = [setSelectEX1, setSelectEX2, setSelectEX3, setSelectEX4];
 
+  const len = [select1.length, select2.length, select3.length, select4.length];
   
   const c_select = [
-    94 + (100 / maxSelect[0]) * (maxSelect[0] - len[0]),
-    94 + (100 / maxSelect[1]) * (maxSelect[1] - len[1]),
-    94 + (100 / maxSelect[2]) * (maxSelect[2] - len[2]),
-    94 + (100 / maxSelect[3]) * (maxSelect[3] - len[3]),
-    94 + (100 / maxSelect[4]) * (maxSelect[4] - len[4]),
+    94 +
+      (100 / maxSelect[0]) *
+        (maxSelect[0] -
+          select1.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[1]) *
+        (maxSelect[1] -
+          select2.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[2]) *
+        (maxSelect[2] -
+          select3.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[3]) *
+        (maxSelect[3] -
+          select4.reduce((total, currentRow) => total + currentRow[1], 0)),
+    
   ];
 
   return (
@@ -274,7 +213,7 @@ const Selecttech = () => {
         <LeftBox>
           {curr &&
             curr.map(
-              (item) =>
+              (item, index) =>
                 item.category_detail !== undefined && (
                   <Title>
                     <Icon>
@@ -282,20 +221,19 @@ const Selecttech = () => {
                         icon={faCheck}
                         style={{ color: "#FF6262", fontSize: "1.7rem" }}
                       />
-                    </Icon>{" "}
+                    </Icon>
                     <TitleText>
                       {item.category_detail}
                       <SmallBox>
                         <XSmaillBox>
                           {item.lectures &&
                             item.lectures.map((lecture) => (
-                            
                               <SelectContainer
                                 {...lecture}
-                                setSelect={setSelect1}
-                                select={select1}
-                                ex_select={ex_select1}
-                                setSelectEX={setSelectEX1}
+                                setSelect={setSelect[index]}
+                                select={select[index]}
+                                ex_select={ex_select[index]}
+                                setSelectEX={setSelectEX[index]}
                               />
                             ))}
                         </XSmaillBox>
@@ -360,118 +298,53 @@ const Selecttech = () => {
             <SecondBar>
               {curr &&
                 curr.map(
-                  (item) =>
+                  (item, index) =>
                     item.category_detail !== undefined && (
                       <Bar>
                         <BarText>{item.category_detail}</BarText>
                         <MiniBar>
-                  <Mini
-                    width={(len[0] * 100) / maxSelect[0]}
-                    bgColor={`rgb(255, ${c_select[0]}, ${c_select[0]})`}
-                    ex_width={(ex_select.length * 100) / maxSelect[0]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[0]) * (maxSelect[0] - ex_select.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[0]) * (maxSelect[0] - ex_select.length)
-                    })`}
-                  />
-                </MiniBar>
+                          <Mini
+                            width={
+                              (select[index].reduce(
+                                (total, currentRow) => total + currentRow[1],
+                                0
+                              ) *
+                                100) /
+                              maxSelect[index]
+                            }
+                            bgColor={`rgb(255, ${c_select[index]}, ${c_select[index]})`}
+                            ex_width={
+                              (ex_select[index].reduce(
+                                (total, currentRow) => total + currentRow[1],
+                                0
+                              ) *
+                                100) /
+                              maxSelect[index]
+                            }
+                            ex_bg={`rgb(255, ${
+                              94 +
+                              (100 / maxSelect[index]) *
+                                (maxSelect[index] -
+                                  ex_select[index].reduce(
+                                    (total, currentRow) =>
+                                      total + currentRow[1],
+                                    0
+                                  ))
+                            }, ${
+                              94 +
+                              (100 / maxSelect[index]) *
+                                (maxSelect[index] -
+                                  ex_select[index].reduce(
+                                    (total, currentRow) =>
+                                      total + currentRow[1],
+                                    0
+                                  ))
+                            })`}
+                          />
+                        </MiniBar>
                       </Bar>
                     )
                 )}
-              
-              <Bar>
-                <BarText>서강인성</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={(len[0] * 100) / maxSelect[0]}
-                    bgColor={`rgb(255, ${c_select[0]}, ${c_select[0]})`}
-                    ex_width={(ex_select.length * 100) / maxSelect[0]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[0]) * (maxSelect[0] - ex_select.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[0]) * (maxSelect[0] - ex_select.length)
-                    })`}
-                  />
-                </MiniBar>
-              </Bar>
-              <Bar>
-                <BarText>글쓰기</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={(len[1] * 100) / maxSelect[1]}
-                    bgColor={`rgb(255, ${c_select[1]}, ${c_select[1]})`}
-                    ex_width={(ex_select1.length * 100) / maxSelect[1]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[1]) * (maxSelect[1] - ex_select1.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[1]) * (maxSelect[1] - ex_select1.length)
-                    })`}
-                  />
-                </MiniBar>
-              </Bar>
-              <Bar>
-                <BarText>글로벌영어</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={(len[2] * 100) / maxSelect[2]}
-                    bgColor={`rgb(255, ${c_select[2]}, ${c_select[2]})`}
-                    ex_width={(ex_select2.length * 100) / maxSelect[2]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[2]) * (maxSelect[2] - ex_select2.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[2]) * (maxSelect[2] - ex_select2.length)
-                    })`}
-                  />
-                </MiniBar>
-              </Bar>
-              <Bar>
-                <BarText>전공진로탐색</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={(len[3] * 100) / maxSelect[3]}
-                    bgColor={`rgb(255, ${c_select[3]}, ${c_select[3]})`}
-                    ex_width={(ex_select3.length * 100) / maxSelect[3]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[3]) * (maxSelect[3] - ex_select3.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[3]) * (maxSelect[3] - ex_select3.length)
-                    })`}
-                  />
-                </MiniBar>
-              </Bar>
-              <Bar>
-                <BarText>소프트웨어</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={(len[4] * 100) / maxSelect[4]}
-                    bgColor={`rgb(255, ${c_select[4]}, ${c_select[4]})`}
-                    ex_width={(ex_select4.length * 100) / maxSelect[4]}
-                    ex_bg={`rgb(255, ${
-                      94 +
-                      (100 / maxSelect[4]) * (maxSelect[4] - ex_select4.length)
-                    }, ${
-                      94 +
-                      (100 / maxSelect[4]) * (maxSelect[4] - ex_select4.length)
-                    })`}
-                  />
-                </MiniBar>
-              </Bar>
             </SecondBar>
           </SelectBar>
           <Save>임시저장</Save>
@@ -541,7 +414,7 @@ const TitleText = styled.div`
 const SmallBox = styled.div`
   width: auto%;
   margin-top: 3%;
-  positon :relative;
+  positon: relative;
 `;
 const XSmaillBox = styled.div``;
 const SelectBox = styled.button`
@@ -560,10 +433,11 @@ const SelectBox = styled.button`
   color: ${({ isClicked }) => (!isClicked ? "#B3B3B3" : "#FF6262")};
   font-weight: ${({ isClicked }) => (!isClicked ? 500 : 700)};
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.08);
+  
 `;
 
 const HoverBox = styled.div`
-  opacity: 0;
+  display: none;
   position: absolute;
   border: 0.2rem solid #ff6262;
   margin-top: 1%;
@@ -575,10 +449,7 @@ const HoverBox = styled.div`
   margin-left: -1%;
   background-color: white;
   ${SelectBox}:hover & {
-    opacity: 100%;
-   
-    transition: 0.5s ease-out;
-
+    display: block;
   }
 `;
 
@@ -679,7 +550,5 @@ const Next = styled.div`
   color: #ff6262;
   font-weight: 700;
 `;
-
-
 
 export default Selecttech;
