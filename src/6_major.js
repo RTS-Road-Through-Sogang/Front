@@ -122,24 +122,24 @@ const SelecMajor = () => {
   //   } catch (err) {
   //     console.log("getPost error: ", err);
   //   }
-  // };
-  console.log("Start");
-  axios
-    .get(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => {
-      // 요청이 성공하면 이 곳에서 응답을 처리합니다.
-      console.log("yes");
-      console.log(response.data);
-    })
-    .catch((error) => {
-      // 요청이 실패하면 이 곳에서 에러를 처리합니다.
-      console.log("no");
-      console.error(error);
-    });
+  // // };
+  // console.log("Start");
+  // axios
+  //   .get(url, {
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`,
+  //     },
+  //   })
+  //   .then((response) => {
+  //     // 요청이 성공하면 이 곳에서 응답을 처리합니다.
+  //     console.log("yes");
+  //     console.log(response.data);
+  //   })
+  //   .catch((error) => {
+  //     // 요청이 실패하면 이 곳에서 에러를 처리합니다.
+  //     console.log("no");
+  //     console.error(error);
+  //   });
    return (
      <>
        <ProgressBar>
