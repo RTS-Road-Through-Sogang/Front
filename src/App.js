@@ -20,10 +20,11 @@ export const URL = process.env.APIURL;
 function App() {
   return (
     <>
-      <Header />
       <BrowserRouter>
+        <Header />
         <Routes>
-          <Route path="/login" element={<SelecMajor />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/majortrack" element={<SelecMajor />} />
           <Route path="/selectsearch" element={<SelectSearch />} />
           <Route path="/selectcommon" element={<SelectCommon />} />

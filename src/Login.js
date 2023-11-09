@@ -6,7 +6,10 @@ import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import InputField from "./InputField";
-const BASE_URL = `http://ec2-13-124-144-89.ap-northeast-2.compute.amazonaws.com`;
+export const BASE_URL = process.env.BASE_URL;
+
+console.log(BASE_URL);
+console.log("ㅇㅇㅇㅇㅇ");
 const Login = () => {
   const navigate = useNavigate();
   const goToSign = () => {
