@@ -1,15 +1,19 @@
 // 인증번호 성공했을때만 확인 버튼이 팝업 창이 뜨면서 모달이 닫혀야함.
 
 import React, { useState } from "react";
+import { useEffect } from "react";
+import { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import App from "./App";
+const BASE_URL = `http://ec2-13-124-144-89.ap-northeast-2.compute.amazonaws.com`;
 
-const Modal = ({ isVisible, closeModal, email }) => {
+const Modal = ({ isVisible, closeModal, email, onVerified }) => {
   const [code, setCode] = useState([...new Array(6).fill("")]);
   const [verified, setVerified] = useState(false); // 인증 성공 여부 상태
   const [verifyMessage, setVerifyMessage] = useState("");
+  const [backendCode, setBackendCode] = useState("");
   const refs = new Array(6).fill().map(() => React.createRef());
 
   const changeRef = (idx, isLeft) => {
@@ -53,24 +57,65 @@ const Modal = ({ isVisible, closeModal, email }) => {
       changeRef(idx, true);
     }
   };
-
-  const handleVerifyClick = async () => {
-    const enteredCode = code.join("");
-    // 백엔드에서 제공하는 인증 코드와 비교하는 로직 필요
-    // 예시: const backendCode = "123456"; // API 호출로 얻어야 함
-    // const isMatch = enteredCode === backendCode;
-    const isMatch = true; // API 호출 결과를 받으면 여기에 적용
-
-    if (isMatch) {
-      setVerified(true);
-      setVerifyMessage("이메일 인증이 성공되었습니다");
-      closeModal(); // 인증 성공시 모달 닫기
-    } else {
-      setVerified(false);
-      setVerifyMessage("올바른 인증번호를 입력하세요");
+  const fetchAndSetVerificationCode = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/users/verify_email/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email }),
+      });
+      const data = await response.json();
+      const match = /(\d{6})/.exec(data.message); // 숫자 6자리를 추출하는 정규표현식
+      // 이 로직은 무조건 성공할수밖에없음
+      if (match && match[1]) {
+        setBackendCode(match[1]);
+      } else {
+        // 추출 실패 처리
+        setVerifyMessage(
+          "인증번호를 받아올 수 없습니다. 관리자에게 문의해주세요."
+        );
+      }
+    } catch (error) {
+      // 에러 처리
+      setVerifyMessage("서버와의 통신 중 문제가 발생했습니다.");
     }
   };
 
+  const handleResendVerificationCode = async () => {
+    await fetchAndSetVerificationCode(); // 인증번호를 다시 요청하는 함수 호출
+  };
+
+  // Modal 컴포넌트 내에서 인증번호를 받아오기 위해 useEffect 훅을 사용합니다.
+  // isVisible의 이전 값을 추적하기 위한 ref
+  const prevIsVisibleRef = useRef();
+
+  useEffect(() => {
+    // 모달이 처음 열릴 때만 인증번호를 요청합니다.
+    if (isVisible && !prevIsVisibleRef.current) {
+      fetchAndSetVerificationCode();
+    }
+    // 현재 isVisible 값을 ref에 저장합니다.
+    prevIsVisibleRef.current = isVisible;
+  }, [isVisible]);
+
+  // 사용자가 인증 버튼을 클릭했을 때 호출되는 함수
+  const handleVerifyClick = async () => {
+    const enteredCode = code.join("");
+    if (enteredCode === backendCode) {
+      setVerified(true);
+      setVerifyMessage(
+        "이메일 인증이 성공되었습니다, 창은 3초후 자동으로 닫힙니다."
+      );
+      onVerified(true);
+      setTimeout(closeModal, 3000);
+    } else {
+      setVerified(false);
+      setVerifyMessage("올바른 인증번호를 입력하세요");
+      onVerified(false);
+    }
+  };
   return isVisible ? (
     <ModalOverlay>
       <ModalWrapper>
@@ -84,7 +129,6 @@ const Modal = ({ isVisible, closeModal, email }) => {
           <VerifyText>아래 이메일로 6자리 숫자가 발송되었습니다 !</VerifyText>
           <VerifyText fontColor="#ff6262">{email}</VerifyText>
           <VerifyText>인증 코드를 입력하세요.</VerifyText>
-
           <CodeInputWrapper>
             {code.map((value, idx) => (
               <CodeInput
@@ -99,7 +143,9 @@ const Modal = ({ isVisible, closeModal, email }) => {
           </CodeInputWrapper>
           <VerifyText fontSize="0.9rem">
             이메일을 받지 못하셨나요?
-            <ResendLink> 이메일 재전송하기</ResendLink>
+            <ResendLink onClick={handleResendVerificationCode}>
+              이메일 재전송하기
+            </ResendLink>
           </VerifyText>
           <VerifyText
             fontSize="0.8rem"
@@ -108,7 +154,7 @@ const Modal = ({ isVisible, closeModal, email }) => {
             {verifyMessage}
           </VerifyText>
 
-          <CloseButton onClick={closeModal}>확인</CloseButton>
+          <CloseButton onClick={handleVerifyClick}>확인</CloseButton>
         </ModalContent>
       </ModalWrapper>
     </ModalOverlay>
