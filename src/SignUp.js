@@ -2,17 +2,135 @@ import React, { useState } from "react";
 import loginimage from "./images/login.jpg";
 import styled, { createGlobalStyle } from "styled-components";
 import { faEyeSlash, faEye } from "@fortawesome/free-regular-svg-icons";
-import { faPlay } from "@fortawesome/free-solid-svg-icons"; // solid 아이콘 패키지에서 import
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputField from "./InputField";
+import Modal from "./Modal";
+import { useNavigate } from "react-router-dom";
+const BASE_URL = `http://ec2-13-124-144-89.ap-northeast-2.compute.amazonaws.com`;
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [showPswd, setShowPswd] = useState(false);
+  const [showConfirmPswd, setShowConfirmPswd] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const [name, setName] = useState("");
+  const [studentid, setStudentid] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [major, setMajor] = useState("");
+  const [email, setEmail] = useState("");
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+
+  const [errors, setError] = useState({
+    name: "",
+    studentid: "",
+    password: "",
+    passwordConfirm: "",
+    major: "",
+    email: "",
+    message: "",
+  });
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    let newErrors = {
+      ...errors,
+      name: "",
+      studentid: "",
+      password: "",
+      passwordConfirm: "",
+      major: "",
+      email: "",
+    };
+
+    if (!name.trim()) {
+      newErrors.name = "이름을 입력하세요";
+    }
+    if (!studentid.trim()) {
+      newErrors.studentid = "학번을 입력하세요";
+    }
+    if (!password.trim()) {
+      newErrors.password = "비밀번호를 입력하세요";
+    }
+    if (!passwordConfirm.trim()) {
+      newErrors.passwordConfirm = "비밀번호 확인란을 입력하세요";
+    }
+    if (password !== passwordConfirm) {
+      newErrors.passwordConfirm =
+        "비밀번호와 비밀번호 확인이 일치하지 않습니다!";
+    }
+    if (major === "") {
+      alert("전공을 선택하세요!");
+    }
+    if (!email.trim()) {
+      newErrors.email = "이메일을 입력하세요";
+    }
+    if (!isEmailVerified) {
+      alert("이메일 인증을 완료해주세요.");
+      return;
+    }
+    setError(newErrors);
+    try {
+      const response = await fetch(`${BASE_URL}/users/signup/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          student_number: studentid,
+          major: major,
+          password: password,
+          email: email,
+        }),
+      });
+      const data = await response.json();
+      if (data.message === "signup completed") {
+        alert("회원가입 성공");
+        navigate("/roadmap");
+      } else {
+        setError((prevErrors) => ({
+          ...prevErrors,
+          message: data.message || "회원 가입 실패!",
+        }));
+      }
+    } catch (error) {
+      console.error(error);
+      setError((prevErrors) => ({
+        ...prevErrors,
+        message: "서버와의 통신에 실패했습니다.",
+      }));
+    }
+  };
+  const toggleConfirmPswdVisibility = () => {
+    setShowConfirmPswd(!showConfirmPswd);
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   const togglePswdVisibility = () => {
     setShowPswd(!showPswd);
   };
-
+  const sendVerificationEmail = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/users/verify_email/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email + "@sogang.ac.kr" }),
+      });
+      const data = await response.json();
+    } catch (error) {
+      alert("인증번호 발송에 실패했습니다.");
+    }
+  };
   return (
     <>
       <GlobalStyles />
@@ -20,46 +138,100 @@ const SignUp = () => {
         <MainImage src={loginimage} alt="Main" />
         <LoginForm>
           <LoginText>회원가입하기</LoginText>
-          <InputField name="username" placeholder="이름을 입력하세요" />
-          <InputField name="username" placeholder="학번을 입력하세요" />
+          <InputField
+            name="username"
+            placeholder="이름을 입력하세요"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
+
+          <InputField
+            name="studentid"
+            placeholder="학번8자리를 입력하세요 ex) 20201234"
+            value={studentid}
+            onChange={(e) => setStudentid(e.target.value)}
+          />
+          {errors.studentid && <ErrorMessage>{errors.studentid}</ErrorMessage>}
+
           <PasswordWrapper>
             <Input
               type={showPswd ? "text" : "password"}
               placeholder="비밀번호를 입력하세요"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <StyledIcon
               icon={showPswd ? faEye : faEyeSlash}
               onClick={togglePswdVisibility}
             />
           </PasswordWrapper>
+          {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+
           <PasswordWrapper>
             <Input
-              type={showPswd ? "text" : "password"}
-              placeholder="비밀번호 재확인"
+              type={showConfirmPswd ? "text" : "password"}
+              placeholder="비밀번호를 다시한번 입력해주세요"
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
             />
             <StyledIcon
-              icon={showPswd ? faEye : faEyeSlash}
-              onClick={togglePswdVisibility}
+              icon={showConfirmPswd ? faEye : faEyeSlash}
+              onClick={toggleConfirmPswdVisibility}
             />
           </PasswordWrapper>
+          {errors.passwordConfirm && (
+            <ErrorMessage>{errors.passwordConfirm}</ErrorMessage>
+          )}
+
           <SelectWrapper>
-            <StyledSelect>
-              <option value="" disabled selected>
+            <StyledSelect
+              value={major}
+              onChange={(e) => setMajor(e.target.value)}
+            >
+              <option value="" disabled>
                 본전공을 선택하세요
               </option>
-              <option value="경제학과">경제학과</option>
-              <option value="경영학과">경영학과</option>
+              <option value="경제">경제학과</option>
+              <option value="경영">경영학과</option>
               <option value="컴퓨터공학과">컴퓨터공학과</option>
             </StyledSelect>
-            <FontAwesomeIcon
-              icon={faPlay}
-              rotation={270}
-              style={{ color: "#ff8484" }}
-            />
           </SelectWrapper>
-          <InputField name="username" placeholder="이메일을 입력하세요" />
+          <EmailInputWrapper>
+            <EmailInput
+              name="email"
+              placeholder="서강대학교 email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <EmailDomainLabel>@sogang.ac.kr</EmailDomainLabel>
+          </EmailInputWrapper>
+          {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
 
-          <StyledButton>
+          <Verify
+            onClick={() => {
+              if (email.includes("@")) {
+                setError((prevErrors) => ({
+                  ...prevErrors,
+                  email:
+                    "올바른 이메일 형식이 아닙니다! @sogang.ac.kr 도메인은 자동으로 추가됩니다.",
+                }));
+              } else {
+                openModal();
+                sendVerificationEmail();
+              }
+            }}
+          >
+            이메일 인증 키 발송
+          </Verify>
+          <Modal
+            isVisible={showModal}
+            closeModal={closeModal}
+            email={email + "@sogang.ac.kr"}
+            onVerified={(verified) => setIsEmailVerified(verified)}
+          />
+
+          <StyledButton type="submit" onClick={handleSignup}>
             <span>회원가입하기</span>
           </StyledButton>
         </LoginForm>
@@ -71,8 +243,6 @@ const SignUp = () => {
 const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
-    padding: 0;
-    
   }
 `;
 const MainSection = styled.div`
@@ -108,7 +278,7 @@ const LoginForm = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 20px;
+  padding: 45px;
   background: rgba(255, 255, 255, 0.8);
 
   display: flex;
@@ -166,8 +336,11 @@ const StyledButton = styled.button`
   }
 `;
 
-const GoSignUpText = styled.div`
+const Verify = styled.div`
+  text-align: center;
+  text-decoration: underline;
   color: #7a7a7a;
+  cursor: pointer;
 `;
 
 const StyledSelect = styled.select`
@@ -182,7 +355,7 @@ const StyledSelect = styled.select`
 
 const SelectWrapper = styled.div`
   position: relative;
-  width: 98.5%;
+  width: 89%%;
 
   & svg {
     position: absolute;
@@ -190,6 +363,36 @@ const SelectWrapper = styled.div`
     right: 10px;
     transform: translateY(-50%);
   }
+`;
+
+const EmailInputWrapper = styled.div`
+  display: flex;
+  width: 98.5%;
+  align-items: center;
+  border: 1px solid #ababab;
+  border-radius: 10px;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.8);
+`;
+
+const EmailDomainLabel = styled.span`
+  padding: 13px;
+  pointer-events: none;
+  color: #707070;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 0 10px 10px 0;
+`;
+
+const EmailInput = styled(Input)`
+  flex-grow: 1; /* input 필드가 가능한 영역을 모두 차지하도록 함 */
+  border-radius: 10px 0 0 10px;
+  border: none;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 0.8rem;
+  margin-left: 1rem;
 `;
 
 export default SignUp;

@@ -5,6 +5,107 @@ import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const curri = ["서강인성"];
 
+const curr = [
+  {
+    track: "단일전공",
+    "이수 학점": 16,
+  },
+  {
+    category_detail: "필수",
+    category_point: 13,
+    lectures: [
+      {
+        id: 2,
+        title: "미적분학II",
+        code: "STS2006",
+        point: 3,
+        eta: "",
+        semester_one: 3,
+        semester_two: 3,
+        teamplay: 1,
+        grade_recommend: 1,
+        season_open: true,
+        teach: false,
+        advance: false,
+        former: null,
+        category21: 11,
+        category22: 11,
+        category23: 11,
+        category24: null,
+        tech: null,
+      },
+      {
+        id: 3,
+        title: "일반물리실험I",
+        code: "PHY1101",
+        point: 1,
+        eta: "",
+        semester_one: 3,
+        semester_two: 3,
+        teamplay: 1,
+        grade_recommend: 1,
+        season_open: true,
+        teach: false,
+        advance: false,
+        former: null,
+        category21: 11,
+        category22: 11,
+        category23: 11,
+        category24: null,
+        tech: null,
+      },
+      // 나머지 강의들도 포함
+    ],
+  },
+  {
+    category_detail: "선택",
+    category_point: 3,
+    lectures: [
+      {
+        id: 7,
+        title: "집합론",
+        code: "MAT2010",
+        point: 3,
+        eta: "",
+        semester_one: 3,
+        semester_two: 3,
+        teamplay: 1,
+        grade_recommend: 1,
+        season_open: true,
+        teach: false,
+        advance: false,
+        former: null,
+        category21: 12,
+        category22: 12,
+        category23: 12,
+        category24: null,
+        tech: null,
+      },
+      {
+        id: 8,
+        title: "선형대수학",
+        code: "MAT2110",
+        point: 3,
+        eta: "",
+        semester_one: 3,
+        semester_two: 3,
+        teamplay: 1,
+        grade_recommend: 1,
+        season_open: true,
+        teach: false,
+        advance: false,
+        former: null,
+        category21: 12,
+        category22: 12,
+        category23: 12,
+        category24: null,
+        tech: null,
+      },
+      // 나머지 강의들도 포함
+    ],
+  },
+];
+
 const curri1 = [
   {
     id: 1,
@@ -94,7 +195,7 @@ const curri5 = [
 
 const SelectContainer = ({
   id,
-  name,
+  title,
   setSelect,
   select,
   ex_select,
@@ -117,7 +218,8 @@ const SelectContainer = ({
   return (
     <>
       <SelectBox onClick={onClick} isClicked={isClicked}>
-        {name}
+        {title}
+        <HoverBox>교수: ㅇㅇㅇ<br></br>과제: 많음<br></br>성적: 깐깐함</HoverBox>
       </SelectBox>
     </>
   );
@@ -150,6 +252,7 @@ const Selecttech = () => {
     select4.length,
   ];
 
+  
   const c_select = [
     94 + (100 / maxSelect[0]) * (maxSelect[0] - len[0]),
     94 + (100 / maxSelect[1]) * (maxSelect[1] - len[1]),
@@ -169,129 +272,38 @@ const Selecttech = () => {
       </BigTitles>
       <BigBox>
         <LeftBox>
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              서강인성
-              <SmallBox>
-                <XSmaillBox>
-                  {curri1.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect}
-                      select={select}
-                      ex_select={ex_select}
-                      setSelectEX={setSelectEX}
-                    />
-                  ))}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              글쓰기
-              <SmallBox>
-                <XSmaillBox>
-                  {curri2.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect1}
-                      select={select1}
-                      ex_select={ex_select1}
-                      setSelectEX={setSelectEX1}
-                    />
-                  ))}{" "}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
-
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              글로벌 영어
-              <SmallBox>
-                <XSmaillBox>
-                  {curri3.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect2}
-                      select={select2}
-                      ex_select={ex_select2}
-                      setSelectEX={setSelectEX2}
-                    />
-                  ))}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
-
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              전공진로탐색
-              <SmallBox>
-                <XSmaillBox>
-                  {curri4.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect3}
-                      select={select3}
-                      ex_select={ex_select3}
-                      setSelectEX={setSelectEX3}
-                    />
-                  ))}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
-
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              소프트웨어
-              <SmallBox>
-                <XSmaillBox>
-                  {curri5.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect4}
-                      select={select4}
-                      ex_select={ex_select4}
-                      setSelectEX={setSelectEX4}
-                    />
-                  ))}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
+          {curr &&
+            curr.map(
+              (item) =>
+                item.category_detail !== undefined && (
+                  <Title>
+                    <Icon>
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        style={{ color: "#FF6262", fontSize: "1.7rem" }}
+                      />
+                    </Icon>{" "}
+                    <TitleText>
+                      {item.category_detail}
+                      <SmallBox>
+                        <XSmaillBox>
+                          {item.lectures &&
+                            item.lectures.map((lecture) => (
+                            
+                              <SelectContainer
+                                {...lecture}
+                                setSelect={setSelect1}
+                                select={select1}
+                                ex_select={ex_select1}
+                                setSelectEX={setSelectEX1}
+                              />
+                            ))}
+                        </XSmaillBox>
+                      </SmallBox>
+                    </TitleText>
+                  </Title>
+                )
+            )}
         </LeftBox>
         <RightBox>
           <TotalBar>
@@ -346,6 +358,30 @@ const Selecttech = () => {
 
           <SelectBar>
             <SecondBar>
+              {curr &&
+                curr.map(
+                  (item) =>
+                    item.category_detail !== undefined && (
+                      <Bar>
+                        <BarText>{item.category_detail}</BarText>
+                        <MiniBar>
+                  <Mini
+                    width={(len[0] * 100) / maxSelect[0]}
+                    bgColor={`rgb(255, ${c_select[0]}, ${c_select[0]})`}
+                    ex_width={(ex_select.length * 100) / maxSelect[0]}
+                    ex_bg={`rgb(255, ${
+                      94 +
+                      (100 / maxSelect[0]) * (maxSelect[0] - ex_select.length)
+                    }, ${
+                      94 +
+                      (100 / maxSelect[0]) * (maxSelect[0] - ex_select.length)
+                    })`}
+                  />
+                </MiniBar>
+                      </Bar>
+                    )
+                )}
+              
               <Bar>
                 <BarText>서강인성</BarText>
 
@@ -457,11 +493,11 @@ const ProgressBar = styled.div`
 `;
 
 const Progress = styled.div`
-  width: ${(props: ITest) => props.width}%;
+  width: ${(props) => props.width}%;
   height: 30px;
   padding: 0;
   text-align: center;
-  background-color: ${(props: Color) => props.bgColor};
+  background-color: ${(props) => props.bgColor};
   color: #111;
 `;
 
@@ -505,6 +541,7 @@ const TitleText = styled.div`
 const SmallBox = styled.div`
   width: auto%;
   margin-top: 3%;
+  positon :relative;
 `;
 const XSmaillBox = styled.div``;
 const SelectBox = styled.button`
@@ -522,6 +559,27 @@ const SelectBox = styled.button`
     !isClicked ? "0.2rem solid #EFEFEF" : "0.2rem solid #FF6262"};
   color: ${({ isClicked }) => (!isClicked ? "#B3B3B3" : "#FF6262")};
   font-weight: ${({ isClicked }) => (!isClicked ? 500 : 700)};
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.08);
+`;
+
+const HoverBox = styled.div`
+  opacity: 0;
+  position: absolute;
+  border: 0.2rem solid #ff6262;
+  margin-top: 1%;
+  color: #ff6262;
+  font-weight: 700;
+
+  border-radius: 20px;
+  padding: 0.5% 1%;
+  margin-left: -1%;
+  background-color: white;
+  ${SelectBox}:hover & {
+    opacity: 100%;
+   
+    transition: 0.5s ease-out;
+
+  }
 `;
 
 const TotalBar = styled.div`
@@ -587,7 +645,7 @@ const MiniBar = styled.div`
   margin: 3% auto;
 `;
 const Mini = styled.div`
-  width: ${(props: ITest) => props.width}%;
+  width: ${(props) => props.width}%;
   height: 30px;
   padding: 0;
   text-align: center;
@@ -621,5 +679,7 @@ const Next = styled.div`
   color: #ff6262;
   font-weight: 700;
 `;
+
+
 
 export default Selecttech;

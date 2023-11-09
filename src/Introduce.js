@@ -1,20 +1,56 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import styled, { createGlobalStyle } from "styled-components";
 import main_image from "./images/milestone.jpg";
-import intro_image from "./images/main.jpeg";
+//import main_image from "./images/123.jpg";
+import intro_image from "./images/intro_image1.jpg";
 import feature_image1 from "./images/main.jpeg";
 import feature_image2 from "./images/main.jpeg";
 import Feature from "./Feature";
+import { useNavigate } from "react-router-dom";
 
 const Introduce = () => {
+  const navigate = useNavigate();
+  const goToSign = () => {
+    navigate("/login");
+  };
+  const title = "Road Through Sogang";
+  const highlightIndices = [0, 5, 13];
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // 컴포넌트 언마운트 시 리스너 제거
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // 빈 배열을 전달하여 컴포넌트 마운트 시에만 실행되도록 합니다.
   return (
     <>
+      <GlobalStyles />
       <MainSection>
         <MainImageWrapper>
-          <MainImage src={main_image} alt="Main" />
+          <MainImage src={main_image} alt="Main" scale={1 + scrollY / 1000} />
         </MainImageWrapper>
-        <MainText>RTS, Road Through Sogang</MainText>
-        <SubText>당신을 도와줄 로드맵</SubText>
+        <MainText>
+          {title.split("").map((char, index) =>
+            char === " " ? (
+              <span key={index}> </span>
+            ) : (
+              <AnimatedSpan
+                key={index}
+                delay={index * 0.1} // 각 글자에 약간의 지연을 줘서 순차적으로 나타나게 함
+                highlight={highlightIndices.includes(index)} // 'R', 'T', 'S'는 하이라이트 색상을 적용
+              >
+                {char}
+              </AnimatedSpan>
+            )
+          )}
+        </MainText>
       </MainSection>
       <IntroSection>
         <IntroImageWrapper>
@@ -52,13 +88,31 @@ const Introduce = () => {
       </FeatureSection>
       <StartSection>
         <BeginPrompt>그럼, 시작해 볼까요 ?</BeginPrompt>
-        <StyledButton>
+        <StyledButton onClick={goToSign}>
           <span>시작하기</span>
         </StyledButton>
       </StartSection>
     </>
   );
 };
+const GlobalStyles = createGlobalStyle`
+    body {
+      margin: 0;
+      padding: 0;
+      
+    }
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+  `;
 
 const MainSection = styled.div`
   display: flex;
@@ -67,18 +121,27 @@ const MainSection = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  width: 70%;
+  width: 100%;
   margin: 0 auto;
+`;
+const AnimatedSpan = styled.span`
+  display: inline-block; // 각 span이 별도의 블록으로 처리되도록 설정
+  opacity: 0; // 초기 상태를 불투명으로 설정
+  animation: fadeInRight 1.3s ease forwards; // 애니메이션 적용
+  animation-delay: ${(props) => props.delay}s; // 지연 시간을 prop으로 설정
+  color: ${(props) =>
+    props.highlight ? "#ff6262" : "white"}; // 조건부 스타일링
 `;
 
 const MainText = styled.div`
-  font-size: 4em;
+  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+  font-size: 4.3em;
   color: white;
   font-weight: bold;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   position: absolute;
   top: 10%;
-  left: 10%;
+  left: 25.5%;
 `;
 
 const SubText = styled.div`
@@ -98,13 +161,16 @@ const MainImageWrapper = styled.div`
 const MainImage = styled.img`
   max-width: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease-out;
+  transform: scale(${(props) => props.scale});
 `;
+
 const IntroSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 70%;
-  margin: 50px auto;
+  width: 80%;
+  margin: 150px auto;
   border: 1px solid grey;
 
   @media (max-width: 768px) {
@@ -123,7 +189,6 @@ const IntroImageWrapper = styled.div`
 const Image = styled.img`
   max-width: 60%;
   object-fit: cover;
-  opacity: 0.3;
 `;
 
 const IntroDescription = styled.div`
@@ -156,7 +221,7 @@ const FeatureWrapper = styled.div`
 const FeatureSection = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 80%;
   margin: 50px auto;
   border: 1px solid grey;
 
@@ -171,6 +236,7 @@ const StartSection = styled.div`
   align-items: center;
 `;
 const BeginPrompt = styled.div`
+  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
   font-size: 1.3em;
   position: relative;
   color: black;
@@ -181,6 +247,7 @@ const BeginPrompt = styled.div`
 `;
 
 const StyledButton = styled.button`
+  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
   cursor: pointer;
   width: 30vw;
   height: 8vh;
@@ -195,7 +262,7 @@ const StyledButton = styled.button`
   span {
     color: #fff;
     text-align: center;
-    font-family: Noto Sans;
+    font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
     font-size: 1.3rem;
     font-style: normal;
     font-weight: 700;

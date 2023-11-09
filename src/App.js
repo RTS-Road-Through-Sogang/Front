@@ -1,22 +1,24 @@
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Header from "./Header";
 import Introduce from "./Introduce";
+import Login from "./Login";
+import SignUp from "./SignUp";
+import Roadmap from "./Roadmap";
+import Selecttech from "./6_tech";
+import SelectSearch from "./6_search";
+import SelecMajor from "./6_major";
+import SelectSub from "./6_submajor";
 import CurrentStatus from "./CurrentStatus";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
 import SemesterList from "./SemesterList";
 import EachSemester from "./EachSemester";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* 웹 서비스 소개 페이지 */}
-        <Route path="/" element={<Introduce />} />
-        {/* ppt 19 /> */}
-        <Route path="/status" element={<CurrentStatus />} />
-        <Route path="/semesterlist" element={<SemesterList />} />
-        <Route path="/semester1-1" element={<EachSemester />} />
-      </Routes>
-    </BrowserRouter>
+
+    <div>
+      <SelecMajor />
+    </div>
+
   );
 }
 
