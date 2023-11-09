@@ -23,6 +23,7 @@ function App() {
       <Header />
       <BrowserRouter>
         <Routes>
+          <Route path="/login" element={<SelecMajor />} />
           <Route path="/majortrack" element={<SelecMajor />} />
           <Route path="/selectsearch" element={<SelectSearch />} />
           <Route path="/selectcommon" element={<SelectCommon />} />
@@ -34,10 +35,7 @@ function App() {
             path="/selectcsedutychoice"
             element={<SelectCseDutyChoice />}
           />
-          <Route
-            path="/selectcsechoice"
-            element={<SelectCseChoice />}
-          />
+          <Route path="/selectcsechoice" element={<SelectCseChoice />} />
         </Routes>
       </BrowserRouter>
     </>

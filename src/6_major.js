@@ -6,10 +6,6 @@ import axios from "axios";
 import Feature from "./Feature";
 import { URL } from "./App";
 import { useNavigate } from "react-router-dom";
-
-const accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMDE3NTI3LCJpYXQiOjE2OTk0MTI3MjcsImp0aSI6ImU2YzljZDY5MjljODQ2NmFiNmY1NTA1OWU2NTg2OGM2IiwidXNlcl9pZCI6Mn0.tyTsn3-7aPavmXQMg_COiwiXh2gaYdcpL_Gl_S5aZ2Y"
-const url =
-  "http://ec2-13-124-144-89.ap-northeast-2.compute.amazonaws.com/roadmaps/usermajortracks/";
 const curri = {
   name: "이우찬",
   major: {
