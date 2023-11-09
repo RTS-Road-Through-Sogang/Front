@@ -3,7 +3,13 @@ import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import Feature from "./Feature";
+import { URL } from "./App";
+import { useNavigate } from "react-router-dom";
 
+const accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwMDE3NTI3LCJpYXQiOjE2OTk0MTI3MjcsImp0aSI6ImU2YzljZDY5MjljODQ2NmFiNmY1NTA1OWU2NTg2OGM2IiwidXNlcl9pZCI6Mn0.tyTsn3-7aPavmXQMg_COiwiXh2gaYdcpL_Gl_S5aZ2Y"
+const url =
+  "http://ec2-13-124-144-89.ap-northeast-2.compute.amazonaws.com/roadmaps/usermajortracks/";
 const curri = {
   name: "이우찬",
   major: {
@@ -47,92 +53,6 @@ const curri = {
     },
   ],
 };
-const curri1 = [
-  {
-    id: 1,
-    name: "성찰과성장",
-  },
-  {
-    id: 2,
-    name: "알바트로스세미나",
-  },
-  {
-    id: 3,
-    name: "어쩌고저쩌고",
-  },
-  {
-    id: 4,
-    name: "어쩌고저쩌고",
-  },
-  {
-    id: 5,
-    name: "어쩌고저쩌고",
-  },
-  {
-    id: 6,
-    name: "어쩌고저쩌고",
-  },
-];
-
-const curri2 = [
-  {
-    id: 7,
-    name: "자연계 글쓰기",
-  },
-  {
-    id: 8,
-    name: "인문계 글쓰기",
-  },
-];
-
-const curri3 = [
-  {
-    id: 9,
-    name: "영어글로벌의사소통1",
-  },
-  {
-    id: 10,
-    name: "영어글로벌의사소통2",
-  },
-];
-
-const curri4 = [
-  {
-    id: 11,
-    name: "영어글로벌의사소통1",
-  },
-  {
-    id: 12,
-    name: "영어글로벌의사소통2",
-  },
-  {
-    id: 13,
-    name: "000000",
-  },
-  {
-    id: 14,
-    name: "33333",
-  },
-];
-
-const curri5 = [
-  {
-    id: 15,
-    name: "컴퓨팅사고력",
-  },
-  {
-    id: 16,
-    name: "영어글로벌의사소통2",
-  },
-  {
-    id: 17,
-    name: "000000",
-  },
-  {
-    id: 18,
-    name: "33333",
-  },
-];
 
 const SelectContainer = ({ id, title, setSelect, select }) => {
   const [isclicked, setisclicked] = useState(false);
@@ -189,19 +109,25 @@ const SelecMajor = () => {
   const [select, setSelect] = useState([]);
   const [select1, setSelect1] = useState([]);
 
-  const ax = async () => {
-    try {
-      const res = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      console.log(res.data);
-      console.log("rtrt");
-    } catch (err) {
-      console.log("getPost error: ", err);
-    }
+  const navigate = useNavigate();
+  const goNext = () => {
+    navigate("/selectsearch");
   };
+ 
+  // const ax = async () => {
+  //   try {
+  //     const res = await axios.get(url, {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     });
+  //     console.log(res.data);
+  //     console.log("rtrt");
+  //   } catch (err) {
+  //     console.log("getPost error: ", err);
+  //   }
+  // };
+  console.log("Start");
   axios
     .get(url, {
       headers: {
@@ -218,66 +144,66 @@ const SelecMajor = () => {
       console.log("no");
       console.error(error);
     });
-  return (
-    <>
-      <ProgressBar>
-        <Progress width={100 - (availableItem * 100) / maxItem} bgcolor={bg} />
-      </ProgressBar>
-      <BigTitles>
-        <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} /> 나의
-        교과과정과 부전공을 선택하세요
-      </BigTitles>
-      <BigBox>
-        <LeftBox>
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              루트 선택
-              <SmallBox>
-                <XSmaillBox>
-                  {curri.major_tracks[0].ECO_tracks.map((item) => (
-                    <SelectContainer
-                      {...item}
-                      setSelect={setSelect}
-                      select={select}
-                    />
-                  ))}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
-          <Title>
-            <Icon>
-              <FontAwesomeIcon
-                icon={faCheck}
-                style={{ color: "#FF6262", fontSize: "1.7rem" }}
-              />
-            </Icon>
-            <TitleText>
-              부전공 선택
-              <SmallBox>
-                <XSmaillBox>
-                  {curri.major_tracks[1].second_major.map((item) => (
-                    <SelectContainer2
-                      {...item}
-                      setSelect={setSelect}
-                      select={select}
-                    />
-                  ))}
-                </XSmaillBox>
-              </SmallBox>
-            </TitleText>
-          </Title>
-          <Next>다음으로</Next>
-        </LeftBox>
-      </BigBox>
-    </>
-  );
+   return (
+     <>
+       <ProgressBar>
+         <Progress width={100 - (availableItem * 100) / maxItem} bgcolor={bg} />
+       </ProgressBar>
+       <BigTitles>
+         <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} /> 나의
+         교과과정과 부전공을 선택하세요
+       </BigTitles>
+       <BigBox>
+         <LeftBox>
+           <Title>
+             <Icon>
+               <FontAwesomeIcon
+                 icon={faCheck}
+                 style={{ color: "#FF6262", fontSize: "1.7rem" }}
+               />
+             </Icon>
+             <TitleText>
+               루트 선택
+               <SmallBox>
+                 <XSmaillBox>
+                   {curri.major_tracks[0].ECO_tracks.map((item) => (
+                     <SelectContainer
+                       {...item}
+                       setSelect={setSelect}
+                       select={select}
+                     />
+                   ))}
+                 </XSmaillBox>
+               </SmallBox>
+             </TitleText>
+           </Title>
+           <Title>
+             <Icon>
+               <FontAwesomeIcon
+                 icon={faCheck}
+                 style={{ color: "#FF6262", fontSize: "1.7rem" }}
+               />
+             </Icon>
+             <TitleText>
+               부전공 선택
+               <SmallBox>
+                 <XSmaillBox>
+                   {curri.major_tracks[1].second_major.map((item) => (
+                     <SelectContainer2
+                       {...item}
+                       setSelect={setSelect}
+                       select={select}
+                     />
+                   ))}
+                 </XSmaillBox>
+               </SmallBox>
+             </TitleText>
+           </Title>
+           <Next onClick={goNext}>다음으로</Next>
+         </LeftBox>
+       </BigBox>
+     </>
+   );
 };
 
 const ProgressBar = styled.div`

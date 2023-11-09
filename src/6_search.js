@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { MultiSelect } from "react-multi-select-component";
 import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 
 const curri = ["서강인성"];
 
@@ -184,6 +185,11 @@ const SelectSearch = () => {
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c})`;
 
+  const navigate = useNavigate();
+  const goNext = () => {
+    navigate("/selectcommon");
+  };
+
   const maxSelect = [4, 1, 1, 3, 2];
 
   const [select, setSelect] = useState([]);
@@ -262,7 +268,7 @@ const SelectSearch = () => {
               </SmallBox>
             </TitleText>
           </Title>
-          <Next>다음으로</Next>
+          <Next onClick={goNext}>다음으로</Next>
         </LeftBox>
       </BigBox>
     </>
