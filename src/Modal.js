@@ -6,7 +6,6 @@ import { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import App from "./App";
 const BASE_URL = `http://ec2-13-124-144-89.ap-northeast-2.compute.amazonaws.com`;
 
 const Modal = ({ isVisible, closeModal, email, onVerified }) => {
