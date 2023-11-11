@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import main_image from "./images/milestone.jpg";
 //import main_image from "./images/123.jpg";
@@ -14,6 +14,10 @@ import Feature from "./Feature";
 import { useNavigate } from "react-router-dom";
 
 const Introduce = () => {
+  const line1Ref = useRef(null);
+  const line2Ref = useRef(null);
+  const line3Ref = useRef(null);
+
   const navigate = useNavigate();
   const goToSign = () => {
     navigate("/login");
@@ -37,14 +41,39 @@ const Introduce = () => {
     gsap.set("#MainImage", { autoAlpha: 1 });
     // 모든 글자 애니메이션이 끝난 후 0.5초 지연된 후 MainImage가 화면 상단에서 아래로 떨어지면서 나타납니다.
     tl.from("#MainImage", {
-      y: "-100%", // 이미지가 화면 위에서 시작합니다.
+      y: "-50%", // 이미지가 화면 위에서 시작합니다.
       autoAlpha: 0, // 이미지가 완전히 투명하게 시작합니다.
-      delay: 5, // 애니메이션 시작 전 0.5초의 지연시간을 가집니다.
-      duration: 1.5, // 이미지가 아래로 떨어지는 데 걸리는 시간입니다.
+
       ease: "bounce.out", // 떨어지는 애니메이션에 바운스 효과를 줍니다.
     });
     // 마지막에 autoAlpha를 1로 설정하여 요소가 보이도록 함
-    tl.to("#MainImage", { autoAlpha: 1, duration: 0 });
+    tl.to("#MainImage", { autoAlpha: 1, y: "50%", duration: 0.5 });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+          } else {
+            entry.target.style.opacity = 0;
+          }
+        });
+      },
+      { threshold: 1 }
+    );
+    // DOM 요소가 준비되었는지 확인하고 observer를 등록합니다.
+
+    const refs = [line1Ref, line2Ref, line3Ref];
+    refs.forEach((ref) => {
+      if (ref.current) {
+        observer.observe(ref.current);
+      } else {
+        console.log("ref.current is not available:", ref);
+      }
+    });
+    return () => {
+      observer.disconnect();
+    };
   }, [title]);
 
   return (
@@ -73,36 +102,21 @@ const Introduce = () => {
           </MainText>
         </MainSection>
         <IntroSection>
-          <IntroDescription>
-            복수전공, 부전공... 학교 생활은 항상 선택의 연속입니다.
-            <br />
-            <span>RTS </span>는 그 선택을 조금 더 간편하게 도와주는
-            <br />
-            <span>로드맵 플랫폼 </span>
-            입니다.
+          <IntroDescription id="IntroDescription">
+            <IntroDescriptionLine ref={line1Ref}>
+              복수전공, 부전공... 학교 생활은 항상 선택의 연속입니다.
+            </IntroDescriptionLine>
+            <IntroDescriptionLine ref={line2Ref}>
+              <span>RTS </span>는 그 선택을 조금 더 간편하게 도와주는
+            </IntroDescriptionLine>
+            <IntroDescriptionLine ref={line3Ref}>
+              <span>로드맵 플랫폼 </span>
+              입니다.
+            </IntroDescriptionLine>
           </IntroDescription>
         </IntroSection>
-        <FeatureSection>
-          <FeatureTitle>어떤 기능을 갖고있나요?</FeatureTitle>
-          <FeatureWrapper>
-            <Feature
-              image={feature_image1}
-              description={{
-                title: "로드맵 작성",
-                detail:
-                  "신입생부터 재학생까지, 당신의 학기별 로드맵을 \n 직접 작성해보세요.",
-              }}
-            />
-            <Feature
-              image={feature_image2}
-              description={{
-                title: "학점 대시보드",
-                detail:
-                  "이수 학점과 전공별로 학점을 얼만큼 채웠는지 \n 한눈에 볼수 있어요.",
-              }}
-            />
-          </FeatureWrapper>
-        </FeatureSection>
+        <Feature />
+
         <StartSection>
           <BeginPrompt>그럼, 시작해 볼까요 ?</BeginPrompt>
           <StyledButton onClick={goToSign}>
@@ -201,52 +215,26 @@ const IntroSection = styled.div.attrs({ id: "IntroSection" })`
   }
 `;
 
-const IntroImageWrapper = styled.div`
-  flex: 1;
-  margin-right: 10px;
-`;
-
-const Image = styled.img`
-  max-width: 60%;
-  object-fit: cover;
-`;
-
 const IntroDescription = styled.div`
   flex: 1;
-  font-size: 2em;
+  font-size: 2.5em;
   position: relative;
   color: black;
   font-weight: 900;
   line-height: 3;
   text-align: center;
+`;
+
+const IntroDescriptionLine = styled.span`
+  display: block; // 각 줄을 블록 요소로 만듭니다.
+  opacity: 0;
+  margin-bottom: 40%;
+  transition: all 1s;
   span {
     color: #ff6262;
   }
-`;
-const FeatureTitle = styled.div`
-  width: 100%;
-  font-size: 2em;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-`;
-const FeatureWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const FeatureSection = styled.div.attrs({ id: "FeatureSection" })`
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  margin: 50px auto;
-  border: 1px solid grey;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 40px 20px;
+  &:last-child {
+    margin-bottom: 0;
   }
 `;
 const StartSection = styled.div`
