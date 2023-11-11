@@ -21,21 +21,21 @@ const Header = () => {
   return (
     <>
       <GlobalStyles />
-      <StyledHeader
-        isMenuOpen={isMenuOpen}
-        isUserOptionsOpen={isUserOptionsOpen}
-      >
+      <StyledHeader>
+        {" "}
+        {/* 여기서 `isUserOptionsOpen` prop을 제거합니다. */}
         <MenuToggle onClick={() => setIsMenuOpen(!isMenuOpen)}>
           <FontAwesomeIcon icon={!isMenuOpen ? faBars : faTimes} />
         </MenuToggle>
         <Logo onClick={goToIntro}>
           <FontAwesomeIcon icon={faApple} />
         </Logo>
-
         <UserToggle onClick={() => setIsUserOptionsOpen(!isUserOptionsOpen)}>
           <FontAwesomeIcon icon={!isUserOptionsOpen ? faUser : faTimes} />
         </UserToggle>
-        <UserOptions isUserOptionsOpen={isUserOptionsOpen}>
+        <UserOptions open={isUserOptionsOpen}>
+          {" "}
+          {/* `open` prop으로 변경합니다. */}
           <OptionItem onClick={goToLogin}>Login</OptionItem>
           <OptionItem onClick={goToSign}>Register</OptionItem>
         </UserOptions>

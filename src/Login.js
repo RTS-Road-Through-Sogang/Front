@@ -7,9 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import InputField from "./InputField";
 export const BASE_URL = process.env.BASE_URL;
-
-console.log(BASE_URL);
-console.log("ㅇㅇㅇㅇㅇ");
 const Login = () => {
   const navigate = useNavigate();
   const goToSign = () => {
