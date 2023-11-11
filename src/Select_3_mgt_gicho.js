@@ -32,10 +32,11 @@ const SelectContainer = ({
       if (item[0] == code) {
         setisClicked(!isClicked);
         setSelect([...select, [code, point]]);
+        
       }
     });
   }, []);
-
+console.log(select);
   const onClick = () => {
     setSelectEX(select);
 
@@ -56,8 +57,6 @@ const SelectContainer = ({
       setSelect0([...select0, [code, point]]);
     }
   };
-  console.log(select);
-
   let season = "";
   if (season_open === true) {
     season = "O";
@@ -87,12 +86,11 @@ const SelectContainer = ({
     </>
   );
 };
-const SelectCseDuty = () => {
+const SelectMgtGicho = () => {
   const maxItem = 5;
   let availableItem = 4;
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c})`;
-
   const { state } = useLocation();
 
   const [selectedData, setSelectedData] = useState([]);
@@ -103,14 +101,13 @@ const SelectCseDuty = () => {
     console.log(localStorage.getItem("majorTitle"));
 
     const dataWithAdditionalInfo = [...selectedData, ...select0];
-    console.log(dataWithAdditionalInfo);
 
-    if (localStorage.getItem("majorTitle") == "경영") {
-      navigate("/selectcsedutychoice", {
+    
+      navigate("/selectmgtduty", {
         state: { selectedData: dataWithAdditionalInfo },
       });
-    }
-
+    
+    
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
     sessionStorage.setItem("ex_sub_select", sub_select);
@@ -130,19 +127,23 @@ const SelectCseDuty = () => {
   useEffect(() => {
     const handleData = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/roadmaps/cse_duty_lecture/1`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const res = await axios.get(
+          `${BASE_URL}/roadmaps/mgt_gicho_lecture/1`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
 
         setDataArray(res.data);
       } catch (err) {
         console.log("getPost error: ", err);
       }
     };
-    handleData();
 
+    handleData();
+    //  handlePoint(); //안됨.........
     setSelectedData(state.selectedData);
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
@@ -218,7 +219,7 @@ const SelectCseDuty = () => {
   }, 0);
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
-  let maj = major_select + sum;
+  let maj = major_select;
   console.log(com, maj);
 
   sessionStorage.setItem("complete_select", com);
@@ -248,7 +249,7 @@ const SelectCseDuty = () => {
                       />
                     </Icon>
                     <TitleText>
-                      전공필수교과
+                      {item.category_detail}
                       <SmallBox>
                         <XSmaillBox>
                           {item.lectures &&
@@ -287,7 +288,6 @@ const SelectCseDuty = () => {
 
               <Bar>
                 <BarText>{localStorage.getItem("majorTitle")}</BarText>
-
                 <MiniBar>
                   <Mini width={(maj * 100) / major_point} bgColor={bg} />
                 </MiniBar>
@@ -310,7 +310,7 @@ const SelectCseDuty = () => {
                 (item, index) =>
                   item.category_detail !== undefined && (
                     <Bar>
-                      <BarText>전공필수교과</BarText>
+                      <BarText>{item.category_detail}</BarText>
                       <MiniBar>
                         <Mini
                           width={
@@ -681,4 +681,4 @@ const Container = styled.div`
   }
 `;
 
-export default SelectCseDuty;
+export default SelectMgtGicho;

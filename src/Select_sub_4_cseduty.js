@@ -31,7 +31,8 @@ const SelectContainer = ({
     selectedData.forEach((item) => {
       if (item[0] == code) {
         setisClicked(!isClicked);
-        setSelect([...select, [code, point]]);
+          setSelect([...select, [code, point]]);
+         
       }
     });
   }, []);
@@ -87,7 +88,7 @@ const SelectContainer = ({
     </>
   );
 };
-const SelectCseDuty = () => {
+const SelectSubCseDuty = () => {
   const maxItem = 5;
   let availableItem = 4;
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
@@ -105,15 +106,13 @@ const SelectCseDuty = () => {
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     console.log(dataWithAdditionalInfo);
 
-    if (localStorage.getItem("majorTitle") == "경영") {
-      navigate("/selectcsedutychoice", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
-    }
+    navigate("/selectsubcsedutychoice", {
+      state: { selectedData: dataWithAdditionalInfo },
+    });
 
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
-    sessionStorage.setItem("ex_sub_select", sub_select);
+    sessionStorage.setItem("ex_sub_select", sub);
   };
 
   const [dataArray, setDataArray] = useState([]);
@@ -218,7 +217,8 @@ const SelectCseDuty = () => {
   }, 0);
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
-  let maj = major_select + sum;
+    let maj = major_select ;
+    let sub = sub_select+sum;
   console.log(com, maj);
 
   sessionStorage.setItem("complete_select", com);
@@ -298,7 +298,7 @@ const SelectCseDuty = () => {
                   <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
                   <MiniBar>
-                    <Mini width={(sub_select * 100) / sub_point} bgColor={bg} />
+                    <Mini width={(sub * 100) / sub_point} bgColor={bg} />
                   </MiniBar>
                 </Bar>
               )}
@@ -681,4 +681,4 @@ const Container = styled.div`
   }
 `;
 
-export default SelectCseDuty;
+export default SelectSubCseDuty;

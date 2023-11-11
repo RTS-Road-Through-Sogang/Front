@@ -2,213 +2,12 @@ import { useEffect, useState, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
+import axios from "axios";
 
-const curr = [
-  {
-    track: "단일전공",
-    "이수 학점": 16,
-  },
-  {
-    category_detail: "필수",
-    category_point: 13,
-    lectures: [
-      {
-        id: 2,
-        title: "미적분학II",
-        code: "STS2006",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        teach: false,
-        advance: false,
-        former: null,
-        category21: 11,
-        category22: 11,
-        category23: 11,
-        category24: null,
-        tech: null,
-      },
-      {
-        id: 3,
-        title: "일반물리실험I",
-        code: "PHY1101",
-        point: 1,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        teach: false,
-        advance: false,
-        former: null,
-        category21: 11,
-        category22: 11,
-        category23: 11,
-        category24: null,
-        tech: null,
-      },
-      {
-        id: 4,
-        title: "일반물리I",
-        code: "PHY1001",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        teach: false,
-        advance: false,
-        former: null,
-        category21: 11,
-        category22: 11,
-        category23: 11,
-        category24: null,
-        tech: null,
-      },
-      {
-        id: 5,
-        title: "응용수학I",
-        code: "MAT2410",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        teach: false,
-        advance: false,
-        former: null,
-        category21: 11,
-        category22: 11,
-        category23: 11,
-        category24: null,
-        tech: null,
-      },
-      {
-        id: 6,
-        title: "응용수학II",
-        code: "MAT2420",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        teach: false,
-        advance: false,
-        former: null,
-        category21: 11,
-        category22: 11,
-        category23: 11,
-        category24: null,
-        tech: null,
-      },
-    ],
-  },
-  {
-    category_detail: "선택",
-    category_point: 3,
-    lectures: [
-      {
-        id: 7,
-        title: "집합론",
-        code: "MAT2010",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        teach: false,
-        advance: false,
-        former: null,
-        category21: 12,
-        category22: 12,
-        category23: 12,
-        category24: null,
-        tech: null,
-      },
-      {
-        id: 8,
-        title: "선형대수학",
-        code: "MAT2110",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        teach: false,
-        advance: false,
-        former: null,
-        category21: 12,
-        category22: 12,
-        category23: 12,
-        category24: null,
-        tech: null,
-      },
-      {
-        id: 9,
-        title: "정수론",
-        code: "MAT2120",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        teach: false,
-        advance: false,
-        former: null,
-        category21: 12,
-        category22: 12,
-        category23: 12,
-        category24: null,
-        tech: null,
-      },
-    ],
-  },
-];
-
-const Tooltip = ({ children, message, rate1, rate2 }) => {
-  console.log(100 * (rate1 / (rate1 + rate2)));
-  return (
-    <Container>
-      {children}
-      <div className="tooltip">
-        {message}
-        <br></br>
-        - 수강 오픈 비율
-        <br />
-        <InsideBar>
-          <Semester1>1학기</Semester1>
-          <Semester2>2학기</Semester2>
-        </InsideBar>
-        <ProgressBar2>
-          <Progress2
-            width={100 * (rate1 / (rate1 + rate2))}
-            bgColor={"#ffe7f3"}
-          />
-        </ProgressBar2>
-      </div>
-    </Container>
-  );
-};
-
+export const BASE_URL = process.env.REACT_APP_BASE_URL;
+const accessToken = localStorage.getItem("accessToken");
 const SelectContainer = ({
   id,
   title,
@@ -221,8 +20,21 @@ const SelectContainer = ({
   semester_one,
   semester_two,
   setSelectEX,
+  selectedData,
+  select0,
+  setSelect0,
+  setSelectedData,
 }) => {
   const [isClicked, setisClicked] = useState(false);
+
+  useEffect(() => {
+    selectedData.forEach((item) => {
+      if (item[0] == code) {
+        setisClicked(!isClicked);
+        setSelect([...select, [code, point]]);
+      }
+    });
+  }, []);
 
   const onClick = () => {
     setSelectEX(select);
@@ -230,12 +42,18 @@ const SelectContainer = ({
     setisClicked(!isClicked);
     if (isClicked) {
       const filtered = select.filter(
-        (item) => item[0] != id || item[1] != point
+        (item) => item[0] != code || item[1] != point
       );
 
+      const filtere = select0.filter((item) => item[0] != code);
+      const filtere1 = selectedData.filter((item) => item[0] != code);
+
       setSelect(filtered);
+      setSelect0(filtere);
+      setSelectedData(filtere1);
     } else {
-      setSelect([...select, [id, point]]);
+      setSelect([...select, [code, point]]);
+      setSelect0([...select0, [code, point]]);
     }
   };
   let season = "";
@@ -244,33 +62,99 @@ const SelectContainer = ({
   } else {
     season = "X";
   }
-  const message = `- 과목 코드: ${code} 
-          - 학점: ${point}학점
-          - 계절: ${season}`;
   return (
     <>
-      <Tooltip message={message} rate1={semester_one} rate2={semester_two}>
-        <SelectBox onClick={onClick} isClicked={isClicked}>
-          {title}
-        </SelectBox>
-      </Tooltip>
+      <SelectBox onClick={onClick} isClicked={isClicked}>
+        {title}
+        <br />
+        <br />
+        - 수강 오픈 비율
+        <br />- 과목 코드: {code}
+        <br />- 학점: {point}학점 <br />- 계절: {season}
+        <InsideBar>
+          <Semester1>1학기</Semester1>
+          <Semester2>2학기</Semester2>
+        </InsideBar>
+        <ProgressBar2>
+          <Progress2
+            width={100 * (semester_one / (semester_one + semester_two))}
+            bgColor={"#ffe7f3"}
+          />
+        </ProgressBar2>
+      </SelectBox>
     </>
   );
 };
-
 const SelectCseGicho = () => {
   const maxItem = 5;
   let availableItem = 4;
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
-    const bg = `rgb(255, ${c}, ${c})`;
+  const bg = `rgb(255, ${c}, ${c})`;
+  const { state } = useLocation();
+
+  const [selectedData, setSelectedData] = useState([]);
+  console.log(selectedData);
+
+  const navigate = useNavigate();
+  const goNext = ({ com, maj, sub_select }) => {
+    console.log(localStorage.getItem("majorTitle"));
+
+    const dataWithAdditionalInfo = [...selectedData, ...select0];
+
+  
+   
+      navigate("/selectcseduty", {
+        state: { selectedData: dataWithAdditionalInfo },
+      });
     
-    const navigate = useNavigate();
-    const goNext = () => {
-      navigate("/selectcseduty");
+    sessionStorage.setItem("ex_complete_select", com);
+    sessionStorage.setItem("ex_major_select", maj);
+    sessionStorage.setItem("ex_sub_select", sub_select);
+  };
+
+  const [dataArray, setDataArray] = useState([]);
+  const [pointArray, setpointArray] = useState([]);
+  //전체 point 계산
+  let complete_select1 = sessionStorage.getItem("ex_complete_select");
+  let major_select1 = sessionStorage.getItem("ex_major_select");
+  let sub_select1 = sessionStorage.getItem("ex_sub_select");
+
+  let complete_select = parseInt(complete_select1);
+  let major_select = parseInt(major_select1);
+  let sub_select = parseInt(sub_select1);
+
+  useEffect(() => {
+    const handleData = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/roadmaps/cse_gicho_lecture/1`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        setDataArray(res.data);
+      } catch (err) {
+        console.log("getPost error: ", err);
+      }
     };
 
+    handleData();
+    //  handlePoint(); //안됨.........
+    setSelectedData(state.selectedData);
+  }, []);
+  const complete_point = sessionStorage.getItem("complete_point");
+  const major_point = sessionStorage.getItem("major_point");
+  let sub_point = null;
+  if (sessionStorage.getItem("sub_point")) {
+    sub_point = sessionStorage.getItem("sub_point");
+  }
 
-  const maxSelect = curr.map((item) => item.category_point);
+  const maxSelect = dataArray.map((item) => item.category_point);
+
+  const [select0, setSelect0] = useState([]); //전체 저장
 
   const [select1, setSelect1] = useState([]);
   const [select2, setSelect2] = useState([]);
@@ -307,10 +191,6 @@ const SelectCseGicho = () => {
     setSelectEX5,
   ];
 
-  const len = [select1.length, select2.length, select3.length, select4.length];
-
-  const list = ["인간과 신앙", "인간과 사상", "인간과 사회", "인간과 과학"];
-
   const c_select = [
     94 +
       (100 / maxSelect[0]) *
@@ -330,6 +210,21 @@ const SelectCseGicho = () => {
           select4.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];
 
+  const sumOfFirstElements = select.reduce((acc, currentArray) => {
+    currentArray.forEach((item) => {
+      acc += item[1];
+    });
+    return acc;
+  }, 0);
+  let sum = sumOfFirstElements;
+  let com = complete_select + sum;
+  let maj = major_select;
+  console.log(com, maj);
+
+  sessionStorage.setItem("complete_select", com);
+  sessionStorage.setItem("major_select", maj);
+  sessionStorage.setItem("sub_select", sub_select);
+
   return (
     <>
       <ProgressBar>
@@ -337,12 +232,12 @@ const SelectCseGicho = () => {
       </ProgressBar>
       <BigTitles>
         <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} /> 나의
-        수강할 전공 기초 과목을 선택하세요
+        수강할 공통 필수 교과를 선택하세요
       </BigTitles>
       <BigBox>
         <LeftBox>
-          {curr &&
-            curr.map(
+          {dataArray &&
+            dataArray.map(
               (item, index) =>
                 item.category_detail !== undefined && (
                   <Title>
@@ -364,6 +259,10 @@ const SelectCseGicho = () => {
                                 select={select[index]}
                                 ex_select={ex_select[index]}
                                 setSelectEX={setSelectEX[index]}
+                                selectedData={selectedData}
+                                setSelect0={setSelect0}
+                                select0={select0}
+                                setSelectedData={setSelectedData}
                               />
                             ))}
                         </XSmaillBox>
@@ -382,111 +281,90 @@ const SelectCseGicho = () => {
                 <BarText>전체</BarText>
 
                 <MiniBar>
-                  <Mini
-                    width={100 - (availableItem * 100) / maxItem}
-                    bgColor={bg}
-                  />
+                  <Mini width={(com * 100) / complete_point} bgColor={bg} />
                 </MiniBar>
               </Bar>
 
               <Bar>
-                <BarText>컴퓨터공학</BarText>
-
+                <BarText>{localStorage.getItem("majorTitle")}</BarText>
                 <MiniBar>
-                  <Mini
-                    width={100 - (availableItem * 100) / maxItem}
-                    bgColor={bg}
-                  />
+                  <Mini width={(maj * 100) / major_point} bgColor={bg} />
                 </MiniBar>
               </Bar>
 
-              <Bar>
-                <BarText>영미영문</BarText>
+              {sub_point !== null && (
+                <Bar>
+                  <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
-                <MiniBar>
-                  <Mini
-                    width={100 - (availableItem * 100) / maxItem}
-                    bgColor={bg}
-                  />
-                </MiniBar>
-              </Bar>
-
-              <Bar>
-                <BarText>영어강의</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={100 - (availableItem * 100) / maxItem}
-                    bgColor={bg}
-                  />
-                </MiniBar>
-              </Bar>
+                  <MiniBar>
+                    <Mini width={(sub_select * 100) / sub_point} bgColor={bg} />
+                  </MiniBar>
+                </Bar>
+              )}
             </FirstBar>
           </TotalBar>
-
           <SelectBar>
             <SecondBar>
-              {curr &&
-                curr.map(
-                  (item, index) =>
-                    item.category_detail !== undefined && (
-                      <Bar>
-                        <BarText>{item.category_detail}</BarText>
-                        <MiniBar>
-                          <Mini
-                            width={
-                              (select[index].reduce(
-                                (total, currentRow) => total + currentRow[1],
-                                0
-                              ) *
-                                100) /
-                              maxSelect[index]
-                            }
-                            bgColor={`rgb(255, ${c_select[index]}, ${c_select[index]})`}
-                            ex_width={
-                              (ex_select[index].reduce(
-                                (total, currentRow) => total + currentRow[1],
-                                0
-                              ) *
-                                100) /
-                              maxSelect[index]
-                            }
-                            ex_bg={`rgb(255, ${
-                              94 +
-                              (100 / maxSelect[index]) *
-                                (maxSelect[index] -
-                                  ex_select[index].reduce(
-                                    (total, currentRow) =>
-                                      total + currentRow[1],
-                                    0
-                                  ))
-                            }, ${
-                              94 +
-                              (100 / maxSelect[index]) *
-                                (maxSelect[index] -
-                                  ex_select[index].reduce(
-                                    (total, currentRow) =>
-                                      total + currentRow[1],
-                                    0
-                                  ))
-                            })`}
-                          />
-                        </MiniBar>
-                        <PointDisplay>
-                          (
-                          {select[index].reduce(
-                            (total, currentRow) => total + currentRow[1],
-                            0
-                          )}
-                          /{maxSelect[index]})
-                        </PointDisplay>
-                      </Bar>
-                    )
-                )}
+              {dataArray.map(
+                (item, index) =>
+                  item.category_detail !== undefined && (
+                    <Bar>
+                      <BarText>{item.category_detail}</BarText>
+                      <MiniBar>
+                        <Mini
+                          width={
+                            (select[index].reduce(
+                              (total, currentRow) => total + currentRow[1],
+                              0
+                            ) *
+                              100) /
+                            maxSelect[index]
+                          }
+                          bgColor={`rgb(255, ${c_select[index]}, ${c_select[index]})`}
+                          ex_width={
+                            (ex_select[index].reduce(
+                              (total, currentRow) => total + currentRow[1],
+                              0
+                            ) *
+                              100) /
+                            maxSelect[index]
+                          }
+                          ex_bg={`rgb(255, ${
+                            94 +
+                            (100 / maxSelect[index]) *
+                              (maxSelect[index] -
+                                ex_select[index].reduce(
+                                  (total, currentRow) => total + currentRow[1],
+                                  0
+                                ))
+                          }, ${
+                            94 +
+                            (100 / maxSelect[index]) *
+                              (maxSelect[index] -
+                                ex_select[index].reduce(
+                                  (total, currentRow) => total + currentRow[1],
+                                  0
+                                ))
+                          })`}
+                        />
+                      </MiniBar>
+                      <PointDisplay>
+                        (
+                        {select[index].reduce(
+                          (total, currentRow) => total + currentRow[1],
+                          0
+                        )}
+                        /{maxSelect[index]})
+                      </PointDisplay>
+                    </Bar>
+                  )
+              )}
             </SecondBar>
           </SelectBar>
           <Save>임시저장</Save>
-          <Next onClick={goNext}>다음으로</Next>
+          <Next onClick={() => goNext({ com, maj, sub_select })}>
+            다음으로
+          </Next>{" "}
         </RightBox>
       </BigBox>
     </>
@@ -501,6 +379,38 @@ const ProgressBar = styled.div`
 
   overflow: hidden;
   margin: 2% auto;
+`;
+
+const Progress = styled.div`
+  width: ${(props) => props.width}%;
+  height: 30px;
+  padding: 0;
+  text-align: center;
+  background-color: ${(props) => props.bgColor};
+  color: #111;
+`;
+
+const BigTitles = styled.div`
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 5%;
+  margin-top: 5%;
+`;
+
+const BigBox = styled.div`
+  width: 60%;
+  margin: 0 auto;
+  cursor: pointer;
+
+  display: flex;
+`;
+
+const LeftBox = styled.div`
+  width: 70%;
+`;
+
+const RightBox = styled.div`
+  width: 30%;
 `;
 
 const ProgressBar2 = styled.div`
@@ -542,38 +452,6 @@ const Semester2 = styled.div`
   float: right;
 `;
 
-const Progress = styled.div`
-  width: ${(props) => props.width}%;
-  height: 30px;
-  padding: 0;
-  text-align: center;
-  background-color: ${(props) => props.bgColor};
-
-  color: #111;
-`;
-
-const BigTitles = styled.div`
-  font-size: 1.8rem;
-  text-align: center;
-  margin-bottom: 5%;
-  margin-top: 5%;
-`;
-
-const BigBox = styled.div`
-  width: 60%;
-  margin: 0 auto;
-  display: flex;
-  cursor: pointer;
-`;
-
-const LeftBox = styled.div`
-  width: 70%;
-`;
-
-const RightBox = styled.div`
-  width: 30%;
-`;
-
 const Title = styled.div`
   display: flex;
   margin-bottom: 1%;
@@ -598,13 +476,13 @@ const SmallBox = styled.div`
 const XSmaillBox = styled.div``;
 const SelectBox = styled.button`
   font-size: 0.9rem;
-  margin-right: 1%;
+  margin-right: 4%;
 
   margin-bottom: 2%;
 
-  padding: 1% 2%;
+  padding: 3% 3%;
 
-  border-radius: 60px;
+  
 
   background-color: ${({ isClicked }) => (!isClicked ? "#EFEFEF" : "white")};
   border: ${({ isClicked }) =>
