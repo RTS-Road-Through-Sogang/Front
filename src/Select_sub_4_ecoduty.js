@@ -31,11 +31,13 @@ const SelectContainer = ({
     selectedData.forEach((item) => {
       if (item[0] == code) {
         setisClicked(!isClicked);
-        setSelect([...select, [code, point]]);
+          setSelect([...select, [code, point]]);
+           console.log("DFDFDFDF");
+           console.log(select);
       }
     });
   }, []);
-
+console.log(select);
   const onClick = () => {
     setSelectEX(select);
 
@@ -87,7 +89,7 @@ const SelectContainer = ({
     </>
   );
 };
-const SelectCseDuty = () => {
+const SelectSubEcoDuty = () => {
   const maxItem = 5;
   let availableItem = 4;
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
@@ -106,7 +108,7 @@ const SelectCseDuty = () => {
     console.log(dataWithAdditionalInfo);
 
     if (localStorage.getItem("majorTitle") == "경영") {
-      navigate("/selectcsedutychoice", {
+      navigate("/selectsubecodutychoice", {
         state: { selectedData: dataWithAdditionalInfo },
       });
     }
@@ -130,7 +132,7 @@ const SelectCseDuty = () => {
   useEffect(() => {
     const handleData = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/roadmaps/cse_duty_lecture/1`, {
+        const res = await axios.get(`${BASE_URL}/roadmaps/eco_duty_lecture/1`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -218,7 +220,8 @@ const SelectCseDuty = () => {
   }, 0);
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
-  let maj = major_select + sum;
+    let maj = major_select;
+    let sub = sub_select+sum;
   console.log(com, maj);
 
   sessionStorage.setItem("complete_select", com);
@@ -298,7 +301,7 @@ const SelectCseDuty = () => {
                   <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
                   <MiniBar>
-                    <Mini width={(sub_select * 100) / sub_point} bgColor={bg} />
+                    <Mini width={(sub* 100) / sub_point} bgColor={bg} />
                   </MiniBar>
                 </Bar>
               )}
@@ -681,4 +684,4 @@ const Container = styled.div`
   }
 `;
 
-export default SelectCseDuty;
+export default SelectSubEcoDuty;

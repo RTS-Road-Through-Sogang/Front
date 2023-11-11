@@ -2,280 +2,22 @@ import { useEffect, useState, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const curr = [
-  {
-    서강인성: 1,
-    lectures: [
-      {
-        id: 1,
-        title: "성찰과 성장",
-        code: "COR1007",
-        point: 1,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 4,
-        grade_recommend: 1,
-        season_open: false,
-        former: null,
-        category21: 1,
-        category22: 1,
-        category23: 1,
-        category24: null,
-      },
-    ],
-  },
-  {
-    글쓰기: 3,
-    lectures: [
-      {
-        id: 2,
-        title: "인문사회 글쓰기",
-        code: "COR1012",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        former: null,
-        category21: 2,
-        category22: 2,
-        category23: 2,
-        category24: null,
-      },
-    ],
-  },
-  {
-    "글로벌 언어1": 3,
-    lectures: [
-      {
-        id: 4,
-        title: "영어글로벌 의사소통1",
-        code: "COR1003",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 3,
-        grade_recommend: 1,
-        season_open: true,
-        former: null,
-        category21: 3,
-        category22: 3,
-        category23: 3,
-        category24: null,
-      },
-      {
-        id: 5,
-        title: "독일언어와 문화1",
-        code: "LCS2001",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        former: null,
-        category21: 3,
-        category22: 3,
-        category23: 3,
-        category24: null,
-      },
-      {
-        id: 6,
-        title: "프랑스언어와 문화1",
-        code: "LCS2003",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        former: null,
-        category21: 3,
-        category22: 3,
-        category23: 3,
-        category24: null,
-      },
-      {
-        id: 7,
-        title: "중국언어와 문화1",
-        code: "LCS2005",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        former: null,
-        category21: 3,
-        category22: 3,
-        category23: 3,
-        category24: null,
-      },
-      {
-        id: 8,
-        title: "일본언어와 문화1",
-        code: "LCS2007",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: true,
-        former: null,
-        category21: 3,
-        category22: 3,
-        category23: 3,
-        category24: null,
-      },
-      {
-        id: 9,
-        title: "초급 라틴어",
-        code: "LCU4021",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: false,
-        former: null,
-        category21: 3,
-        category22: 3,
-        category23: 3,
-        category24: null,
-      },
-      {
-        id: 10,
-        title: "초급 스페인어",
-        code: "LCU4030",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: false,
-        former: null,
-        category21: 3,
-        category22: 3,
-        category23: 3,
-        category24: null,
-      },
-      {
-        id: 11,
-        title: "초급 이탈리아어",
-        code: "LCU4025",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: false,
-        former: null,
-        category21: 3,
-        category22: 3,
-        category23: 3,
-        category24: null,
-      },
-      {
-        id: 12,
-        title: "초급 러시아어",
-        code: "LCU4035",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: false,
-        former: null,
-        category21: 3,
-        category22: 3,
-        category23: 3,
-        category24: null,
-      },
-      {
-        id: 13,
-        title: "초급 아랍어",
-        code: "LCU4105",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: false,
-        former: null,
-        category21: 3,
-        category22: 3,
-        category23: 3,
-        category24: null,
-      },
-    ],
-  },
-  {
-    "전공 진로 탐색": 1,
-    lectures: [
-      {
-        id: 14,
-        title: "알바트로스 세미나",
-        code: "COR1015",
-        point: 3,
-        eta: "",
-        semester_one: 3,
-        semester_two: 3,
-        teamplay: 1,
-        grade_recommend: 1,
-        season_open: false,
-        former: null,
-        category21: 4,
-        category22: 4,
-        category23: 4,
-        category24: null,
-      },
-    ],
-  },
-  {
-    소프트웨어: 0,
-    lectures: [],
-  },
-];
-const Tooltip = ({ children, message, rate1, rate2 }) => {
-  console.log(100 * (rate1 / (rate1 + rate2)));
-  return (
-    <Container>
-      {children}
-      <div className="tooltip">
-        {message}
-        <br></br>
-        - 수강 오픈 비율
-        <br />
-        <InsideBar>
-          <Semester1>1학기</Semester1>
-          <Semester2>2학기</Semester2>
-        </InsideBar>
-        <ProgressBar2>
-          <Progress2
-            width={100 * (rate1 / (rate1 + rate2))}
-            bgColor={"#ffe7f3"}
-          />
-        </ProgressBar2>
-      </div>
-    </Container>
-  );
-};
+import axios from "axios";
 
+//전체 point 계산
+let complete_select1 = sessionStorage.getItem("complete_select");
+let major_select1 = sessionStorage.getItem("major_select");
+let sub_select1 = sessionStorage.getItem("sub_select");
+
+let complete_select = parseInt(complete_select1);
+let major_select = parseInt(major_select1);
+let sub_select = parseInt(sub_select1);
+
+
+export const BASE_URL = process.env.REACT_APP_BASE_URL;
+const accessToken = localStorage.getItem("accessToken");
 const SelectContainer = ({
   id,
   title,
@@ -287,9 +29,23 @@ const SelectContainer = ({
   ex_select,
   semester_one,
   semester_two,
+  selectedData,
   setSelectEX,
+  select0,
+  setSelect0,
+  setSelectedData,
 }) => {
   const [isClicked, setisClicked] = useState(false);
+  //new
+  
+  useEffect(() => {
+    selectedData.forEach((item) => {
+      if (item[0] == code) {
+        setisClicked(!isClicked);
+        setSelect([...select, [code, point]]);
+      }
+    });
+  }, []);
 
   const onClick = () => {
     setSelectEX(select);
@@ -297,30 +53,48 @@ const SelectContainer = ({
     setisClicked(!isClicked);
     if (isClicked) {
       const filtered = select.filter(
-        (item) => item[0] != id || item[1] != point
+        (item) => item[0] != code || item[1] != point
       );
 
+      const filtere = select0.filter((item) => item[0] != code);
+      const filtere1 = selectedData.filter((item) => item[0] != code);
+
       setSelect(filtered);
+      setSelect0(filtere);
+      setSelectedData(filtere1);
     } else {
-      setSelect([...select, [id, point]]);
+      setSelect([...select, [code, point]]);
+      setSelect0([...select0, [code, point]]);
     }
   };
+  console.log(selectedData);
   let season = "";
   if (season_open === true) {
     season = "O";
   } else {
     season = "X";
   }
-  const message = `- 과목 코드: ${code} 
-          - 학점: ${point}학점
-          - 계절: ${season}`;
+
   return (
     <>
-      <Tooltip message={message} rate1={semester_one} rate2={semester_two}>
-        <SelectBox onClick={onClick} isClicked={isClicked}>
-          {title}
-        </SelectBox>
-      </Tooltip>
+      <SelectBox onClick={onClick} isClicked={isClicked}>
+        {title}
+        <br />
+        <br />
+        - 수강 오픈 비율
+        <br />- 과목 코드: {code}
+        <br />- 학점: {point}학점 <br />- 계절: {season}
+        <InsideBar>
+          <Semester1>1학기</Semester1>
+          <Semester2>2학기</Semester2>
+        </InsideBar>
+        <ProgressBar2>
+          <Progress2
+            width={100 * (semester_one / (semester_one + semester_two))}
+            bgColor={"#ffe7f3"}
+          />
+        </ProgressBar2>
+      </SelectBox>
     </>
   );
 };
@@ -330,32 +104,80 @@ const SelectCommon = () => {
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c})`;
 
+  const { state } = useLocation();
+ 
+  const [selectedData, setSelectedData] = useState([]);
+  
+
+
   const navigate = useNavigate();
   const goNext = () => {
-    navigate("/selectchoice");
+    sessionStorage.setItem("ex_complete_select", com);
+    sessionStorage.setItem("ex_major_select", maj);
+    sessionStorage.setItem("ex_sub_select", sub_select);
+    const dataWithAdditionalInfo = [...selectedData, ...select0];
+    console.log(dataWithAdditionalInfo);
+    navigate("/selectchoice", {
+      state: { selectedData: dataWithAdditionalInfo },
+    });
   };
 
-  const maxSelect = [1, 3, 3, 3, 0];
+  const [dataArray, setDataArray] = useState([]);
+
+  useEffect(() => {
+    const handleData = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/roadmaps/commondutylecturelists/`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        setDataArray(res.data);
+      } catch (err) {
+        console.log("getPost error: ", err);
+      }
+    };
+ 
+    handleData();
+    setSelectedData(state.selectedData);
+
+  }, []);
+  const complete_point = sessionStorage.getItem("complete_point");
+  const major_point = sessionStorage.getItem("major_point");
+  let sub_point = null;
+  if (sessionStorage.getItem("sub_point")) {
+    sub_point = sessionStorage.getItem("sub_point");
+  }
+
+  const maxSelect = dataArray.map((item) => item.category_point);
+  const [select0, setSelect0] = useState([]); //전체 저장
 
   const [select1, setSelect1] = useState([]);
   const [select2, setSelect2] = useState([]);
   const [select3, setSelect3] = useState([]);
   const [select4, setSelect4] = useState([]);
   const [select5, setSelect5] = useState([]);
+  const [select6, setSelect6] = useState([]);
 
   const [ex_select1, setSelectEX1] = useState([]);
   const [ex_select2, setSelectEX2] = useState([]);
   const [ex_select3, setSelectEX3] = useState([]);
   const [ex_select4, setSelectEX4] = useState([]);
   const [ex_select5, setSelectEX5] = useState([]);
+  const [ex_select6, setSelectEX6] = useState([]);
 
-  const select = [select1, select2, select3, select4, select5];
+  const select = [select1, select2, select3, select4, select5, select6];
   const setSelect = [
     setSelect1,
     setSelect2,
     setSelect3,
     setSelect4,
-    setSelectEX5,
+    setSelect5,
+    setSelect6,
   ];
   const ex_select = [
     ex_select1,
@@ -363,6 +185,7 @@ const SelectCommon = () => {
     ex_select3,
     ex_select4,
     ex_select5,
+    ex_select6,
   ];
   const setSelectEX = [
     setSelectEX1,
@@ -370,17 +193,9 @@ const SelectCommon = () => {
     setSelectEX3,
     setSelectEX4,
     setSelectEX5,
+    setSelectEX6,
   ];
 
-  const len = [select1.length, select2.length, select3.length, select4.length];
-
-  const list = [
-    "서강인성",
-    "글쓰기",
-    "글로벌 언어1",
-    "전공진로탐색",
-    "소프트웨어",
-  ];
 
   const c_select = [
     94 +
@@ -399,9 +214,27 @@ const SelectCommon = () => {
       (100 / maxSelect[3]) *
         (maxSelect[3] -
           select4.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[3]) *
+        (maxSelect[3] -
+          select5.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];
 
-  console.log(select);
+  const sumOfFirstElements = select.reduce((acc, currentArray) => {
+    currentArray.forEach((item) => {
+      acc += item[1];
+    });
+    return acc;
+  }, 0);
+  let sum = sumOfFirstElements;
+  let com = complete_select + sum;
+  let maj = major_select;
+  console.log(com, maj);
+
+  sessionStorage.setItem("complete_select", com);
+  sessionStorage.setItem("major_select", maj);
+  sessionStorage.setItem("sub_select", sub_select);
+
   return (
     <>
       <ProgressBar>
@@ -413,7 +246,7 @@ const SelectCommon = () => {
       </BigTitles>
       <BigBox>
         <LeftBox>
-          {curr.map((item, index) => (
+          {dataArray.map((item, index) => (
             <Title>
               <Icon>
                 <FontAwesomeIcon
@@ -422,7 +255,7 @@ const SelectCommon = () => {
                 />
               </Icon>
               <TitleText>
-                {list[index]}
+                {item.category_detail}
                 <SmallBox>
                   <XSmaillBox>
                     {item.lectures &&
@@ -433,6 +266,10 @@ const SelectCommon = () => {
                           select={select[index]}
                           ex_select={ex_select[index]}
                           setSelectEX={setSelectEX[index]}
+                          setSelect0={setSelect0}
+                          select0={select0}
+                          selectedData={selectedData}
+                          setSelectedData={setSelectedData}
                         />
                       ))}
                   </XSmaillBox>
@@ -450,53 +287,35 @@ const SelectCommon = () => {
                 <BarText>전체</BarText>
 
                 <MiniBar>
-                  <Mini
-                    width={100 - (availableItem * 100) / maxItem}
-                    bgColor={bg}
-                  />
+                  <Mini width={(com * 100) / complete_point} bgColor={bg} />
                 </MiniBar>
               </Bar>
 
               <Bar>
-                <BarText>컴퓨터공학</BarText>
+                <BarText>{localStorage.getItem("majorTitle")}</BarText>
 
                 <MiniBar>
-                  <Mini
-                    width={100 - (availableItem * 100) / maxItem}
-                    bgColor={bg}
-                  />
+                  <Mini width={(maj * 100) / major_point} bgColor={bg} />
                 </MiniBar>
               </Bar>
 
-              <Bar>
-                <BarText>영미영문</BarText>
+              {sub_point !== null && (
+                <Bar>
+                  <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
-                <MiniBar>
-                  <Mini
-                    width={100 - (availableItem * 100) / maxItem}
-                    bgColor={bg}
-                  />
-                </MiniBar>
-              </Bar>
-
-              <Bar>
-                <BarText>영어강의</BarText>
-
-                <MiniBar>
-                  <Mini
-                    width={100 - (availableItem * 100) / maxItem}
-                    bgColor={bg}
-                  />
-                </MiniBar>
-              </Bar>
+                  <MiniBar>
+                    <Mini width={(sub_select * 100) / sub_point} bgColor={bg} />
+                  </MiniBar>
+                </Bar>
+              )}
             </FirstBar>
           </TotalBar>
 
           <SelectBar>
             <SecondBar>
-              {curr.map((item, index) => (
+              {dataArray.map((item, index) => (
                 <Bar>
-                  <BarText>{list[index]}</BarText>
+                  <BarText>{item.category_detail}</BarText>
                   <MiniBar>
                     <Mini
                       width={
@@ -636,7 +455,6 @@ const Semester2 = styled.div`
   float: right;
 `;
 
-
 const Title = styled.div`
   display: flex;
   margin-bottom: 1%;
@@ -661,13 +479,13 @@ const SmallBox = styled.div`
 const XSmaillBox = styled.div``;
 const SelectBox = styled.button`
   font-size: 0.9rem;
-  margin-right: 1%;
+  margin-right: 4%;
 
   margin-bottom: 2%;
 
-  padding: 1% 2%;
+  padding: 3% 3%;
 
-  border-radius: 60px;
+  
 
   background-color: ${({ isClicked }) => (!isClicked ? "#EFEFEF" : "white")};
   border: ${({ isClicked }) =>

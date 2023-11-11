@@ -5,8 +5,10 @@ import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { MultiSelect } from "react-multi-select-component";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const curri = ["서강인성"];
+export const BASE_URL = process.env.REACT_APP_BASE_URL;
+const accessToken = localStorage.getItem("accessToken");
 
 const major = [
   {
@@ -186,11 +188,47 @@ const SelectSearch = () => {
   const bg = `rgb(255, ${c}, ${c})`;
 
   const navigate = useNavigate();
+  
   const goNext = () => {
-    navigate("/selectcommon");
+    const dataWithAdditionalInfo = [
+      ["COR1012", 3],
+      ["HFS2001", 3],
+      ["ECO3008", 3],
+      ["ECO2004", 3],
+      ["ECO2003", 3],
+    ];
+    navigate("/selectcommon", {
+        state: { selectedData: dataWithAdditionalInfo },
+      });
   };
 
+  //axios
+  const [dataArray, setDataArray] = useState([]);
+  useEffect(() => {
+    const handleData = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/roadmaps/completed_lecture_search/`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        setDataArray(res.data);
+      console.log(res.data)
+        
+      } catch (err) {
+        console.log("getPost error: ", err);
+      }
+    };
+    handleData();
+    
+  }, []);
+
   const maxSelect = [4, 1, 1, 3, 2];
+  console.log(dataArray);
 
   const [select, setSelect] = useState([]);
   const [select1, setSelect1] = useState([]);

@@ -32,6 +32,7 @@ const SelectContainer = ({
       if (item[0] == code) {
         setisClicked(!isClicked);
         setSelect([...select, [code, point]]);
+      
       }
     });
   }, []);
@@ -56,7 +57,7 @@ const SelectContainer = ({
       setSelect0([...select0, [code, point]]);
     }
   };
-  console.log(select);
+  console.log(select)
 
   let season = "";
   if (season_open === true) {
@@ -87,7 +88,7 @@ const SelectContainer = ({
     </>
   );
 };
-const SelectCseDuty = () => {
+const SelectEcoDuty = () => {
   const maxItem = 5;
   let availableItem = 4;
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
@@ -100,13 +101,13 @@ const SelectCseDuty = () => {
 
   const navigate = useNavigate();
   const goNext = ({ com, maj, sub_select }) => {
-    console.log(localStorage.getItem("majorTitle"));
-
-    const dataWithAdditionalInfo = [...selectedData, ...select0];
-    console.log(dataWithAdditionalInfo);
+      console.log(localStorage.getItem("majorTitle"));
+      
+      const dataWithAdditionalInfo = [...selectedData, ...select0];
+      console.log(dataWithAdditionalInfo);
 
     if (localStorage.getItem("majorTitle") == "경영") {
-      navigate("/selectcsedutychoice", {
+      navigate("/selectecodutychoice", {
         state: { selectedData: dataWithAdditionalInfo },
       });
     }
@@ -130,7 +131,7 @@ const SelectCseDuty = () => {
   useEffect(() => {
     const handleData = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/roadmaps/cse_duty_lecture/1`, {
+        const res = await axios.get(`${BASE_URL}/roadmaps/eco_duty_lecture/1`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -681,4 +682,4 @@ const Container = styled.div`
   }
 `;
 
-export default SelectCseDuty;
+export default SelectEcoDuty;

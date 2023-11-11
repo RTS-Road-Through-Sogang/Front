@@ -32,6 +32,7 @@ const SelectContainer = ({
       if (item[0] == code) {
         setisClicked(!isClicked);
         setSelect([...select, [code, point]]);
+        
       }
     });
   }, []);
@@ -87,7 +88,7 @@ const SelectContainer = ({
     </>
   );
 };
-const SelectCseDuty = () => {
+const SelectMgtDuty = () => {
   const maxItem = 5;
   let availableItem = 4;
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
@@ -105,11 +106,9 @@ const SelectCseDuty = () => {
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     console.log(dataWithAdditionalInfo);
 
-    if (localStorage.getItem("majorTitle") == "경영") {
-      navigate("/selectcsedutychoice", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
-    }
+    navigate("/selectmgtdutychoice", {
+      state: { selectedData: dataWithAdditionalInfo },
+    });
 
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
@@ -130,7 +129,7 @@ const SelectCseDuty = () => {
   useEffect(() => {
     const handleData = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/roadmaps/cse_duty_lecture/1`, {
+        const res = await axios.get(`${BASE_URL}/roadmaps/mgt_duty_lecture/1`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -681,4 +680,4 @@ const Container = styled.div`
   }
 `;
 
-export default SelectCseDuty;
+export default SelectMgtDuty;
