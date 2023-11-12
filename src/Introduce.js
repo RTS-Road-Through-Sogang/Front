@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import main_image from "./images/milestone.jpg";
+
 //import main_image from "./images/123.jpg";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ScrollReveal from "scrollreveal";
+
 import background_image from "./images/background.jpg";
 import sign_image from "./images/sign.jpg";
 
@@ -12,11 +12,15 @@ import feature_image1 from "./images/main.jpeg";
 import feature_image2 from "./images/main.jpeg";
 import Feature from "./Feature";
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as Arrow } from "./images/arrow.svg";
+import "aos/dist/aos.css"; // AOS styles
+import Aos from "aos";
 
 const Introduce = () => {
   const line1Ref = useRef(null);
   const line2Ref = useRef(null);
   const line3Ref = useRef(null);
+  const arrowRef = useRef(null);
 
   const navigate = useNavigate();
   const goToSign = () => {
@@ -28,6 +32,8 @@ const Introduce = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     // Timeline을 생성합니다.
+    Aos.init({});
+
     const tl = gsap.timeline({ defaults: { ease: "power1.out" } });
 
     // AnimatedSpan에 대한 애니메이션을 설정합니다.
@@ -71,6 +77,7 @@ const Introduce = () => {
         console.log("ref.current is not available:", ref);
       }
     });
+
     return () => {
       observer.disconnect();
     };
@@ -118,8 +125,11 @@ const Introduce = () => {
         <Feature />
 
         <StartSection>
-          <BeginPrompt>그럼, 시작해 볼까요 ?</BeginPrompt>
-          <StyledButton onClick={goToSign}>
+          <StyledButton
+            onClick={goToSign}
+            data-aos="pulse"
+            data-aos-delay="300"
+          >
             <span>시작하기</span>
           </StyledButton>
         </StartSection>
@@ -228,7 +238,7 @@ const IntroDescription = styled.div`
 const IntroDescriptionLine = styled.span`
   display: block; // 각 줄을 블록 요소로 만듭니다.
   opacity: 0;
-  margin-bottom: 40%;
+  margin-bottom: 35%;
   transition: all 1s;
   span {
     color: #ff6262;
@@ -241,6 +251,19 @@ const StartSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+const StyledArrow = styled(Arrow)`
+  path {
+    stroke-dasharray: 0; /* 실제 path 길이에 맞게 조정해야 함 */
+    stroke-dashoffset: 0; /* 실제 path 길이에 맞게 조정해야 함 */
+    animation: drawLine 2s ease forwards; /* 애니메이션 적용 */
+  }
+
+  @keyframes drawLine {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
 `;
 const BeginPrompt = styled.div`
   font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
@@ -256,12 +279,29 @@ const BeginPrompt = styled.div`
 const StyledButton = styled.button`
   font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
   cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
   width: 30vw;
   height: 8vh;
   border-radius: 60px;
   border: 2px solid #ff6262;
   background: #ff6262;
-
+  margin-bottom: 5%;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* 그림자 효과를 추가하여 돌출되는 듯한 효과를 줌 */
+  }
+  animation: pulse 2s infinite;
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
   @media (max-width: 768px) {
     width: 50vw;
     height: 7vh;
