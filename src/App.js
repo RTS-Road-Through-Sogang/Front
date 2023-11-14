@@ -14,6 +14,7 @@ import SelectCseGicho from "./Select_3_cse_gicho";
 import SelectCseDuty from "./Select_4_cseduty";
 import SelectCseDutyChoice from "./Select_5_csedutychoice";
 import SelectCseChoice from "./Select_6_cseselect";
+import Sehwan from "./Sehwan";
 
 export const URL = process.env.APIURL;
 
@@ -23,8 +24,11 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
+          <Route path="test" element={<Sehwan />} />
+          <Route path="/intro" element={<Introduce />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/majortrack" element={<SelecMajor />} />
           <Route path="/selectsearch" element={<SelectSearch />} />
           <Route path="/selectcommon" element={<SelectCommon />} />
