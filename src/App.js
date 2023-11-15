@@ -24,7 +24,6 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="test" element={<Sehwan />} />
           <Route path="/intro" element={<Introduce />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
