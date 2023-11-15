@@ -106,11 +106,10 @@ const SelectEcoDuty = () => {
       const dataWithAdditionalInfo = [...selectedData, ...select0];
       console.log(dataWithAdditionalInfo);
 
-    if (localStorage.getItem("majorTitle") == "경영") {
-      navigate("/selectecodutychoice", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
-    }
+    
+    navigate("/selectecodutychoice", {
+      state: { selectedData: dataWithAdditionalInfo },
+    })
 
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);

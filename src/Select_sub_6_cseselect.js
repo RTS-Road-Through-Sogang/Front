@@ -98,12 +98,9 @@ const SelectSubCseChoice = () => {
   const navigate = useNavigate();
   const goNext = ({ com, maj, sub_select }) => {
     const dataWithAdditionalInfo = [...selectedData, ...select0];
-
-    //라우터
-// navigate("/url", {
-//         state: { selectedData: dataWithAdditionalInfo },
-//       });
-//     } 
+    navigate("/status", {
+      state: { selectedData: dataWithAdditionalInfo },
+    });
 
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
@@ -216,8 +213,8 @@ const SelectSubCseChoice = () => {
   }, 0);
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
-    let maj = major_select;
-    let sub = sub_select + sum;
+  let maj = major_select;
+  let sub = sub_select + sum;
   console.log(com, maj);
 
   sessionStorage.setItem("complete_select", com);

@@ -216,7 +216,8 @@ const SelectSubMgtDuty = () => {
   }, 0);
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
-  let maj = major_select + sum;
+  let maj = major_select;
+  let sub = sub_select + sum;
   console.log(com, maj);
 
   sessionStorage.setItem("complete_select", com);
@@ -296,7 +297,7 @@ const SelectSubMgtDuty = () => {
                   <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
                   <MiniBar>
-                    <Mini width={(sub_select * 100) / sub_point} bgColor={bg} />
+                    <Mini width={(sub * 100) / sub_point} bgColor={bg} />
                   </MiniBar>
                 </Bar>
               )}

@@ -31,13 +31,13 @@ const SelectContainer = ({
     selectedData.forEach((item) => {
       if (item[0] == code) {
         setisClicked(!isClicked);
-          setSelect([...select, [code, point]]);
-           console.log("DFDFDFDF");
-           console.log(select);
+        setSelect([...select, [code, point]]);
+        console.log("DFDFDFDF");
+        console.log(select);
       }
     });
   }, []);
-console.log(select);
+  console.log(select);
   const onClick = () => {
     setSelectEX(select);
 
@@ -137,7 +137,7 @@ const SelectSubEcoDuty = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-
+        // console.log(res.data);
         setDataArray(res.data);
       } catch (err) {
         console.log("getPost error: ", err);
@@ -220,8 +220,8 @@ const SelectSubEcoDuty = () => {
   }, 0);
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
-    let maj = major_select;
-    let sub = sub_select+sum;
+  let maj = major_select;
+  let sub = sub_select + sum;
   console.log(com, maj);
 
   sessionStorage.setItem("complete_select", com);
@@ -301,7 +301,7 @@ const SelectSubEcoDuty = () => {
                   <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
                   <MiniBar>
-                    <Mini width={(sub* 100) / sub_point} bgColor={bg} />
+                    <Mini width={(sub * 100) / sub_point} bgColor={bg} />
                   </MiniBar>
                 </Bar>
               )}

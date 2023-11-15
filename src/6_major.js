@@ -10,6 +10,7 @@ import RoadmapComponent from './RoadmapComponent';
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
+console.log(accessToken)
 
 //전체 point 계산
 let com = 0;
@@ -87,17 +88,18 @@ const SelecMajor = () => {
   const bg = `rgb(255, ${c}, ${c})`;
 
   const maxSelect = [4, 1, 1, 3, 2];
-
+ 
   const [select, setSelect] = useState("");
   const [select1, setSelect1] = useState([]);
   const SelectContainer = (name) => {
     setSelect(name);
-    console.log(name);
+    
+  
     localStorage.setItem("majorTrack", name);
   };
 const SelectContainer3 = (name) => {
   setSelect1(name);
-  console.log(name);
+ 
   localStorage.setItem("submajorTrack", name);
 };
   
@@ -126,7 +128,6 @@ const SelectContainer3 = (name) => {
     handleData();
     console.log(dataArray);
   }, []);
-  console.log(dataArray);
 
   if (dataArray.major && dataArray.major.title) {
     const majorTitle = dataArray.major.title;
@@ -245,17 +246,14 @@ const SelectContainer3 = (name) => {
                   루트 선택
                   <SmallBox>
                     <XSmaillBox>
-                      {dataArray.major_tracks[0].ECO_tracks.map(
-                        (
-                          item //변경
-                        ) => (
-                          <SelectContainer
-                            {...item}
-                            setSelect={setSelect}
-                            select={select}
-                          />
-                        )
-                      )}
+                      {dataArray.major_tracks[0].CSE_tracks.map((item) => (
+                        <SelectBox
+                          onClick={() => SelectContainer(item.title)}
+                          isclicked={select === item.title}
+                        >
+                          {item.title}
+                        </SelectBox>
+                      ))}
                     </XSmaillBox>
                   </SmallBox>
                 </TitleText>
@@ -302,6 +300,7 @@ const SelectContainer3 = (name) => {
         );
         sessionStorage.setItem("major_point", point1[0].points.major_point);
       }
+      console.log("emfdjdha")
       return (
         <>
           <ProgressBar>
@@ -327,17 +326,15 @@ const SelectContainer3 = (name) => {
                   루트 선택
                   <SmallBox>
                     <XSmaillBox>
-                      {dataArray.major_tracks[0].ECO_tracks.map(
-                        (
-                          item //변경
-                        ) => (
-                          <SelectContainer
-                            {...item}
-                            setSelect={setSelect}
-                            select={select}
-                          />
-                        )
-                      )}
+                      {dataArray.major_tracks[0].ECO_tracks.map((item) => (
+                        <SelectBox
+                          onClick={() => SelectContainer(item.title)}
+                          isclicked={select === item.title}
+                        >
+                          {item.title}
+                        </SelectBox>
+                      ))}
+                    
                     </XSmaillBox>
                   </SmallBox>
                 </TitleText>

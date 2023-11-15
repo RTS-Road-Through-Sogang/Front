@@ -103,11 +103,9 @@ const SelectSubEcoChoice = () => {
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     console.log(dataWithAdditionalInfo);
 
-    //라우터
-    // navigate("/url", {
-    //         state: { selectedData: dataWithAdditionalInfo },
-    //       });
-    //     }
+    navigate("/status", {
+      state: { selectedData: dataWithAdditionalInfo },
+    });
 
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
@@ -273,7 +271,8 @@ const SelectSubEcoChoice = () => {
 
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
-  let maj = major_select + sum;
+  let maj = major_select;
+  let sub = sub_select + sum;
 
   let pot1 = sumOfFirstElements2;
   let pot = 0;
@@ -369,7 +368,7 @@ const SelectSubEcoChoice = () => {
                   <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
                   <MiniBar>
-                    <Mini width={(sub_select * 100) / sub_point} bgColor={bg} />
+                    <Mini width={(sub * 100) / sub_point} bgColor={bg} />
                   </MiniBar>
                   <PointDisplay>
                     ({sub_select}/{sub_point})
