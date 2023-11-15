@@ -12,7 +12,6 @@ import feature_image1 from "./images/main.jpeg";
 import feature_image2 from "./images/main.jpeg";
 import Feature from "./Feature";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as Arrow } from "./images/arrow.svg";
 import "aos/dist/aos.css"; // AOS styles
 import Aos from "aos";
 
@@ -20,7 +19,6 @@ const Introduce = () => {
   const line1Ref = useRef(null);
   const line2Ref = useRef(null);
   const line3Ref = useRef(null);
-  const arrowRef = useRef(null);
 
   const navigate = useNavigate();
   const goToSign = () => {
@@ -252,30 +250,6 @@ const StartSection = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const StyledArrow = styled(Arrow)`
-  path {
-    stroke-dasharray: 0; /* 실제 path 길이에 맞게 조정해야 함 */
-    stroke-dashoffset: 0; /* 실제 path 길이에 맞게 조정해야 함 */
-    animation: drawLine 2s ease forwards; /* 애니메이션 적용 */
-  }
-
-  @keyframes drawLine {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-`;
-const BeginPrompt = styled.div`
-  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
-  font-size: 1.3em;
-  position: relative;
-  color: black;
-  font-weight: bold;
-  padding: 10px;
-  border-radius: 5px;
-  line-height: 3;
-`;
-
 const StyledButton = styled.button`
   font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
   cursor: pointer;
