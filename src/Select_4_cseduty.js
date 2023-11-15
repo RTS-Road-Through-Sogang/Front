@@ -105,11 +105,11 @@ const SelectCseDuty = () => {
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     console.log(dataWithAdditionalInfo);
 
-    if (localStorage.getItem("majorTitle") == "경영") {
+    
       navigate("/selectcsedutychoice", {
         state: { selectedData: dataWithAdditionalInfo },
       });
-    }
+    
 
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);

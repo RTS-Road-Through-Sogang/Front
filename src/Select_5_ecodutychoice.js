@@ -29,11 +29,11 @@ const SelectContainer = ({
 
   useEffect(() => {
     selectedData.forEach((item) => {
-      if (item == code) {
+      if (item[0] == code) {
         setisClicked(!isClicked);
+        setSelect([...select, [code, point]]);
       }
     });
-
   }, []);
 
   const onClick = () => {
@@ -42,18 +42,18 @@ const SelectContainer = ({
     setisClicked(!isClicked);
     if (isClicked) {
       const filtered = select.filter(
-        (item) => item[0] != id || item[1] != point
+        (item) => item[0] != code || item[1] != point
       );
 
-      const filtere = select0.filter((item) => item != code);
-      const filtere1 = selectedData.filter((item) => item != code);
+      const filtere = select0.filter((item) => item[0] != code);
+      const filtere1 = selectedData.filter((item) => item[0] != code);
 
       setSelect(filtered);
       setSelect0(filtere);
       setSelectedData(filtere1);
     } else {
-      setSelect([...select, [id, point]]);
-      setSelect0([...select0, code]);
+      setSelect([...select, [code, point]]);
+      setSelect0([...select0, [code, point]]);
     }
   };
   let season = "";
@@ -318,7 +318,8 @@ let sum = sumOfFirstElements;
 let com = complete_select + sum;
 let maj = major_select + sum;
 
-let pot1 = sumOfFirstElements2;
+  let pot1 = sumOfFirstElements2;
+  console.log(select0)
 let pot = 0;
 
 const credit = dataArray.find((item) => item.hasOwnProperty("이수 학점"));
@@ -449,16 +450,7 @@ if (credit) {
                   ({pot1}/{pot})
                 </PointDisplay>
               </Bar>
-              <Bar>
-                <BarText>이수학점</BarText>
-
-                <MiniBar>
-                  <Mini width={(pot1 * 100) / pot} bgColor={bg} />
-                </MiniBar>
-                <PointDisplay>
-                  ({pot1}/{pot})
-                </PointDisplay>
-              </Bar>
+              
             </FirstBar>
           </TotalBar>
           <SelectBar>

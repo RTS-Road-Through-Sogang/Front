@@ -311,7 +311,8 @@ const SelectSubEcoDutyChoice = () => {
   );
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
-  let maj = major_select + sum;
+  let maj = major_select;
+  let sub = sub_select + sum;
 
   let pot1 = sumOfFirstElements2;
   let pot = 0;
@@ -430,7 +431,7 @@ const SelectSubEcoDutyChoice = () => {
                   <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
                   <MiniBar>
-                    <Mini width={(sub_select * 100) / sub_point} bgColor={bg} />
+                    <Mini width={(sub * 100) / sub_point} bgColor={bg} />
                   </MiniBar>
                 </Bar>
               )}

@@ -85,7 +85,7 @@ const SelectContainer = ({
     </>
   );
 };
-const SelectSubMgtChoice = () => {
+const SelectMgtChoice = () => {
   const maxItem = 5;
   let availableItem = 4;
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
@@ -103,11 +103,9 @@ const SelectSubMgtChoice = () => {
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     console.log(dataWithAdditionalInfo);
 
-    //라우터
-    // navigate("/url", {
-    //         state: { selectedData: dataWithAdditionalInfo },
-    //       });
-    //     }
+    navigate("/status", {
+      state: { selectedData: dataWithAdditionalInfo },
+    });
 
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
@@ -166,6 +164,10 @@ const SelectSubMgtChoice = () => {
   const [select7, setSelect7] = useState([]);
   const [select8, setSelect8] = useState([]);
   const [select9, setSelect9] = useState([]);
+  const [select10, setSelect10] = useState([]);
+  const [select11, setSelect11] = useState([]);
+  const [select12, setSelect12] = useState([]);
+  const [select13, setSelect13] = useState([]);
 
   const [ex_select1, setSelectEX1] = useState([]);
   const [ex_select2, setSelectEX2] = useState([]);
@@ -176,6 +178,10 @@ const SelectSubMgtChoice = () => {
   const [ex_select7, setSelectEX7] = useState([]);
   const [ex_select8, setSelectEX8] = useState([]);
   const [ex_select9, setSelectEX9] = useState([]);
+  const [ex_select10, setSelectEX10] = useState([]);
+  const [ex_select11, setSelectEX11] = useState([]);
+  const [ex_select12, setSelectEX12] = useState([]);
+  const [ex_select13, setSelectEX13] = useState([]);
 
   const select = [
     select1,
@@ -187,6 +193,10 @@ const SelectSubMgtChoice = () => {
     select7,
     select8,
     select9,
+    select10,
+    select11,
+    select12,
+    select13,
   ];
   const setSelect = [
     setSelect1,
@@ -198,6 +208,10 @@ const SelectSubMgtChoice = () => {
     setSelect7,
     setSelect8,
     setSelect9,
+    setSelect10,
+    setSelect11,
+    setSelect12,
+    setSelect13,
   ];
   const ex_select = [
     ex_select1,
@@ -209,6 +223,10 @@ const SelectSubMgtChoice = () => {
     ex_select7,
     ex_select8,
     ex_select9,
+    ex_select10,
+    ex_select11,
+    ex_select12,
+    ex_select13,
   ];
   const setSelectEX = [
     setSelectEX1,
@@ -219,6 +237,11 @@ const SelectSubMgtChoice = () => {
     setSelectEX6,
     setSelectEX7,
     setSelectEX8,
+    setSelectEX9,
+    setSelectEX10,
+    setSelectEX11,
+    setSelectEX12,
+    setSelectEX13,
   ];
 
   const c_select = [
@@ -258,6 +281,22 @@ const SelectSubMgtChoice = () => {
       (100 / maxSelect[8]) *
         (maxSelect[8] -
           select9.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[9]) *
+        (maxSelect[9] -
+          select10.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[10]) *
+        (maxSelect[10] -
+          select11.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[11]) *
+        (maxSelect[11] -
+          select12.reduce((total, currentRow) => total + currentRow[1], 0)),
+    94 +
+      (100 / maxSelect[12]) *
+        (maxSelect[12] -
+          select13.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];
 
   const sumOfFirstElements = select.reduce((acc, currentArray) => {
@@ -266,10 +305,23 @@ const SelectSubMgtChoice = () => {
     });
     return acc;
   }, 0);
+  const sumOfFirstElements2 = select0.reduce(
+    (accumulator, item) => accumulator + item[1],
+    0
+  );
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
-  let maj = major_select + sum;
-  console.log(com, maj);
+  let maj = major_select;
+  let sub = sub_select + sum;
+
+  let pot1 = sumOfFirstElements2;
+  let pot = 0;
+
+  const credit = dataArray.find((item) => item.hasOwnProperty("이수 학점"));
+  if (credit) {
+    console.log(credit["이수 학점"]); // 이수 학점 값 출력
+    pot = credit["이수 학점"];
+  }
 
   sessionStorage.setItem("complete_select", com);
   sessionStorage.setItem("major_select", maj);
@@ -350,10 +402,20 @@ const SelectSubMgtChoice = () => {
                   <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
                   <MiniBar>
-                    <Mini width={(sub_select * 100) / sub_point} bgColor={bg} />
+                    <Mini width={(sub * 100) / sub_point} bgColor={bg} />
                   </MiniBar>
                 </Bar>
               )}
+              <Bar>
+                <BarText>필수이수학점</BarText>
+
+                <MiniBar>
+                  <Mini width={(pot1 * 100) / pot} bgColor={bg} />
+                </MiniBar>
+                <PointDisplay>
+                  ({pot1}/{pot})
+                </PointDisplay>
+              </Bar>
             </FirstBar>
           </TotalBar>
           <SelectBar>
@@ -737,4 +799,4 @@ const Container = styled.div`
   }
 `;
 
-export default SelectSubMgtChoice;
+export default SelectMgtChoice;
