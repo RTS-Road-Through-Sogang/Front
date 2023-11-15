@@ -6,7 +6,7 @@ import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import InputField from "./InputField";
-export const BASE_URL = process.env.BASE_URL;
+export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const Login = () => {
   const navigate = useNavigate();
   const goToSign = () => {
