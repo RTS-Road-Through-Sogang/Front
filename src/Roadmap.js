@@ -63,6 +63,12 @@ const DummyData = [
             roadmap_detail: 2,
             mgtlecture: 7,
           },
+          {
+            id: 6,
+            cse_name: "응용수학2",
+            roadmap_detail: 1,
+            cselecture: 6,
+          },
         ],
       },
       {
@@ -85,10 +91,116 @@ const DummyData = [
             roadmap_detail: 3,
             ecolecture: 4,
           },
+          {
+            id: 6,
+            cse_name: "응용수학2",
+            roadmap_detail: 1,
+            cselecture: 6,
+          },
         ],
       },
       {
         "2-2": [
+          {
+            id: 16,
+            cse_name: "응용수학1",
+            roadmap_detail: 4,
+            cselecture: 5,
+          },
+          {
+            id: 17,
+            cse_name: "일반물리실험1",
+            roadmap_detail: 4,
+            cselecture: 3,
+          },
+          {
+            id: 18,
+            eco_name: "경제수리기초",
+            roadmap_detail: 4,
+            ecolecture: 2,
+          },
+          {
+            id: 6,
+            cse_name: "응용수학2",
+            roadmap_detail: 1,
+            cselecture: 6,
+          },
+          {
+            id: 6,
+            cse_name: "응용수학2",
+            roadmap_detail: 1,
+            cselecture: 6,
+          },
+        ],
+      },
+      {
+        "3-1": [
+          {
+            id: 16,
+            cse_name: "응용수학1",
+            roadmap_detail: 4,
+            cselecture: 5,
+          },
+          {
+            id: 17,
+            cse_name: "일반물리실험1",
+            roadmap_detail: 4,
+            cselecture: 3,
+          },
+          {
+            id: 18,
+            eco_name: "경제수리기초",
+            roadmap_detail: 4,
+            ecolecture: 2,
+          },
+        ],
+      },
+      {
+        "3-2": [
+          {
+            id: 16,
+            cse_name: "응용수학1",
+            roadmap_detail: 4,
+            cselecture: 5,
+          },
+          {
+            id: 17,
+            cse_name: "일반물리실험1",
+            roadmap_detail: 4,
+            cselecture: 3,
+          },
+          {
+            id: 18,
+            eco_name: "경제수리기초",
+            roadmap_detail: 4,
+            ecolecture: 2,
+          },
+        ],
+      },
+      {
+        "4-1": [
+          {
+            id: 16,
+            cse_name: "응용수학1",
+            roadmap_detail: 4,
+            cselecture: 5,
+          },
+          {
+            id: 17,
+            cse_name: "일반물리실험1",
+            roadmap_detail: 4,
+            cselecture: 3,
+          },
+          {
+            id: 18,
+            eco_name: "경제수리기초",
+            roadmap_detail: 4,
+            ecolecture: 2,
+          },
+        ],
+      },
+      {
+        "4-2": [
           {
             id: 16,
             cse_name: "응용수학1",
@@ -116,7 +228,96 @@ const DummyData = [
     title: "2안",
     track: "단일전공 - 21",
     roadmap_detail: [
-      // ...
+      {
+        "1-1": [
+          {
+            id: 1,
+            common_name: "성찰과 성장",
+            roadmap_detail: 1,
+            commonlecture: 1,
+          },
+          {
+            id: 2,
+            common_name: "중국언어와 문화1",
+            roadmap_detail: 1,
+            commonlecture: 7,
+          },
+          {
+            id: 3,
+            common_name: "초급 아랍어",
+            roadmap_detail: 1,
+            commonlecture: 13,
+          },
+          {
+            id: 6,
+            cse_name: "응용수학2",
+            roadmap_detail: 1,
+            cselecture: 6,
+          },
+          {
+            id: 7,
+            mgt_name: "조직행동이론",
+            roadmap_detail: 1,
+            mgtlecture: 6,
+          },
+          {
+            id: 8,
+            eco_name: "산업경제학",
+            roadmap_detail: 1,
+            ecolecture: 13,
+          },
+        ],
+      },
+      {
+        "1-2": [
+          {
+            id: 9,
+            common_name: "프랑스언어와 문화1",
+            roadmap_detail: 2,
+            commonlecture: 6,
+          },
+          {
+            id: 12,
+            mgt_name: "재무관리",
+            roadmap_detail: 2,
+            mgtlecture: 7,
+          },
+          {
+            id: 6,
+            cse_name: "응용수학2",
+            roadmap_detail: 1,
+            cselecture: 6,
+          },
+        ],
+      },
+      {
+        "2-1": [
+          {
+            id: 13,
+            cse_name: "일반물리1",
+            roadmap_detail: 3,
+            cselecture: 4,
+          },
+          {
+            id: 14,
+            eco_name: "경제정보분석",
+            roadmap_detail: 3,
+            ecolecture: 12,
+          },
+          {
+            id: 15,
+            eco_name: "미적분학 II",
+            roadmap_detail: 3,
+            ecolecture: 4,
+          },
+          {
+            id: 6,
+            cse_name: "응용수학2",
+            roadmap_detail: 1,
+            cselecture: 6,
+          },
+        ],
+      },
     ],
   },
 ];
@@ -173,6 +374,7 @@ const TextWrapper = styled.div`
   height: 5vh;
   margin-top: 30px;
   position: relative;
+  background: whitesmoke;
 `;
 
 const TitleImage = styled.img`
