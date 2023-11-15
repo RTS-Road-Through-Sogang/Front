@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import InputField from "./InputField";
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const Login = () => {
   const navigate = useNavigate();
   const goToSign = () => {
@@ -50,6 +51,7 @@ const Login = () => {
         setVerifyMessage(data.message || "아이디, 비밀번호를 확인해주세요.");
       }
     } catch (error) {
+      console.log("1)");
       setVerifyMessage(
         "로그인 시도 중 오류가 발생했습니다. 다시 시도해주세요."
       );
