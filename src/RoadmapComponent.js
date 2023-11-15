@@ -6,6 +6,8 @@ import {
   faChevronRight,
   faPen,
   faTrash,
+  faGear,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 const Semester = ({ semester, courses, deg, z }) => {
   return (
@@ -112,34 +114,95 @@ const RoadmapDetail = ({ detail }) => {
   );
 };
 
+const handleIdx = ({ index }) => {
+  sessionStorage.setItem("roadmap_idx", index + 1);
+  console.log(sessionStorage);
+};
+
 const RoadmapComponent = ({ data }) => {
+  const [roadmaps, setRoadmaps] = useState(data);
+  const addRoadmap = () => {
+    const newRoadmap = {
+      student: "New Student",
+      title: "New Title",
+      track: "New Track",
+      roadmap_detail: [],
+    };
+    setRoadmaps([...roadmaps, newRoadmap]);
+  };
+  const deleteRoadmap = (idxDelete) => {
+    setRoadmaps((roadmaps) =>
+      roadmaps.filter((_, index) => index !== idxDelete)
+    );
+  };
   return (
     <Container>
-      {data.map((roadmap, idx) => {
+      {roadmaps.map((roadmap, index) => {
         const { student, title, track, roadmap_detail } = roadmap;
-
         return (
           <RoadmapContainer key={`${student}${track}`}>
             {/* 공통 */}
             <SemesterBox>
-              <ButtonWrapper>
-                <Button className="edit" style={{ color: "white" }}>
-                  <FontAwesomeIcon icon={faPen} />
-                </Button>
-              </ButtonWrapper>
-              <div style={{ marginBottom: "0.5em" }} />
-              <ButtonWrapper>
-                <Button className="delete" style={{ color: "white" }}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </Button>
-              </ButtonWrapper>
+              {/* <div style={{ marginBottom: "0.5em" }} /> */}
 
               <SemesterInfo>
                 <RoadmapWrapper>
-                  <SemesterNumber>#{idx + 1}</SemesterNumber>
+                  <SemesterNumber>#{index + 1}</SemesterNumber>
                 </RoadmapWrapper>
               </SemesterInfo>
-              <MyRoadmapText>로드맵 이름</MyRoadmapText>
+              <ButtonWrapper>
+                <Button
+                  className="edit"
+                  style={{ color: "white" }}
+                  onClick={() => {
+                    handleIdx({ index });
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    // style={{ marginLeft: "35%" }}
+                  />
+                  <Tooltip>
+                    로드맵 수정 및 앞으로 이수할 과목들을 <br />
+                    추가할 수 있어요
+                  </Tooltip>
+                </Button>
+
+                <Button className="setting" style={{ color: "white" }}>
+                  <FontAwesomeIcon
+                    icon={faGear}
+                    // style={{ marginLeft: "35%" }}
+                  />
+                  <Tooltip>이미 이수한 과목들을 수정할수 있어요</Tooltip>
+                </Button>
+
+                <Button
+                  className="delete"
+                  style={{ color: "white" }}
+                  onClick={() => {
+                    deleteRoadmap(index);
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    // style={{ marginLeft: "35%" }}
+                  />
+                  <Tooltip>로드맵을 삭제할 수 있어요</Tooltip>
+                </Button>
+                <Button
+                  className="plus"
+                  style={{ color: "white" }}
+                  onClick={addRoadmap}
+                >
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    // style={{ marginLeft: "35%" }}
+                  />
+                  <Tooltip>로드맵을 추가로 만들 수 있어요</Tooltip>
+                </Button>
+              </ButtonWrapper>
+
+              {/* <MyRoadmapText>로드맵 이름</MyRoadmapText> */}
             </SemesterBox>
 
             {roadmap_detail && roadmap_detail.length > 0 && (
@@ -175,7 +238,7 @@ const SemesterBox = styled.div`
   background: #ffaec6;
   box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.15);
   display: flex;
-  // align-items: flex-start;
+  align-items: center;
   justify-content: center;
   //   margin: 10px;
   flex-direction: column;
@@ -183,31 +246,63 @@ const SemesterBox = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
+  // align-items: center;
+  // border-radius: 34px 0px;
+  // background-color: #ff6262;
+  // cursor: pointer;
+
+  display: grid;
+  grid-template-columns: 40% 50%;
+  grid-column-gap: 1em;
+  grid-row-gap: 0.5em;
+  // flex-directoin: column;
+  // flex-wrap: wrap;
+  // justify-content: space-around;
+  margin-left: 30%;
+  width: 100%;
+  padding: 1em;
+`;
+
+const Tooltip = styled.div`
+  display: flex;
+  text-align: center;
+  width: 30%;
+
+  position: absolute;
+  left: 100%;
+  margin-left: 50%;
+  white-space: nowrap;
+  z-index: 1;
+  pointer-events: none;
+  font-size: 1.2rem;
+  padding: 2rem;
+
+  visibility: hidden;
+`;
+const Button = styled.div`
+  width: 6.5%;
+  height: 3em;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 6%;
   border-radius: 34px 0px;
   background-color: #ff6262;
   cursor: pointer;
-
   position: relative;
-  top: 5%;
-  left: 93%;
-  gap: 100px;
-
+  &.edit {
+    margin-bottom: 0.8rem;
+  }
+  &.setting {
+    margin-bottom: 0.8rem;
+  }
+  &:hover ${Tooltip} {
+    visibility: visible;
+    opacity: 1;
+  }
   box-shadow: 3px 3px 4px 0px rgba(0, 0, 0, 0.18);
+  z-index: 3;
 `;
-const Button = styled.div`
-  width: 10%;
-  height: 10%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5em;
-`;
-
 const SemesterInfo = styled.div`
   position: absolute;
   top: 50%;
