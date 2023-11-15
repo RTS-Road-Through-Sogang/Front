@@ -7,7 +7,7 @@ import InputField from "./InputField";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
 
-export const BASE_URL = process.env.BASE_URL;
+export const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const SignUp = () => {
   const navigate = useNavigate();
