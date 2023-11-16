@@ -16,24 +16,26 @@ const Semester = ({ semester, courses, deg, z }) => {
         transform: `rotateY(${deg}deg) translateZ(${z}px)`,
       }}
     >
-      <CourseTopBox>
-        {/* {semester} */}
-        <SemesterText>{semester}</SemesterText>
-      </CourseTopBox>
+      <CourseWrapper>
+        <CourseTopBox>
+          {/* {semester} */}
+          <SemesterText>{semester}</SemesterText>
+        </CourseTopBox>
 
-      <CourseBottomBox>
-        {courses.map((course, idx) => {
-          const { id, common_name, cse_name, mgt_name, eco_name } = course;
+        <CourseBottomBox>
+          {courses.map((course, idx) => {
+            const { id, common_name, cse_name, mgt_name, eco_name } = course;
 
-          return (
-            <SemesterText>
-              <div key={id}>
-                {common_name || cse_name || mgt_name || eco_name}
-              </div>
-            </SemesterText>
-          );
-        })}
-      </CourseBottomBox>
+            return (
+              <SemesterText>
+                <div key={id}>
+                  {common_name || cse_name || mgt_name || eco_name}
+                </div>
+              </SemesterText>
+            );
+          })}
+        </CourseBottomBox>
+      </CourseWrapper>
     </CourseBox>
   );
 };
@@ -182,10 +184,10 @@ const RoadmapComponent = ({ data }) => {
                     icon={faPen}
                     // style={{ marginLeft: "35%" }}
                   />
-                  <Tooltip>
+                  {/* <Tooltip>
                     로드맵 수정 및 앞으로 이수할 과목들을 <br />
                     추가할 수 있어요
-                  </Tooltip>
+                  </Tooltip> */}
                 </Button>
                 <Button
                   className="delete"
@@ -198,7 +200,7 @@ const RoadmapComponent = ({ data }) => {
                     icon={faTrash}
                     // style={{ marginLeft: "35%" }}
                   />
-                  <Tooltip>로드맵을 삭제할 수 있어요</Tooltip>
+                  {/* <Tooltip>로드맵을 삭제할 수 있어요</Tooltip> */}
                 </Button>
               </ButtonWrapper>
 
@@ -230,6 +232,7 @@ const RoadmapContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 1em;
 `;
 
 const SemesterBox = styled.div`
@@ -271,8 +274,8 @@ const Tooltip = styled.div`
   font-size: 1rem;
   font-family: "BMJUA";
   padding: 1rem;
-
-  visibility: hidden;
+  color: black;
+  // visibility: hidden;
 `;
 const Button = styled.div`
   width: 3em;
@@ -291,10 +294,7 @@ const Button = styled.div`
   &.setting {
     margin-bottom: 0.8rem;
   }
-  &:hover ${Tooltip} {
-    visibility: visible;
-    opacity: 1;
-  }
+
   box-shadow: 3px 3px 4px 0px rgba(0, 0, 0, 0.18);
   z-index: 3;
 `;
@@ -372,7 +372,7 @@ const Scene = styled.div`
   height: 30vh;
   padding: 5vh 0;
   // background-color: tomato;
-  position: relative;
+  // position: relative;
   // position: absolute;
   // top: 0;
   // right: 0;
@@ -400,18 +400,28 @@ const CourseBox = styled.div`
   top: 0;
   left: 0;
 
-  display: flex;
-  flex-direction: column;
-  padding: 0.3em;
-  width: 11em;
-  border-radius: 20px;
-  background-color: #fff;
-  box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.25);
-  align-items: center;
+  // padding: 0.3em;
+
+  // width: 11em;
+  width: 100%;
+  padding: 0 15%;
+  box-sizing: border-box; //전체 스타일링 먹이면 편함
+
   @media screen and (max-width: 1000px) {
     width: 80%;
     font-size: 80%;
   }
+`;
+const CourseWrapper = styled.div`
+  width: 100%;
+  padding: 2% 10%;
+  align-items: center;
+  box-sizing: border-box; //전체 스타일링 먹이면 편함
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
 `;
 
 const CourseTopBox = styled.div`
@@ -425,7 +435,7 @@ const CourseTopBox = styled.div`
   //   justify-content: center;
   //   align-items: center;
 
-  width: 95%;
+  width: 100%;
   // padding: 0.5rem 1rem;
   background-color: #ff8c8c;
   font-family: "BM JUA_TTF";
@@ -444,15 +454,15 @@ const CourseTopBox = styled.div`
 `;
 
 const CourseBottomBox = styled.div`
-  //   width: 12vw; /* 예시: 186px를 vw로 변환 */
+  //   width: 12vw;
   //   height: auto;
   //   flex-shrink: 0;
-  width: 95%;
+  width: 100%;
   min-height: 10em;
   border-radius: 0px 0px 20px 20px;
   text-align: center;
   background: #fff;
-  margin: 0;
+  // margin: 0;
   padding: 0.6em 0;
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.2);
   font-family: "Noto Sans KR";
@@ -486,16 +496,22 @@ const MoveButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
+  position: relative;
   &.left {
-    left: -60px;
+    left: -90px;
   }
   &.right {
-    right: -60px;
+    right: -90px;
   }
 `;
 const ButtonsForDefault = styled.div`
   display: flex;
   width: 100%;
+  flex-direction: column;
+  &:hover ${Tooltip} {
+    visibility: visible;
+    opacity: 1;
+    font-color: black;
+  }
 `;
 export default RoadmapComponent;
