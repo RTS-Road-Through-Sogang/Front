@@ -127,18 +127,17 @@ const SelectContainer = ({
       const filtered = select.filter(
         (item) => item[0] != id && item[1] != point
       );
-   
+
       setSelect(filtered);
     } else {
       setSelect([...select, [id, point]]);
     }
   };
-  let season="";
-   if (season_open === true) {
-     season="O"
-  }
-   else {
-     season="X"
+  let season = "";
+  if (season_open === true) {
+    season = "O";
+  } else {
+    season = "X";
   }
 
   return (
@@ -179,7 +178,7 @@ const Selecttech = () => {
   const setSelectEX = [setSelectEX1, setSelectEX2, setSelectEX3, setSelectEX4];
 
   const len = [select1.length, select2.length, select3.length, select4.length];
-  
+
   const c_select = [
     94 +
       (100 / maxSelect[0]) *
@@ -197,7 +196,6 @@ const Selecttech = () => {
       (100 / maxSelect[3]) *
         (maxSelect[3] -
           select4.reduce((total, currentRow) => total + currentRow[1], 0)),
-    
   ];
 
   return (
@@ -206,8 +204,13 @@ const Selecttech = () => {
         <Progress width={100 - (availableItem * 100) / maxItem} bgColor={bg} />
       </ProgressBar>
       <BigTitles>
-        <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} /> 나의
-        교과과정과 부전공을 선택하세요
+        <PageTitle
+          text={{
+            left: "나의 교과 과정과 ",
+            bold: "부전공을",
+            right: " 선택하세요",
+          }}
+        />
       </BigTitles>
       <BigBox>
         <LeftBox>
@@ -419,6 +422,8 @@ const SmallBox = styled.div`
 const XSmaillBox = styled.div``;
 const SelectBox = styled.button`
   font-size: 0.9rem;
+  font-family: "Noto Sans KR";
+  font-weight: 500;
   margin-right: 1%;
   margin-bottom: 2%;
 
@@ -433,7 +438,6 @@ const SelectBox = styled.button`
   color: ${({ isClicked }) => (!isClicked ? "#B3B3B3" : "#FF6262")};
   font-weight: ${({ isClicked }) => (!isClicked ? 500 : 700)};
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.08);
-  
 `;
 
 const HoverBox = styled.div`
@@ -537,6 +541,7 @@ const Save = styled.div`
   border-radius: 60px;
   background-color: #ff6262;
   color: white;
+  font-family: "Noto Sans KR";
   font-weight: 700;
 `;
 
@@ -548,6 +553,7 @@ const Next = styled.div`
   margin-top: 5%;
   border-radius: 60px;
   color: #ff6262;
+  font-family: "Noto Sans KR";
   font-weight: 700;
 `;
 

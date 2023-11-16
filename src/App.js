@@ -1,4 +1,5 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import GlobalStyle from "./GlobalStyle.jsx";
 import Header from "./Header";
 import Introduce from "./Introduce";
 import Login from "./Login";
@@ -43,6 +44,7 @@ export const URL = process.env.APIURL;
 function App() {
   return (
     <>
+      <GlobalStyle />
       <BrowserRouter>
         <Header />
         <Routes>

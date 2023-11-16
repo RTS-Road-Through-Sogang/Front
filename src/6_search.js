@@ -6,6 +6,7 @@ import { MultiSelect } from "react-multi-select-component";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import PageTitle from "./PageTitle";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
@@ -188,7 +189,7 @@ const SelectSearch = () => {
   const bg = `rgb(255, ${c}, ${c})`;
 
   const navigate = useNavigate();
-  
+
   const goNext = () => {
     const dataWithAdditionalInfo = [
       ["COR1012", 3],
@@ -198,8 +199,8 @@ const SelectSearch = () => {
       ["ECO2003", 3],
     ];
     navigate("/selectcommon", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
+      state: { selectedData: dataWithAdditionalInfo },
+    });
   };
 
   //axios
@@ -217,14 +218,12 @@ const SelectSearch = () => {
         );
 
         setDataArray(res.data);
-      console.log(res.data)
-        
+        console.log(res.data);
       } catch (err) {
         console.log("getPost error: ", err);
       }
     };
     handleData();
-    
   }, []);
 
   const maxSelect = [4, 1, 1, 3, 2];
@@ -263,8 +262,13 @@ const SelectSearch = () => {
         <Progress width={100 - (availableItem * 100) / maxItem} bgColor={bg} />
       </ProgressBar>
       <BigTitles>
-        <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} /> 나의
-        교과과정과 부전공을 선택하세요
+        <PageTitle
+          text={{
+            left: "나의 교과 과정과 ",
+            bold: "부전공을",
+            right: " 선택하세요",
+          }}
+        />
       </BigTitles>
       <SearchBox>
         <SelectMajor
@@ -333,7 +337,6 @@ const Progress = styled.div`
 `;
 
 const BigTitles = styled.div`
-  font-size: 1.8rem;
   text-align: center;
   margin-bottom: 5%;
   margin-top: 5%;
@@ -379,7 +382,6 @@ const Icon = styled.div`
 `;
 
 const TitleText = styled.div`
-  font-size: 1.3rem;
   background-color: white;
   margin-bottom: 2%;
   width: 100%;
@@ -391,6 +393,8 @@ const SmallBox = styled.div`
 `;
 const XSmaillBox = styled.div``;
 const SelectBox = styled.button`
+  font-family: "Noto Sans KR";
+  font-weight: 700;
   font-size: 0.9rem;
   margin-right: 1%;
   margin-bottom: 2%;
@@ -419,6 +423,8 @@ const Next = styled.button`
   background-color: #ff6262;
   padding: 0.8% 2%;
   text-align: center;
+  font-family: "Noto Sans KR";
+  font-weight: 700;
 `;
 
 export default SelectSearch;

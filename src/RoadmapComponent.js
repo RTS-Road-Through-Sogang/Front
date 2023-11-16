@@ -79,6 +79,9 @@ const RoadmapDetail = ({ detail }) => {
 
   return (
     <Scene>
+      <MoveButton className="left" onClick={() => handleClickChevron(true)}>
+        <FontAwesomeIcon icon={faChevronLeft} />
+      </MoveButton>
       <CoursesContainer
         ref={ref}
         style={{
@@ -101,9 +104,6 @@ const RoadmapDetail = ({ detail }) => {
         })}
       </CoursesContainer>
 
-      <MoveButton className="left" onClick={() => handleClickChevron(true)}>
-        <FontAwesomeIcon icon={faChevronLeft} />
-      </MoveButton>
       <MoveButton
         className="right"
         onClick={handleClickChevron.bind(this, false)}
@@ -137,6 +137,26 @@ const RoadmapComponent = ({ data }) => {
   };
   return (
     <Container>
+      <ButtonsForDefault>
+        <Button className="setting" style={{ color: "white" }}>
+          <FontAwesomeIcon
+            icon={faGear}
+            // style={{ marginLeft: "35%" }}
+          />
+          <Tooltip>이미 이수한 과목들을 수정할수 있어요</Tooltip>
+        </Button>
+        <Button
+          className="plus"
+          style={{ color: "white" }}
+          onClick={addRoadmap}
+        >
+          <FontAwesomeIcon
+            icon={faPlus}
+            // style={{ marginLeft: "35%" }}
+          />
+          <Tooltip>로드맵을 추가로 만들 수 있어요</Tooltip>
+        </Button>
+      </ButtonsForDefault>
       {roadmaps.map((roadmap, index) => {
         const { student, title, track, roadmap_detail } = roadmap;
         return (
@@ -167,15 +187,6 @@ const RoadmapComponent = ({ data }) => {
                     추가할 수 있어요
                   </Tooltip>
                 </Button>
-
-                <Button className="setting" style={{ color: "white" }}>
-                  <FontAwesomeIcon
-                    icon={faGear}
-                    // style={{ marginLeft: "35%" }}
-                  />
-                  <Tooltip>이미 이수한 과목들을 수정할수 있어요</Tooltip>
-                </Button>
-
                 <Button
                   className="delete"
                   style={{ color: "white" }}
@@ -188,17 +199,6 @@ const RoadmapComponent = ({ data }) => {
                     // style={{ marginLeft: "35%" }}
                   />
                   <Tooltip>로드맵을 삭제할 수 있어요</Tooltip>
-                </Button>
-                <Button
-                  className="plus"
-                  style={{ color: "white" }}
-                  onClick={addRoadmap}
-                >
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    // style={{ marginLeft: "35%" }}
-                  />
-                  <Tooltip>로드맵을 추가로 만들 수 있어요</Tooltip>
                 </Button>
               </ButtonWrapper>
 
@@ -215,16 +215,21 @@ const RoadmapComponent = ({ data }) => {
   );
 };
 const Container = styled.div`
-  width: 100%;
   height: 100vh;
+  margin: 0;
   padding: 5%;
-  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const RoadmapContainer = styled.div`
   width: 90%;
-  //background-color: orange;
+  margin-top: 2em;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const SemesterBox = styled.div`
@@ -232,34 +237,23 @@ const SemesterBox = styled.div`
   //   height: 10vh;
   width: 70%;
   padding: 1rem 1.5rem;
-  margin-left: 12.5%;
   border-radius: 41px 0px;
   border: 5px solid #fff;
   background: #ffaec6;
   box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.15);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   //   margin: 10px;
-  flex-direction: column;
   position: relative;
 `;
 
 const ButtonWrapper = styled.div`
-  // align-items: center;
+  display: flex;
   // border-radius: 34px 0px;
   // background-color: #ff6262;
   // cursor: pointer;
-
-  display: grid;
-  grid-template-columns: 40% 50%;
-  grid-column-gap: 1em;
-  grid-row-gap: 0.5em;
-  // flex-directoin: column;
-  // flex-wrap: wrap;
-  // justify-content: space-around;
-  margin-left: 30%;
-  width: 100%;
   padding: 1em;
 `;
 
@@ -274,13 +268,14 @@ const Tooltip = styled.div`
   white-space: nowrap;
   z-index: 1;
   pointer-events: none;
-  font-size: 1.2rem;
-  padding: 2rem;
+  font-size: 1rem;
+  font-family: "BMJUA";
+  padding: 1rem;
 
   visibility: hidden;
 `;
 const Button = styled.div`
-  width: 6.5%;
+  width: 3em;
   height: 3em;
 
   display: flex;
@@ -370,16 +365,13 @@ const MyRoadmapText = styled.span`
 
 const Scene = styled.div`
   display: flex;
-  justify-content: center;
-  // align-items: center;
+  justify-content: space-between;
   perspective: 3000px;
   transform-style: preserve-3d;
-  // width: 100%;
   width: 60%;
   height: 30vh;
   padding: 5vh 0;
   // background-color: tomato;
-  margin: 0 auto;
   position: relative;
   // position: absolute;
   // top: 0;
@@ -394,6 +386,7 @@ const CoursesContainer = styled.div`
   position: relative;
   width: 40%;
   transform-style: preserve-3d;
+  margin: 0 2em;
 `;
 
 const CourseBox = styled.div`
@@ -409,9 +402,16 @@ const CourseBox = styled.div`
 
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 20vh;
-  padding: 0 0.5rem;
+  padding: 0.3em;
+  width: 11em;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.25);
+  align-items: center;
+  @media screen and (max-width: 1000px) {
+    width: 80%;
+    font-size: 80%;
+  }
 `;
 
 const CourseTopBox = styled.div`
@@ -428,12 +428,19 @@ const CourseTopBox = styled.div`
   width: 95%;
   // padding: 0.5rem 1rem;
   background-color: #ff8c8c;
+  font-family: "BM JUA_TTF";
   text-align: center;
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.2);
   border-radius: 20px 20px 0px 0px;
   color: #fff;
   font-size: 2rem;
   line-height: 3rem;
+  height: 2em;
+  padding: 0.2em 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.3em;
 `;
 
 const CourseBottomBox = styled.div`
@@ -441,19 +448,25 @@ const CourseBottomBox = styled.div`
   //   height: auto;
   //   flex-shrink: 0;
   width: 95%;
-  height: calc(105%);
+  min-height: 10em;
   border-radius: 0px 0px 20px 20px;
   text-align: center;
   background: #fff;
-  padding-top: 5px;
+  margin: 0;
+  padding: 0.6em 0;
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.2);
+  font-family: "Noto Sans KR";
+  font-weight: 500;
+  color: #9a9a9a;
+  font-size: 0.9em;
+  @media screen and (max-width: 1000px) {
+  }
 `;
 
 const SemesterText = styled.span`
   //   width: 5vw;
   //   height: 5vh;
   //   flex-shrink: 0;
-  font-family: "BM JUA_TTF";
   padding: 1em auto;
   line-height: 1.5em;
   display: flex;
@@ -467,7 +480,6 @@ const MoveButton = styled.div`
   height: 35px;
   border-radius: 100%;
   background-color: black;
-  position: absolute;
   top: calc(15vh);
   cursor: pointer;
   color: white;
@@ -481,5 +493,9 @@ const MoveButton = styled.div`
   &.right {
     right: -60px;
   }
+`;
+const ButtonsForDefault = styled.div`
+  display: flex;
+  width: 100%;
 `;
 export default RoadmapComponent;

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
+import PageTitle from "./PageTitle";
 import SelectContainer from "./SelectContainer";
 import {
   Progress,
@@ -15,9 +16,9 @@ import {
   SmallBox,
   XSmaillBox,
   RightBox,
-  TotalBar, 
-  FirstBar, 
-  Bar, 
+  TotalBar,
+  FirstBar,
+  Bar,
   BarText,
   MiniBar,
   Mini,
@@ -25,7 +26,7 @@ import {
   SecondBar,
   PointDisplay,
   Save,
-  Next
+  Next,
 } from "./Select_styledcomponent";
 import axios from "axios";
 
@@ -181,8 +182,13 @@ const SelectCommon = () => {
         <Progress width={100 - (availableItem * 100) / maxItem} bgColor={bg} />
       </ProgressBar>
       <BigTitles>
-        <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} /> 나의
-        수강할 공통 필수 교과를 선택하세요
+        <PageTitle
+          text={{
+            left: "나의 수강할 ",
+            bold: "필수 교과를",
+            right: " 선택하세요",
+          }}
+        />
       </BigTitles>
       <BigBox>
         <LeftBox>
@@ -312,5 +318,5 @@ const SelectCommon = () => {
       </BigBox>
     </>
   );
-}
+};
 export default SelectCommon;

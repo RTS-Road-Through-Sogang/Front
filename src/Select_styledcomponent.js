@@ -22,7 +22,6 @@ export const Progress = styled.div`
 `;
 
 export const BigTitles = styled.div`
-  font-size: 1.8rem;
   text-align: center;
   margin-bottom: 5%;
   margin-top: 5%;
@@ -93,10 +92,11 @@ export const Icon = styled.div`
 `;
 
 export const TitleText = styled.div`
-  font-size: 1.3rem;
   background-color: white;
   margin-bottom: 2%;
   width: 100%;
+  font-family: "BMJUA";
+  font-size: 1.6em;
 `;
 
 export const SmallBox = styled.div`
@@ -107,6 +107,8 @@ export const SmallBox = styled.div`
 export const XSmaillBox = styled.div``;
 export const SelectBox = styled.button`
   font-size: 0.9rem;
+  font-family: "Noto Sans KR";
+  font-weight: 500;
   margin-right: 4%;
 
   margin-bottom: 2%;
@@ -133,6 +135,7 @@ export const HoverBox = styled.div`
   border: 0.2rem solid #ababab;
   margin-top: 1%;
   color: #ff6262;
+  font-family: "Noto Sans KR";
   font-weight: 700;
 
   border-radius: 20px;
@@ -148,6 +151,8 @@ export const TotalBar = styled.div`
   text-align: center;
   margin: 3% auto;
   font-size: 1.1rem;
+  font-family: "Noto Sans KR";
+  font-weight: 400;
 `;
 
 export const FirstBar = styled.div`
@@ -226,6 +231,7 @@ export const Save = styled.div`
   border-radius: 60px;
   background-color: #ff6262;
   color: white;
+  font-family: "Noto Sans KR";
   font-weight: 700;
 `;
 export const Next = styled.div`
@@ -236,6 +242,7 @@ export const Next = styled.div`
   margin-top: 5%;
   border-radius: 60px;
   color: #ff6262;
+  font-family: "Noto Sans KR";
   font-weight: 700;
   margin-bottom: 15%;
 `;

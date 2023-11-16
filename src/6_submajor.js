@@ -176,8 +176,13 @@ const SelectSub = () => {
         <Progress width={100 - (availableItem * 100) / maxItem} bgColor={bg} />
       </ProgressBar>
       <BigTitles>
-        <FontAwesomeIcon icon={faComment} style={{ color: "#FFAF36" }} /> 나의
-        교과과정과 부전공을 선택하세요
+        <PageTitle
+          text={{
+            left: "나의 교과 과정과 ",
+            bold: "부전공을",
+            right: " 선택하세요",
+          }}
+        />
       </BigTitles>
       <BigBox>
         <LeftBox>
@@ -521,6 +526,8 @@ const SmallBox = styled.div`
 const XSmaillBox = styled.div``;
 const SelectBox = styled.button`
   font-size: 0.9rem;
+  font-family: "Noto Sans KR";
+  font-weight: 500;
   margin-right: 1%;
   margin-bottom: 2%;
 
@@ -650,6 +657,7 @@ const Next = styled.div`
   margin-top: 5%;
   border-radius: 60px;
   color: #ffaf36;
+  font-family: "Noto Sans KR";
   font-weight: 700;
 `;
 

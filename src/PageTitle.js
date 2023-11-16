@@ -15,7 +15,7 @@ const PageTitle = ({ text }) => {
 
 const PageTitleDiv = styled.div`
   font-family: "BMJUA";
-  font-size: 1.7em;
+  font-size: 2em;
   font-weight: normal;
   margin: 2em 0;
 `;
