@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
+import PageTitle from "./PageTitle";
 
 import axios from "axios";
 
@@ -97,8 +98,6 @@ const SelectCseDutyChoice = () => {
 
   const navigate = useNavigate();
   const goNext = ({ com, maj, sub_select }) => {
-    
-
     const dataWithAdditionalInfo = [...selectedData, ...select0];
 
     navigate("/selectcsechoice", {
@@ -229,8 +228,13 @@ const SelectCseDutyChoice = () => {
         <Progress width={100 - (availableItem * 100) / maxItem} bgColor={bg} />
       </ProgressBar>
       <BigTitles>
-        <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} /> 나의
-        수강할 공통 필수 교과를 선택하세요
+        <PageTitle
+          text={{
+            left: "나의 수강할 ",
+            bold: "공통 필수 교과를",
+            right: " 선택하세요",
+          }}
+        />
       </BigTitles>
       <BigBox>
         <LeftBox>
@@ -389,7 +393,6 @@ const Progress = styled.div`
 `;
 
 const BigTitles = styled.div`
-  font-size: 1.8rem;
   text-align: center;
   margin-bottom: 5%;
   margin-top: 5%;

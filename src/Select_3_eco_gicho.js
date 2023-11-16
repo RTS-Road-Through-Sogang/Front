@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
+import PageTitle from "./PageTitle";
 
 import axios from "axios";
 
@@ -26,7 +27,6 @@ const SelectContainer = ({
   setSelectedData,
 }) => {
   const [isClicked, setisClicked] = useState(false);
-
 
   useEffect(() => {
     selectedData.forEach((item) => {
@@ -57,7 +57,7 @@ const SelectContainer = ({
       setSelect0([...select0, [code, point]]);
     }
   };
-  
+
   let season = "";
   if (season_open === true) {
     season = "O";
@@ -92,9 +92,8 @@ const SelectEcoGicho = () => {
   let availableItem = 4;
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c})`;
- const { state } = useLocation();
-  
-  
+  const { state } = useLocation();
+
   const [selectedData, setSelectedData] = useState([]);
   console.log(selectedData);
 
@@ -104,10 +103,10 @@ const SelectEcoGicho = () => {
 
     const dataWithAdditionalInfo = [...selectedData, ...select0];
 
-      navigate("/selectecoduty", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
-    
+    navigate("/selectecoduty", {
+      state: { selectedData: dataWithAdditionalInfo },
+    });
+
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
     sessionStorage.setItem("ex_sub_select", sub_select);
@@ -141,10 +140,10 @@ const SelectEcoGicho = () => {
         console.log("getPost error: ", err);
       }
     };
- 
+
     handleData();
-      //  handlePoint(); //안됨.........
-       setSelectedData(state.selectedData);
+    //  handlePoint(); //안됨.........
+    setSelectedData(state.selectedData);
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
   const major_point = sessionStorage.getItem("major_point");
@@ -232,8 +231,13 @@ const SelectEcoGicho = () => {
         <Progress width={100 - (availableItem * 100) / maxItem} bgColor={bg} />
       </ProgressBar>
       <BigTitles>
-        <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} /> 나의
-        수강할 공통 필수 교과를 선택하세요
+        <PageTitle
+          text={{
+            left: "나의 수강할 ",
+            bold: "공통 필수 교과를",
+            right: " 선택하세요",
+          }}
+        />
       </BigTitles>
       <BigBox>
         <LeftBox>
@@ -392,7 +396,6 @@ const Progress = styled.div`
 `;
 
 const BigTitles = styled.div`
-  font-size: 1.8rem;
   text-align: center;
   margin-bottom: 5%;
   margin-top: 5%;

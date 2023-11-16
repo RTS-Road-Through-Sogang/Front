@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
+import PageTitle from "./PageTitle";
 
 import axios from "axios";
 
@@ -94,7 +95,6 @@ const SelectEcoDutyChoice = () => {
   const { state } = useLocation();
 
   const [selectedData, setSelectedData] = useState([]);
- 
 
   const navigate = useNavigate();
   const goNext = ({ com, maj, sub_select }) => {
@@ -133,13 +133,12 @@ const SelectEcoDutyChoice = () => {
         );
 
         setDataArray(res.data);
-      
       } catch (err) {
         console.log("getPost error: ", err);
       }
     };
-      handleData();
-       setSelectedData(state.selectedData);
+    handleData();
+    setSelectedData(state.selectedData);
     //  handlePoint(); //안됨.........
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
@@ -151,7 +150,6 @@ const SelectEcoDutyChoice = () => {
 
   const maxSelect = dataArray.map((item) => item.duty_point);
   const maxSelect2 = dataArray.map((item) => item.duty_choice_point);
-
 
   const [select0, setSelect0] = useState([]); //전체 저장
   const [select1, setSelect1] = useState([]);
@@ -302,31 +300,30 @@ const SelectEcoDutyChoice = () => {
           select13.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];
 
-  
   const sumOfFirstElements = select.reduce((acc, currentArray) => {
     currentArray.forEach((item) => {
       acc += item[1];
     });
     return acc;
   }, 0);
-const sumOfFirstElements2 = select0.reduce(
-  (accumulator, item) => accumulator + item[1],
-  0
-);
+  const sumOfFirstElements2 = select0.reduce(
+    (accumulator, item) => accumulator + item[1],
+    0
+  );
 
-let sum = sumOfFirstElements;
-let com = complete_select + sum;
-let maj = major_select + sum;
+  let sum = sumOfFirstElements;
+  let com = complete_select + sum;
+  let maj = major_select + sum;
 
   let pot1 = sumOfFirstElements2;
-  console.log(select0)
-let pot = 0;
+  console.log(select0);
+  let pot = 0;
 
-const credit = dataArray.find((item) => item.hasOwnProperty("이수 학점"));
-if (credit) {
-  console.log(credit["이수 학점"]); // 이수 학점 값 출력
-  pot = credit["이수 학점"];
-}
+  const credit = dataArray.find((item) => item.hasOwnProperty("이수 학점"));
+  if (credit) {
+    console.log(credit["이수 학점"]); // 이수 학점 값 출력
+    pot = credit["이수 학점"];
+  }
   sessionStorage.setItem("complete_select", com);
   sessionStorage.setItem("major_select", maj);
   sessionStorage.setItem("sub_select", sub_select);
@@ -337,8 +334,13 @@ if (credit) {
         <Progress width={100 - (availableItem * 100) / maxItem} bgColor={bg} />
       </ProgressBar>
       <BigTitles>
-        <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} /> 나의
-        수강할 공통 필수 교과를 선택하세요
+        <PageTitle
+          text={{
+            left: "나의 수강할 ",
+            bold: "공통 필수 교과를",
+            right: " 선택하세요",
+          }}
+        />
       </BigTitles>
       <BigBox>
         <LeftBox>
@@ -450,7 +452,6 @@ if (credit) {
                   ({pot1}/{pot})
                 </PointDisplay>
               </Bar>
-              
             </FirstBar>
           </TotalBar>
           <SelectBar>
@@ -593,7 +594,6 @@ const Progress = styled.div`
 `;
 
 const BigTitles = styled.div`
-  font-size: 1.8rem;
   text-align: center;
   margin-bottom: 5%;
   margin-top: 5%;

@@ -6,22 +6,23 @@ import axios from "axios";
 import Feature from "./Feature";
 import { URL } from "./App";
 import { useNavigate } from "react-router-dom";
-import RoadmapComponent from './RoadmapComponent';
+import RoadmapComponent from "./RoadmapComponent";
+import PageTitle from "./PageTitle";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
-console.log(accessToken)
+console.log(accessToken);
 
 //전체 point 계산
 let com = 0;
 let maj = 0;
 let sub_select = 0;
-  sessionStorage.setItem("complete_select", com);
-  sessionStorage.setItem("major_select", maj);
+sessionStorage.setItem("complete_select", com);
+sessionStorage.setItem("major_select", maj);
 sessionStorage.setItem("sub_select", sub_select);
-  sessionStorage.setItem("ex_complete_select", com);
-  sessionStorage.setItem("ex_major_select", maj);
-  sessionStorage.setItem("ex_sub_select", sub_select);
+sessionStorage.setItem("ex_complete_select", com);
+sessionStorage.setItem("ex_major_select", maj);
+sessionStorage.setItem("ex_sub_select", sub_select);
 
 const point1 = [
   {
@@ -68,9 +69,8 @@ const SelectContainer2 = ({ id, major, setSelect, select }) => {
     } else {
       setSelect([...select, major]);
     }
-     
   };
-   localStorage.setItem("submajorTrack", select);
+  localStorage.setItem("submajorTrack", select);
 
   return (
     <>
@@ -88,21 +88,19 @@ const SelecMajor = () => {
   const bg = `rgb(255, ${c}, ${c})`;
 
   const maxSelect = [4, 1, 1, 3, 2];
- 
+
   const [select, setSelect] = useState("");
   const [select1, setSelect1] = useState([]);
   const SelectContainer = (name) => {
     setSelect(name);
-    
-  
+
     localStorage.setItem("majorTrack", name);
   };
-const SelectContainer3 = (name) => {
-  setSelect1(name);
- 
-  localStorage.setItem("submajorTrack", name);
-};
-  
+  const SelectContainer3 = (name) => {
+    setSelect1(name);
+
+    localStorage.setItem("submajorTrack", name);
+  };
 
   const navigate = useNavigate();
   const goNext = () => {
@@ -150,8 +148,13 @@ const SelectContainer3 = (name) => {
             />
           </ProgressBar>
           <BigTitles>
-            <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} />{" "}
-            나의 교과과정과 부전공을 선택하세요
+            <PageTitle
+              text={{
+                left: "나의 교과 과정과 ",
+                bold: "부전공을",
+                right: " 선택하세요",
+              }}
+            />
           </BigTitles>
           <BigBox>
             <LeftBox>
@@ -230,8 +233,13 @@ const SelectContainer3 = (name) => {
             />
           </ProgressBar>
           <BigTitles>
-            <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} />{" "}
-            나의 교과과정과 부전공을 선택하세요
+            <PageTitle
+              text={{
+                left: "나의 교과 과정과 ",
+                bold: "부전공을",
+                right: " 선택하세요",
+              }}
+            />
           </BigTitles>
           <BigBox>
             <LeftBox>
@@ -300,7 +308,7 @@ const SelectContainer3 = (name) => {
         );
         sessionStorage.setItem("major_point", point1[0].points.major_point);
       }
-      console.log("emfdjdha")
+      console.log("emfdjdha");
       return (
         <>
           <ProgressBar>
@@ -310,8 +318,13 @@ const SelectContainer3 = (name) => {
             />
           </ProgressBar>
           <BigTitles>
-            <FontAwesomeIcon icon={faComment} style={{ color: "#FF6262" }} />{" "}
-            나의 교과과정과 부전공을 선택하세요
+            <PageTitle
+              text={{
+                left: "나의 교과 과정과 ",
+                bold: "부전공을",
+                right: " 선택하세요",
+              }}
+            />
           </BigTitles>
           <BigBox>
             <LeftBox>
@@ -334,7 +347,6 @@ const SelectContainer3 = (name) => {
                           {item.title}
                         </SelectBox>
                       ))}
-                    
                     </XSmaillBox>
                   </SmallBox>
                 </TitleText>
@@ -410,7 +422,6 @@ const Progress = styled.div`
 `;
 
 const BigTitles = styled.div`
-  font-size: 1.8rem;
   text-align: center;
   margin-bottom: 5%;
   margin-top: 5%;
@@ -435,10 +446,11 @@ const Icon = styled.div`
 `;
 
 const TitleText = styled.div`
-  font-size: 1.3rem;
   background-color: white;
   margin-bottom: 2%;
   width: 100%;
+  font-family: "BMJUA";
+  font-size: 1.6em;
 `;
 
 const SmallBox = styled.div`
@@ -448,6 +460,8 @@ const SmallBox = styled.div`
 const XSmaillBox = styled.div``;
 const SelectBox = styled.button`
   font-size: 0.9rem;
+  font-family: "Noto Sans KR";
+  font-weight: 500;
   margin-right: 1%;
   margin-bottom: 2%;
 
@@ -482,5 +496,7 @@ const Next = styled.button`
   background-color: #ff6262;
   padding: 0.8% 2%;
   text-align: center;
+  font-family: "Noto Sans KR";
+  font-weight: 700;
 `;
 export default SelecMajor;

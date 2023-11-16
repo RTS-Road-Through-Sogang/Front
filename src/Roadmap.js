@@ -3,6 +3,7 @@ import styled from "styled-components";
 import backimg from "./images/main_background.jpg";
 import title from "./images/title.png";
 import RoadmapComponent from "./RoadmapComponent";
+import PageTitle from "./PageTitle";
 const DummyData = [
   {
     student: "20210723",
@@ -340,8 +341,11 @@ const Roadmap = ({ data = [] }) => {
   return (
     <>
       <TextWrapper>
-        <TopText>My Roadmap</TopText>
-        <TitleImage src={title} alt="타이틀 꾸미기" />
+        <PageTitle
+          text={{
+            bold: "My Roadmap",
+          }}
+        />
       </TextWrapper>
       {hasCoursesTaken(DummyData) ? (
         <RoadmapComponent data={DummyData} />
@@ -374,7 +378,6 @@ const TextWrapper = styled.div`
   height: 5vh;
   margin-top: 30px;
   position: relative;
-  background: whitesmoke;
 `;
 
 const TitleImage = styled.img`
