@@ -7,6 +7,7 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PageTitle from "./PageTitle";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
@@ -14,8 +15,8 @@ const accessToken = localStorage.getItem("accessToken");
 const major = [
   {
     id: 1,
-    label: "경영경제",
-    value: "성성",
+    label: "경제학과",
+    value: "경제",
   },
   {
     id: 2,
@@ -203,31 +204,11 @@ const SelectSearch = () => {
     });
   };
 
-  const handleData = async () => {
-    try {
-      const res = await axios.get(
-        `${BASE_URL}/roadmaps/completed_lecture_search/`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      setDataArray(res.data);
-      console.log(res.data);
-    } catch (err) {
-      console.log("getPost error: ", err);
-    }
-  };
   //axios
   const [dataArray, setDataArray] = useState([]);
-  useEffect(() => {
-    handleData();
-  }, []);
 
   const maxSelect = [4, 1, 1, 3, 2];
-  console.log(dataArray);
+  // console.log(dataArray);
 
   const [select, setSelect] = useState([]);
   const [select1, setSelect1] = useState([]);
@@ -239,6 +220,7 @@ const SelectSearch = () => {
   const [ex_select2, setSelectEX2] = useState([]);
   const [ex_select3, setSelectEX3] = useState([]);
   const [ex_select4, setSelectEX4] = useState([]);
+  const [keyword, setKeyword] = useState("");
 
   const len = [
     select.length,
@@ -255,6 +237,37 @@ const SelectSearch = () => {
     94 + (100 / maxSelect[3]) * (maxSelect[3] - len[3]),
     94 + (100 / maxSelect[4]) * (maxSelect[4] - len[4]),
   ];
+  // useEffect(() => {
+  //   handleData();
+  // }, []);
+  console.log(select1);
+  console.log(keyword);
+  const handleData = async () => {
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/roadmaps/completed_lecture_search/${encodeURIComponent(
+          select1
+        )}/${encodeURIComponent(keyword)}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          // body: JSON.stringify({
+          //   major: select1,
+          //   keyword: keyword,
+          // }),
+        }
+      );
+      // const data = await res.json();
+      // setDataArray(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log("getPost error: ", err);
+    }
+  };
+  const handleChange = (event) => {
+    setKeyword(event.target.value);
+  };
 
   return (
     <>
@@ -270,6 +283,7 @@ const SelectSearch = () => {
           }}
         />
       </BigTitles>
+
       <SearchBox>
         <SelectMajor
           options={major}
@@ -282,6 +296,15 @@ const SelectSearch = () => {
           }}
           placeholder={"전공을 선택하세요"}
         />
+        <SearchBar>
+          <StyledInput
+            type="text"
+            value={keyword}
+            onChange={handleChange}
+            placeholder="과목을 검색하세요"
+          />
+          <SearchIcon icon={faMagnifyingGlass} onClick={handleData} />
+        </SearchBar>
         <MultiMajor
           options={curri1}
           value={select}
@@ -349,13 +372,14 @@ const BigBox = styled.div`
 `;
 
 const SearchBox = styled.div`
-  justify-content: center;
+  // justify-content: center;
   margin: 0 auto;
   display: flex;
 
   width: 60%;
 
   margin-bottom: 2%;
+  justify-content: space-between;
 `;
 const SelectMajor = styled(Select)`
   .select-placeholder-text {
@@ -363,7 +387,24 @@ const SelectMajor = styled(Select)`
   }
   border-radius: 60px;
   width: 30%;
-  margin-right: 10%;
+  // margin-right: 10%;
+`;
+const SearchBar = styled.div`
+  position: relative;
+  // background: black;
+  width: 30%;
+`;
+const StyledInput = styled.input`
+  width: 100%;
+  height: 80%;
+  border-radius: 60px;
+`;
+const SearchIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  right: 10px;
+  top: 30%;
+  right: 3%;
+  cursor: pointer;
 `;
 const MultiMajor = styled(MultiSelect)`
   width: 30%;
