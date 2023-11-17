@@ -21,28 +21,28 @@ const major = [
   {
     id: 2,
     label: "컴퓨터공학과",
-    value: "알세",
+    value: "컴퓨터공학",
   },
   {
     id: 3,
-    label: "전자공학과",
-    value: "3",
+    label: "경영학과",
+    value: "경영",
   },
   {
     id: 4,
-    label: "화학공학과",
-    value: "성성4",
+    label: "공통",
+    value: "공통",
   },
-  {
-    id: 5,
-    label: "유럽문화",
-    value: "성성5",
-  },
-  {
-    id: 6,
-    label: "커뮤니케이션학과",
-    value: "성성6",
-  },
+  // {
+  //   id: 5,
+  //   label: "유럽문화",
+  //   value: "성성5",
+  // },
+  // {
+  //   id: 6,
+  //   label: "커뮤니케이션학과",
+  //   value: "성성6",
+  // },
 ];
 
 const curri1 = [
@@ -240,26 +240,25 @@ const SelectSearch = () => {
   // useEffect(() => {
   //   handleData();
   // }, []);
-  console.log(select1);
-  console.log(keyword);
+  // console.log(select1);
+  // console.log(keyword);
+
+  const searchedData = dataArray.map((subject) => ({
+    value: subject.id,
+    label: subject.title,
+  }));
   const handleData = async () => {
     try {
       const res = await axios.get(
-        `${BASE_URL}/roadmaps/completed_lecture_search/${encodeURIComponent(
-          select1
-        )}/${encodeURIComponent(keyword)}/`,
+        `${BASE_URL}/roadmaps/completed_lecture_search/${select1.value}/${keyword}/`,
+        // `${BASE_URL}/roadmaps/completed_lecture_search/${"경제"}/${"금융"}/`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-          // body: JSON.stringify({
-          //   major: select1,
-          //   keyword: keyword,
-          // }),
         }
       );
-      // const data = await res.json();
-      // setDataArray(res.data);
+      setDataArray(res.data);
       console.log(res.data);
     } catch (err) {
       console.log("getPost error: ", err);
@@ -306,7 +305,7 @@ const SelectSearch = () => {
           <SearchIcon icon={faMagnifyingGlass} onClick={handleData} />
         </SearchBar>
         <MultiMajor
-          options={curri1}
+          options={searchedData}
           value={select}
           onChange={setSelect}
           labelledBy={"Select"}
