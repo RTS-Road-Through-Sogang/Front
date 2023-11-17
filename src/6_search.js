@@ -203,26 +203,26 @@ const SelectSearch = () => {
     });
   };
 
+  const handleData = async () => {
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/roadmaps/completed_lecture_search/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      setDataArray(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log("getPost error: ", err);
+    }
+  };
   //axios
   const [dataArray, setDataArray] = useState([]);
   useEffect(() => {
-    const handleData = async () => {
-      try {
-        const res = await axios.get(
-          `${BASE_URL}/roadmaps/completed_lecture_search/`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-
-        setDataArray(res.data);
-        console.log(res.data);
-      } catch (err) {
-        console.log("getPost error: ", err);
-      }
-    };
     handleData();
   }, []);
 
