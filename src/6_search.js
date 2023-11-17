@@ -7,6 +7,7 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PageTitle from "./PageTitle";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
@@ -14,34 +15,34 @@ const accessToken = localStorage.getItem("accessToken");
 const major = [
   {
     id: 1,
-    label: "경영경제",
-    value: "성성",
+    label: "경제학과",
+    value: "경제",
   },
   {
     id: 2,
     label: "컴퓨터공학과",
-    value: "알세",
+    value: "컴퓨터공학",
   },
   {
     id: 3,
-    label: "전자공학과",
-    value: "3",
+    label: "경영학과",
+    value: "경영",
   },
   {
     id: 4,
-    label: "화학공학과",
-    value: "성성4",
+    label: "공통",
+    value: "공통",
   },
-  {
-    id: 5,
-    label: "유럽문화",
-    value: "성성5",
-  },
-  {
-    id: 6,
-    label: "커뮤니케이션학과",
-    value: "성성6",
-  },
+  // {
+  //   id: 5,
+  //   label: "유럽문화",
+  //   value: "성성5",
+  // },
+  // {
+  //   id: 6,
+  //   label: "커뮤니케이션학과",
+  //   value: "성성6",
+  // },
 ];
 
 const curri1 = [
@@ -205,29 +206,9 @@ const SelectSearch = () => {
 
   //axios
   const [dataArray, setDataArray] = useState([]);
-  useEffect(() => {
-    const handleData = async () => {
-      try {
-        const res = await axios.get(
-          `${BASE_URL}/roadmaps/completed_lecture_search/`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-
-        setDataArray(res.data);
-        console.log(res.data);
-      } catch (err) {
-        console.log("getPost error: ", err);
-      }
-    };
-    handleData();
-  }, []);
 
   const maxSelect = [4, 1, 1, 3, 2];
-  console.log(dataArray);
+  // console.log(dataArray);
 
   const [select, setSelect] = useState([]);
   const [select1, setSelect1] = useState([]);
@@ -239,6 +220,7 @@ const SelectSearch = () => {
   const [ex_select2, setSelectEX2] = useState([]);
   const [ex_select3, setSelectEX3] = useState([]);
   const [ex_select4, setSelectEX4] = useState([]);
+  const [keyword, setKeyword] = useState("");
 
   const len = [
     select.length,
@@ -255,6 +237,36 @@ const SelectSearch = () => {
     94 + (100 / maxSelect[3]) * (maxSelect[3] - len[3]),
     94 + (100 / maxSelect[4]) * (maxSelect[4] - len[4]),
   ];
+  // useEffect(() => {
+  //   handleData();
+  // }, []);
+  // console.log(select1);
+  // console.log(keyword);
+
+  const searchedData = dataArray.map((subject) => ({
+    value: subject.id,
+    label: subject.title,
+  }));
+  const handleData = async () => {
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/roadmaps/completed_lecture_search/${select1.value}/${keyword}/`,
+        // `${BASE_URL}/roadmaps/completed_lecture_search/${"경제"}/${"금융"}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setDataArray(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log("getPost error: ", err);
+    }
+  };
+  const handleChange = (event) => {
+    setKeyword(event.target.value);
+  };
 
   return (
     <>
@@ -270,6 +282,7 @@ const SelectSearch = () => {
           }}
         />
       </BigTitles>
+
       <SearchBox>
         <SelectMajor
           options={major}
@@ -282,8 +295,17 @@ const SelectSearch = () => {
           }}
           placeholder={"전공을 선택하세요"}
         />
+        <SearchBar>
+          <StyledInput
+            type="text"
+            value={keyword}
+            onChange={handleChange}
+            placeholder="과목을 검색하세요"
+          />
+          <SearchIcon icon={faMagnifyingGlass} onClick={handleData} />
+        </SearchBar>
         <MultiMajor
-          options={curri1}
+          options={searchedData}
           value={select}
           onChange={setSelect}
           labelledBy={"Select"}
@@ -349,13 +371,14 @@ const BigBox = styled.div`
 `;
 
 const SearchBox = styled.div`
-  justify-content: center;
+  // justify-content: center;
   margin: 0 auto;
   display: flex;
 
   width: 60%;
 
   margin-bottom: 2%;
+  justify-content: space-between;
 `;
 const SelectMajor = styled(Select)`
   .select-placeholder-text {
@@ -363,7 +386,24 @@ const SelectMajor = styled(Select)`
   }
   border-radius: 60px;
   width: 30%;
-  margin-right: 10%;
+  // margin-right: 10%;
+`;
+const SearchBar = styled.div`
+  position: relative;
+  // background: black;
+  width: 30%;
+`;
+const StyledInput = styled.input`
+  width: 100%;
+  height: 80%;
+  border-radius: 60px;
+`;
+const SearchIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  right: 10px;
+  top: 30%;
+  right: 3%;
+  cursor: pointer;
 `;
 const MultiMajor = styled(MultiSelect)`
   width: 30%;
