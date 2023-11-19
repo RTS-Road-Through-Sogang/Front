@@ -54,16 +54,30 @@ const SelectCommon = () => {
   const [selectedData, setSelectedData] = useState([]);
 
   const navigate = useNavigate();
+
+  const goSave = () => {
+    sessionStorage.setItem("ex_complete_select", com);
+    sessionStorage.setItem("ex_major_select", maj);
+    sessionStorage.setItem("ex_sub_select", sub_select);
+    const dataWithAdditionalInfo = [...selectedData, ...select0];
+    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+    sessionStorage.setItem("selected", serializedArray);
+    alert("임시저장 되었습니다.");
+  };
+
   const goNext = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
     sessionStorage.setItem("ex_sub_select", sub_select);
     const dataWithAdditionalInfo = [...selectedData, ...select0];
-    console.log(dataWithAdditionalInfo);
+    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+    sessionStorage.setItem("selected", serializedArray);
     navigate("/selectchoice", {
       state: { selectedData: dataWithAdditionalInfo },
     });
   };
+
+  
 
   const [dataArray, setDataArray] = useState([]);
 
@@ -78,16 +92,17 @@ const SelectCommon = () => {
             },
           }
         );
-
         setDataArray(res.data);
-    
       } catch (err) {
         console.log("getPost error: ", err);
       }
+
     };
 
     handleData();
-    setSelectedData(state.selectedData);
+    const storedArray = sessionStorage.getItem("selected");
+    const deserializedArray = JSON.parse(storedArray);
+    setSelectedData(deserializedArray);
     
   }, []);
   console.log(selectedData);
@@ -316,7 +331,7 @@ const SelectCommon = () => {
               ))}
             </SecondBar>
           </SelectBar>
-          <Save>임시저장</Save>
+          <Save onClick={goSave}>임시저장</Save>
           <Next onClick={goNext}>다음으로</Next>
         </RightBox>
       </BigBox>
