@@ -86,7 +86,7 @@ const SelectSearch = () => {
   const [select4, setSelect4] = useState([]);
   const [ex_select, setSelectEX] = useState([]);
 
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(null);
 
   // const len = [
   //   select.length,
@@ -121,7 +121,11 @@ const SelectSearch = () => {
       alert("전공을 선택해주세요");
       return;
     } else {
-      url += `${select1.value}/${keyword}/`;
+      console.log(keyword);
+      url += `${select1.value}/`;
+      if (keyword) {
+        url += `${keyword}/`;
+      }
     }
     // if (select1 && select1.value && keyword) {
     //   console.log(select1);
