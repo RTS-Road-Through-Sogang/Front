@@ -58,6 +58,7 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     navigate("/selectcseduty", {
       state: { selectedData: dataWithAdditionalInfo },
     });
+  };
 
     
 

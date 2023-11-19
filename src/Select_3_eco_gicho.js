@@ -56,6 +56,7 @@ const SelectEcoGicho = () => {
     navigate("/selectecoduty", {
       state: { selectedData: dataWithAdditionalInfo },
     });
+  };
 
     
   };
