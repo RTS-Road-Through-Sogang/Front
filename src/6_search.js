@@ -33,19 +33,7 @@ const major = [
     label: "공통",
     value: "공통",
   },
-  // {
-  //   id: 5,
-  //   label: "유럽문화",
-  //   value: "성성5",
-  // },
-  // {
-  //   id: 6,
-  //   label: "커뮤니케이션학과",
-  //   value: "성성6",
-  // },
 ];
-
-
 
 const SelectContainer = ({
   id,
@@ -78,8 +66,8 @@ const SelectSearch = () => {
       item.code,
       item.point,
     ]);
-    console.log(select)
-    console.log(dataWithAdditionalInfo)
+    // console.log(select);
+    // console.log(dataWithAdditionalInfo);
 
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
@@ -92,21 +80,21 @@ const SelectSearch = () => {
   const [dataArray, setDataArray] = useState([]);
 
   const [select, setSelect] = useState([]);
-  const [select1, setSelect1] = useState([]);
+  const [select1, setSelect1] = useState(null);
   const [select2, setSelect2] = useState([]);
   const [select3, setSelect3] = useState([]);
   const [select4, setSelect4] = useState([]);
   const [ex_select, setSelectEX] = useState([]);
 
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(null);
 
-  const len = [
-    select.length,
-    select1.length,
-    select2.length,
-    select3.length,
-    select4.length,
-  ];
+  // const len = [
+  //   select.length,
+  //   select1.length,
+  //   select2.length,
+  //   select3.length,
+  //   select4.length,
+  // ];
 
   // useEffect(() => {
   //   handleData();
@@ -118,22 +106,42 @@ const SelectSearch = () => {
     value: subject.id,
     label: subject.title,
     code: subject.code,
-    point: subject.point
+    point: subject.point,
   }));
-  console.log(searchedData)
+  console.log(searchedData);
+  const handleMajorChange = (newMajor) => {
+    setSelect1(newMajor);
+    setDataArray([]);
+    setSelect([]);
+    setKeyword("");
+  };
   const handleData = async () => {
+    let url = `${BASE_URL}/roadmaps/completed_lecture_search/`;
+    if (!select1) {
+      alert("전공을 선택해주세요");
+      return;
+    } else {
+      console.log(keyword);
+      url += `${select1.value}/`;
+      if (keyword) {
+        url += `${keyword}/`;
+      }
+    }
+    // if (select1 && select1.value && keyword) {
+    //   console.log(select1);
+    // } else if (select1 && select1.value) {
+    //   url += `${select1.value}/`;
+    // } else {
+    //   alert("전공을 선택해주세요");
+    // }
     try {
-      const res = await axios.get(
-        `${BASE_URL}/roadmaps/completed_lecture_search/${select1.value}/${keyword}/`,
-        // `${BASE_URL}/roadmaps/completed_lecture_search/${"경제"}/${"금융"}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       setDataArray(res.data);
-      console.log(res.data);
+      // console.log(res.data);
     } catch (err) {
       console.log("getPost error: ", err);
     }
@@ -161,7 +169,7 @@ const SelectSearch = () => {
         <SelectMajor
           options={major}
           value={select1}
-          onChange={setSelect1}
+          onChange={handleMajorChange}
           labelledBy={"Select"}
           isCreatable={true}
           components={{
