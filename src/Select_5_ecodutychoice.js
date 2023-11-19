@@ -101,7 +101,7 @@ const SelectEcoDutyChoice = () => {
       }
     };
     handleData();
-
+  
     const storedArray = sessionStorage.getItem("selected");
     const deserializedArray = JSON.parse(storedArray);
 
@@ -281,7 +281,7 @@ const SelectEcoDutyChoice = () => {
   let com = complete_select + sum;
   let maj = major_select + sum;
 
-  let pot1 = sumOfFirstElements;
+  let pot1 =  sumOfFirstElements;
   console.log(select0);
   let pot = 0;
 

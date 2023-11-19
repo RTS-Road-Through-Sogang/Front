@@ -50,7 +50,7 @@ const SelectCseGicho = () => {
     console.log(localStorage.getItem("majorTitle"));
 
     const dataWithAdditionalInfo = [...selectedData, ...select0];
-    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
@@ -60,6 +60,11 @@ const SelectCseGicho = () => {
     });
   };
 
+    
+
+    
+  };
+
   const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
@@ -67,8 +72,8 @@ const SelectCseGicho = () => {
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
-    alert("임시저장 되었습니다.");
-  };
+    alert("임시저장 되었습니다.")
+  }
 
   const [dataArray, setDataArray] = useState([]);
   const [pointArray, setpointArray] = useState([]);
@@ -100,10 +105,10 @@ const SelectCseGicho = () => {
     };
 
     handleData();
-    const storedArray = sessionStorage.getItem("selected");
-    const deserializedArray = JSON.parse(storedArray);
-
-    setSelectedData(deserializedArray);
+     const storedArray = sessionStorage.getItem("selected");
+     const deserializedArray = JSON.parse(storedArray);
+ 
+     setSelectedData(deserializedArray);
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
   const major_point = sessionStorage.getItem("major_point");

@@ -47,8 +47,7 @@ const SelectmgtDutyChoice = () => {
   const [selectedData, setSelectedData] = useState([]);
   console.log(selectedData);
 
-  const navigate = useNavigate();
-  const goSave = () => {
+  const navigate = useNavigate();const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
     sessionStorage.setItem("ex_sub_select", sub_select);
@@ -68,6 +67,7 @@ const SelectmgtDutyChoice = () => {
     navigate("/selectmgtchoice", {
       state: { selectedData: dataWithAdditionalInfo },
     });
+
   };
 
   const [dataArray, setDataArray] = useState([]);
@@ -217,11 +217,14 @@ const SelectmgtDutyChoice = () => {
     (accumulator, item) => accumulator + item[1],
     0
   );
-
-  console.log(select);
+   
+  console.log(select)
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
   let maj = major_select + sum;
+  
+
+  
 
   let pot1 = sumOfFirstElements;
 

@@ -25,17 +25,33 @@ const SelectContainer = ({
   
   useEffect(() => {
     selectedData.forEach((item) => {
-      if (item[0] == code) {
-        setisClicked(!isClicked);
-        setSelect([...select, [code, point]]);
+    if (item[0] === code) {
+      if (!select.some(([c, p]) => c === code)) {
+            setSelect((prevSelect) => {
+          const newSelect = [...prevSelect, [code, point]];
+          // 중복된 항목 제거
+          return newSelect.filter(
+            (item, index, self) =>
+              index === self.findIndex(([c, p]) => c === item[0] && p === item[1])
+          );
+        });
       }
-    });
+    }
+  });
+ selectedData.forEach((item) => {
+   if (item[0] == code) {
+     setisClicked(!isClicked);
+     
+   }
+ }); 
   }, []);
+  
+
 
   const onClick = () => {
     setSelectEX(select);
 
-    setisClicked(!isClicked);
+    setisClicked((prevIsClicked) => !prevIsClicked);
     if (isClicked) {
       const filtered = select.filter(
         (item) => item[0] != code || item[1] != point
@@ -52,7 +68,8 @@ const SelectContainer = ({
       setSelect0([...select0, [code, point]]);
     }
   };
-  console.log(selectedData);
+  
+ 
   let season = "";
   if (season_open === true) {
     season = "O";
@@ -64,7 +81,7 @@ const SelectContainer = ({
   };
 
   const StarRating = ({ rating }) => {
-    console.log(rating);
+   
     const stars = Array.from({ length: rating }, (_, index) => (
       <span key={index}>
         {index === 0 ? <span>팀플: &#9733; </span> : <span>&#9733; </span>}
@@ -73,6 +90,7 @@ const SelectContainer = ({
 
     return <div className="star-rating">{stars}</div>;
   };
+
 
 
   return (

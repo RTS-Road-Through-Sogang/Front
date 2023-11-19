@@ -41,6 +41,7 @@ const SelectSubMgtDuty = () => {
   const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c2})`;
 
+
   const { state } = useLocation();
 
   const [selectedData, setSelectedData] = useState([]);

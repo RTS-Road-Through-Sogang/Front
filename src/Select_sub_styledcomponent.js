@@ -270,6 +270,7 @@ export const PointDisplay = styled.div`
   margin-top: 2%;
 `;
 
+
 export const InsideBar = styled.div`
   width: auto;
   font-size: 0.7rem;
@@ -287,6 +288,7 @@ export const Semester1 = styled.div`
 export const Semester2 = styled.div`
   float: right;
 `;
+
 
 export const ProgressBar2 = styled.div`
   width: 80%;
@@ -308,3 +310,4 @@ export const Progress2 = styled.div`
 
   color: #111;
 `;
+

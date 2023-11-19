@@ -37,9 +37,10 @@ const accessToken = localStorage.getItem("accessToken");
 const SelectSubCseDuty = () => {
   const maxItem = 5;
   let availableItem = 4;
-  const c = 175 - (55 / maxItem) * (maxItem - availableItem);
-  const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
-  const bg = `rgb(255, ${c}, ${c2})`;
+ const c = 175 - (55 / maxItem) * (maxItem - availableItem);
+ const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
+ const bg = `rgb(255, ${c}, ${c2})`;
+
 
   const { state } = useLocation();
 
@@ -181,8 +182,7 @@ const SelectSubCseDuty = () => {
       (146 / maxSelect[2]) *
         (maxSelect[2] -
           select3.reduce((total, currentRow) => total + currentRow[1], 0)),
-    54 +
-      (146 / maxSelect[3]) *
+    54 + (146 / maxSelect[3]) *
         (maxSelect[3] -
           select4.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];

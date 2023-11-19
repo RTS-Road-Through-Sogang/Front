@@ -41,12 +41,13 @@ const SelectSubEcoDutyChoice = () => {
   const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c2})`;
 
+
   const { state } = useLocation();
 
   const [selectedData, setSelectedData] = useState([]);
 
   const navigate = useNavigate();
-
+  
   const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
@@ -101,6 +102,7 @@ const SelectSubEcoDutyChoice = () => {
     const storedArray = sessionStorage.getItem("selected");
     const deserializedArray = JSON.parse(storedArray);
     setSelectedData(deserializedArray);
+    
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
   const major_point = sessionStorage.getItem("major_point");
@@ -289,6 +291,7 @@ const SelectSubEcoDutyChoice = () => {
           select13.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];
 
+  
   const c_select4 = [
     54 +
       (146 / maxSelect2[0]) *

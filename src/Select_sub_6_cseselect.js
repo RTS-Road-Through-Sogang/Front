@@ -65,7 +65,7 @@ const SelectSubCseChoice = () => {
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
-
+ 
     navigate("/status", {
       state: { selectedData: dataWithAdditionalInfo },
     });
@@ -151,6 +151,7 @@ const SelectSubCseChoice = () => {
     setSelectEX5,
   ];
 
+  
   const c_select = [
     175 +
       (55 / maxSelect[0]) *

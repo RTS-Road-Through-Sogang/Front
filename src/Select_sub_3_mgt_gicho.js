@@ -41,6 +41,7 @@ const SelectSubMgtGicho = () => {
   const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c2})`;
 
+  
   const { state } = useLocation();
 
   const [selectedData, setSelectedData] = useState([]);
@@ -171,24 +172,24 @@ const SelectSubMgtGicho = () => {
         (maxSelect[3] -
           select4.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];
-  const c_select2 = [
-    54 +
-      (146 / maxSelect[0]) *
-        (maxSelect[0] -
-          select1.reduce((total, currentRow) => total + currentRow[1], 0)),
-    54 +
-      (146 / maxSelect[1]) *
-        (maxSelect[1] -
-          select2.reduce((total, currentRow) => total + currentRow[1], 0)),
-    54 +
-      (146 / maxSelect[2]) *
-        (maxSelect[2] -
-          select3.reduce((total, currentRow) => total + currentRow[1], 0)),
-    54 +
-      (146 / maxSelect[3]) *
-        (maxSelect[3] -
-          select4.reduce((total, currentRow) => total + currentRow[1], 0)),
-  ];
+const c_select2 = [
+  54 +
+    (146 / maxSelect[0]) *
+      (maxSelect[0] -
+        select1.reduce((total, currentRow) => total + currentRow[1], 0)),
+  54 +
+    (146 / maxSelect[1]) *
+      (maxSelect[1] -
+        select2.reduce((total, currentRow) => total + currentRow[1], 0)),
+  54 +
+    (146 / maxSelect[2]) *
+      (maxSelect[2] -
+        select3.reduce((total, currentRow) => total + currentRow[1], 0)),
+  54 +
+    (146 / maxSelect[3]) *
+      (maxSelect[3] -
+        select4.reduce((total, currentRow) => total + currentRow[1], 0)),
+];
   const sumOfFirstElements = select.reduce((acc, currentArray) => {
     currentArray.forEach((item) => {
       acc += item[1];

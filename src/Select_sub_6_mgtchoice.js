@@ -41,6 +41,7 @@ const SelectMgtChoice = () => {
   const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c2})`;
 
+
   const { state } = useLocation();
 
   const [selectedData, setSelectedData] = useState([]);
@@ -68,6 +69,7 @@ const SelectMgtChoice = () => {
     navigate("/status", {
       state: { selectedData: dataWithAdditionalInfo },
     });
+
   };
 
   const [dataArray, setDataArray] = useState([]);
@@ -258,6 +260,8 @@ const SelectMgtChoice = () => {
         (maxSelect[12] -
           select13.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];
+
+  
 
   const c_select2 = [
     54 +

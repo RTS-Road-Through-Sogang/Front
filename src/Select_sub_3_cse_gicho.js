@@ -68,6 +68,7 @@ const SelectSubCseGicho = () => {
     navigate("/selectsubcseduty", {
       state: { selectedData: dataWithAdditionalInfo },
     });
+
   };
 
   const [dataArray, setDataArray] = useState([]);

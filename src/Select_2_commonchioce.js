@@ -83,6 +83,7 @@ const SelectCommon = () => {
     alert("임시저장 되었습니다.");
   };
 
+
   const [dataArray, setDataArray] = useState([]);
   const [pointArray, setpointArray] = useState([]);
   //전체 point 계산

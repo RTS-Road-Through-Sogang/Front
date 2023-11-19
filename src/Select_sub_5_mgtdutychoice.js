@@ -41,13 +41,14 @@ const SelectSubmgtDutyChoice = () => {
   const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c2})`;
 
+
   const { state } = useLocation();
 
   const [selectedData, setSelectedData] = useState([]);
   console.log(selectedData);
 
   const navigate = useNavigate();
-
+ 
   const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
@@ -68,6 +69,7 @@ const SelectSubmgtDutyChoice = () => {
     navigate("/selectsubmgtchoice", {
       state: { selectedData: dataWithAdditionalInfo },
     });
+
   };
 
   const [dataArray, setDataArray] = useState([]);
@@ -110,7 +112,7 @@ const SelectSubmgtDutyChoice = () => {
     sub_point = sessionStorage.getItem("sub_point");
   }
 
-  const maxSelect = [100, 100, 100, 100, 100, 100, 100, 100];
+  const maxSelect = [100,100,100,100,100,100,100,100]
 
   const [select0, setSelect0] = useState([]); //전체 저장
 

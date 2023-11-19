@@ -48,7 +48,7 @@ const SelectSubCseDutyChoice = () => {
   console.log(selectedData);
 
   const navigate = useNavigate();
-
+  
   const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
