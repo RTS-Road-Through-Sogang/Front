@@ -42,6 +42,7 @@ let sub_select = parseInt(sub_select1);
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
 
+
 const SelectCommon = () => {
   const maxItem = 5;
   let availableItem = 4;
@@ -79,7 +80,7 @@ const SelectCommon = () => {
         );
 
         setDataArray(res.data);
-        console.log(res.data);
+    
       } catch (err) {
         console.log("getPost error: ", err);
       }
@@ -87,7 +88,9 @@ const SelectCommon = () => {
 
     handleData();
     setSelectedData(state.selectedData);
+    
   }, []);
+  console.log(selectedData);
   const complete_point = sessionStorage.getItem("complete_point");
   const major_point = sessionStorage.getItem("major_point");
   let sub_point = null;
@@ -170,7 +173,8 @@ const SelectCommon = () => {
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
   let maj = major_select;
-  console.log(com, maj);
+  console.log(com)
+
 
   sessionStorage.setItem("complete_select", com);
   sessionStorage.setItem("major_select", maj);
