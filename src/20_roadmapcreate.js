@@ -53,49 +53,6 @@ const CreateRoadmapDetails = () => {
     console.log("Invalid usersSubmajor value");
   }
 
-  // useEffect(() => {
-  //   const createRoadmapDetails = async () => {
-  //     try {
-  //       // Replace 'your-api-endpoint' with the actual endpoint
-  //       const response = await fetch(
-  //         `${BASE_URL}/roadmaps/roadmap_roadmapdetail_create/`,
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             Authorization: `Bearer ${accessToken}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: {
-  //             detail: "Not found.",
-  //           },
-  //         }
-  //       );
-  //       const data = await response.json();
-
-  //       // Replace 'your-roadmap-id' with the actual roadmap_id
-  //       const roadmapId = "새 로드맵";
-
-  //       // Array of semester titles
-  //       const titles = ["1-1", "1-2", "2-1", "2-2", "3-1", "3-2", "4-1", "4-2"];
-
-  //       // Loop through titles and create roadmap details
-  //       for (const title of titles) {
-  //         await axios.post(response, {
-  //           roadmap_id: roadmapId,
-  //           semester: title,
-  //         });
-  //       }
-
-  //       console.log("Roadmap details created successfully!");
-  //     } catch (error) {
-  //       console.error("Error creating roadmap details:", error);
-  //     }
-  //   };
-
-  //   // Call the function to create roadmap details when the component mounts
-  //   createRoadmapDetails();
-  // }, []);
-
   const semesters = [
     "1-1",
     "1-하계",
@@ -327,64 +284,52 @@ const CreateRoadmapDetails = () => {
         }
       );
 
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("Roadmap created:", responseData);
-
-        const { id: roadmapId } = responseData;
-        console.log("Roadmap ID:", roadmapId);
-
-        // Fetching roadmap data after creating it
-        const roadmapResponse = await axios.get(`${BASE_URL}/roadmaps/`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        console.log(roadmapResponse.data);
-        const roadmapData = roadmapResponse.data;
-        console.log("Roadmap data:", roadmapData);
-
-        const findRoadmapDetailById = (roadmapData, targetRoadmapId) => {
-          const roadmap = roadmapData.find(
-            (item) => item.roadmap_id === targetRoadmapId
-          );
-
-          if (!roadmap) {
-            console.log(`Roadmap with ID ${targetRoadmapId} not found.`);
-            return {};
-          }
-
-          const detailArray = roadmap.roadmap_detail;
-          const findRoadmapDetailId = {};
-
-          detailArray.forEach((detail) => {
-            findRoadmapDetailId[detail.semester] = detail.roadmap_detail_id;
-          });
-
-          return findRoadmapDetailId;
-        };
-
-        const targetRoadmapId = roadmapId;
-        const detailsForRoadmapId = findRoadmapDetailById(
-          roadmapData,
-          targetRoadmapId
-        );
-        console.log("Details for Roadmap ID:", detailsForRoadmapId);
-
-        await createRoadmapDetailAndAddLectures(detailsForRoadmapId);
-      } else {
+      if (!response.ok) {
         throw new Error("Failed to create roadmap");
       }
-    } catch (error) {
-      console.error("Error creating roadmap:", error);
-    }
-  };
+      const responseData = await response.json();
+      console.log("Roadmap created:", responseData);
 
-  // Call the function to create the roadmap
+      const { id: roadmapId } = responseData;
+      console.log("Roadmap ID:", roadmapId);
 
-  const createRoadmapDetailAndAddLectures = async (detailsForRoadmapId) => {
-    try {
-      for (const semesterData of selectedLectures) {
+      // Fetching roadmap data after creating it
+      const roadmapResponse = await axios.get(`${BASE_URL}/roadmaps/`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log(roadmapResponse.data);
+      const roadmapData = roadmapResponse.data;
+      console.log("Roadmap data:", roadmapData);
+
+      const findRoadmapDetailById = (roadmapData, targetRoadmapId) => {
+        const roadmap = roadmapData.find(
+          (item) => item.roadmap_id === targetRoadmapId
+        );
+
+        if (!roadmap) {
+          console.log(`Roadmap with ID ${targetRoadmapId} not found.`);
+          return {};
+        }
+
+        const detailArray = roadmap.roadmap_detail;
+        const findRoadmapDetailId = {};
+
+        detailArray.forEach((detail) => {
+          findRoadmapDetailId[detail.semester] = detail.roadmap_detail_id;
+        });
+
+        return findRoadmapDetailId;
+      };
+
+      const targetRoadmapId = roadmapId;
+      const detailsForRoadmapId = findRoadmapDetailById(
+        roadmapData,
+        targetRoadmapId
+      );
+      console.log("Details for Roadmap ID:", detailsForRoadmapId);
+      const promises = selectedLectures.map(async (semesterData) => {
         const semester = semesterData.semester;
         const roadmapDetailId = detailsForRoadmapId[semester];
 
@@ -396,25 +341,36 @@ const CreateRoadmapDetails = () => {
             lecture_type: lecture.lecture_type,
             lecture_id: lecture.id,
           };
-          console.log("과목 정보: ", RequestData)
+          console.log("과목 정보: ", RequestData);
 
-          const response = await axios.post(
-            `${BASE_URL}/roadmaps/roadmapdetaillecture_create/`,
-            RequestData,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          );
+          try {
+            await axios.post(
+              `${BASE_URL}/roadmaps/roadmapdetaillecture_create/`,
+              RequestData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              }
+            );
+          } catch (error) {
+            console.error("Error response:", error.response);
+            console.error("API로 데이터 전송 중 에러 발생:", error);
+            // 에러 처리
+          }
         }
+      });
+      // 비동기 작업들을 일정 간격으로 실행하기 위해 setTimeout 사용
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      for (const promise of promises) {
+        await promise;
+        await delay(100); // 100ms 간격으로 작업을 실행하도록 지연시간 추가
       }
+
       console.log("모든 API 요청이 성공적으로 완료되었습니다!");
     } catch (error) {
-      console.error("Error response:", error.response);
-      console.error("API로 데이터 전송 중 에러 발생:", error);
-      // 에러 처리
+      console.error("Error creating roadmap:", error);
     }
   };
 
