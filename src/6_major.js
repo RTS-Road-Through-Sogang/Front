@@ -119,14 +119,14 @@ const SelecMajor = () => {
         });
 
         setDataArray(res.data);
+        console.log(dataArray);
       } catch (err) {
         console.log("getPost error: ", err);
       }
     };
     handleData();
-    console.log(dataArray);
   }, []);
-
+  console.log(dataArray);
   if (dataArray.major && dataArray.major.title) {
     const majorTitle = dataArray.major.title;
     localStorage.setItem("majorTitle", majorTitle);
@@ -308,7 +308,7 @@ const SelecMajor = () => {
         );
         sessionStorage.setItem("major_point", point1[0].points.major_point);
       }
-      console.log("emfdjdha");
+
       return (
         <>
           <ProgressBar>

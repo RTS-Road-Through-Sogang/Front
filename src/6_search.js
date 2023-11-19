@@ -7,6 +7,7 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PageTitle from "./PageTitle";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
@@ -14,157 +15,34 @@ const accessToken = localStorage.getItem("accessToken");
 const major = [
   {
     id: 1,
-    label: "경영경제",
-    value: "성성",
+    label: "경제학과",
+    value: "경제",
   },
   {
     id: 2,
     label: "컴퓨터공학과",
-    value: "알세",
+    value: "컴퓨터공학",
   },
   {
     id: 3,
-    label: "전자공학과",
-    value: "3",
+    label: "경영학과",
+    value: "경영",
   },
   {
     id: 4,
-    label: "화학공학과",
-    value: "성성4",
+    label: "공통",
+    value: "공통",
   },
-  {
-    id: 5,
-    label: "유럽문화",
-    value: "성성5",
-  },
-  {
-    id: 6,
-    label: "커뮤니케이션학과",
-    value: "성성6",
-  },
-];
-
-const curri1 = [
-  {
-    id: 1,
-    label: "성찰과성장",
-    value: "성성",
-  },
-  {
-    id: 2,
-    label: "알바트로스세미나",
-    value: "알세",
-  },
-  {
-    id: 3,
-    label: "어쩌고저쩌고",
-    value: "3",
-  },
-  {
-    id: 4,
-    label: "어쩌고저쩌고",
-    value: "성성4",
-  },
-  {
-    id: 5,
-    label: "어쩌고저쩌고",
-    value: "성성5",
-  },
-  {
-    id: 6,
-    label: "어쩌고저쩌고",
-    value: "성성6",
-  },
-  {
-    id: 7,
-    label: "어쩌고저쩌고",
-    value: "성성7",
-  },
-  {
-    id: 8,
-    label: "어쩌고저쩌고",
-    value: "성성8",
-  },
-  {
-    id: 9,
-    label: "어쩌고저쩌고",
-    value: "성성9",
-  },
-  {
-    id: 10,
-    label: "어쩌고저쩌고",
-    value: "성성10",
-  },
-  {
-    id: 11,
-    label: "어쩌고저쩌고",
-    value: "11",
-  },
-  {
-    id: 12,
-    label: "어쩌고저쩌고",
-    value: "성성12",
-  },
-];
-
-const curri2 = [
-  {
-    id: 7,
-    name: "자연계 글쓰기",
-  },
-  {
-    id: 8,
-    name: "인문계 글쓰기",
-  },
-];
-
-const curri3 = [
-  {
-    id: 9,
-    name: "영어글로벌의사소통1",
-  },
-  {
-    id: 10,
-    name: "영어글로벌의사소통2",
-  },
-];
-
-const curri4 = [
-  {
-    id: 11,
-    name: "영어글로벌의사소통1",
-  },
-  {
-    id: 12,
-    name: "영어글로벌의사소통2",
-  },
-  {
-    id: 13,
-    name: "000000",
-  },
-  {
-    id: 14,
-    name: "33333",
-  },
-];
-
-const curri5 = [
-  {
-    id: 15,
-    name: "컴퓨팅사고력",
-  },
-  {
-    id: 16,
-    name: "영어글로벌의사소통2",
-  },
-  {
-    id: 17,
-    name: "000000",
-  },
-  {
-    id: 18,
-    name: "33333",
-  },
+  // {
+  //   id: 5,
+  //   label: "유럽문화",
+  //   value: "성성5",
+  // },
+  // {
+  //   id: 6,
+  //   label: "커뮤니케이션학과",
+  //   value: "성성6",
+  // },
 ];
 
 const SelectContainer = ({
@@ -174,6 +52,9 @@ const SelectContainer = ({
   setSelect,
   select,
   setSelectEX,
+  code,
+  point,
+  ex_select,
 }) => {
   return (
     <>
@@ -191,13 +72,15 @@ const SelectSearch = () => {
   const navigate = useNavigate();
 
   const goNext = () => {
-    const dataWithAdditionalInfo = [
-      ["COR1012", 3],
-      ["HFS2001", 3],
-      ["ECO3008", 3],
-      ["ECO2004", 3],
-      ["ECO2003", 3],
-    ];
+    const dataWithAdditionalInfo = select.map((item) => [
+      item.code,
+      item.point,
+    ]);
+    console.log(select);
+    console.log(dataWithAdditionalInfo);
+
+    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+    sessionStorage.setItem("selected", serializedArray);
     navigate("/selectcommon", {
       state: { selectedData: dataWithAdditionalInfo },
     });
@@ -205,29 +88,6 @@ const SelectSearch = () => {
 
   //axios
   const [dataArray, setDataArray] = useState([]);
-  useEffect(() => {
-    const handleData = async () => {
-      try {
-        const res = await axios.get(
-          `${BASE_URL}/roadmaps/completed_lecture_search/`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-
-        setDataArray(res.data);
-        console.log(res.data);
-      } catch (err) {
-        console.log("getPost error: ", err);
-      }
-    };
-    handleData();
-  }, []);
-
-  const maxSelect = [4, 1, 1, 3, 2];
-  console.log(dataArray);
 
   const [select, setSelect] = useState([]);
   const [select1, setSelect1] = useState([]);
@@ -235,10 +95,8 @@ const SelectSearch = () => {
   const [select3, setSelect3] = useState([]);
   const [select4, setSelect4] = useState([]);
   const [ex_select, setSelectEX] = useState([]);
-  const [ex_select1, setSelectEX1] = useState([]);
-  const [ex_select2, setSelectEX2] = useState([]);
-  const [ex_select3, setSelectEX3] = useState([]);
-  const [ex_select4, setSelectEX4] = useState([]);
+
+  const [keyword, setKeyword] = useState("");
 
   const len = [
     select.length,
@@ -248,13 +106,39 @@ const SelectSearch = () => {
     select4.length,
   ];
 
-  const c_select = [
-    94 + (100 / maxSelect[0]) * (maxSelect[0] - len[0]),
-    94 + (100 / maxSelect[1]) * (maxSelect[1] - len[1]),
-    94 + (100 / maxSelect[2]) * (maxSelect[2] - len[2]),
-    94 + (100 / maxSelect[3]) * (maxSelect[3] - len[3]),
-    94 + (100 / maxSelect[4]) * (maxSelect[4] - len[4]),
-  ];
+  // useEffect(() => {
+  //   handleData();
+  // }, []);
+  // console.log(select1);
+  // console.log(keyword);
+
+  const searchedData = dataArray.map((subject) => ({
+    value: subject.id,
+    label: subject.title,
+    code: subject.code,
+    point: subject.point,
+  }));
+  console.log(searchedData);
+  const handleData = async () => {
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/roadmaps/completed_lecture_search/${select1.value}/${keyword}/`,
+        // `${BASE_URL}/roadmaps/completed_lecture_search/${"경제"}/${"금융"}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setDataArray(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log("getPost error: ", err);
+    }
+  };
+  const handleChange = (event) => {
+    setKeyword(event.target.value);
+  };
 
   return (
     <>
@@ -270,6 +154,7 @@ const SelectSearch = () => {
           }}
         />
       </BigTitles>
+
       <SearchBox>
         <SelectMajor
           options={major}
@@ -282,8 +167,17 @@ const SelectSearch = () => {
           }}
           placeholder={"전공을 선택하세요"}
         />
+        <SearchBar>
+          <StyledInput
+            type="text"
+            value={keyword}
+            onChange={handleChange}
+            placeholder=" 과목을 검색하세요"
+          />
+          <SearchIcon icon={faMagnifyingGlass} onClick={handleData} />
+        </SearchBar>
         <MultiMajor
-          options={curri1}
+          options={searchedData}
           value={select}
           onChange={setSelect}
           labelledBy={"Select"}
@@ -349,13 +243,14 @@ const BigBox = styled.div`
 `;
 
 const SearchBox = styled.div`
-  justify-content: center;
+  // justify-content: center;
   margin: 0 auto;
   display: flex;
 
   width: 60%;
 
   margin-bottom: 2%;
+  justify-content: space-between;
 `;
 const SelectMajor = styled(Select)`
   .select-placeholder-text {
@@ -363,7 +258,26 @@ const SelectMajor = styled(Select)`
   }
   border-radius: 60px;
   width: 30%;
-  margin-right: 10%;
+  // margin-right: 10%;
+`;
+const SearchBar = styled.div`
+  position: relative;
+  // background: black;
+  width: 30%;
+`;
+const StyledInput = styled.input`
+  width: 100%;
+  height: 80%;
+  border: 0.1rem solid #cccccc;
+  color: #cccccc;
+  border-radius: 3px;
+`;
+const SearchIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  right: 10px;
+  top: 30%;
+  right: 3%;
+  cursor: pointer;
 `;
 const MultiMajor = styled(MultiSelect)`
   width: 30%;

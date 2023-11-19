@@ -61,8 +61,10 @@ const LecturesMajorMgt = () => {
     fetchData();
   }, []);
 
-  const location = useLocation();
-  const arr = location.state.arrData;
+  // const location = useLocation();
+  // const arr = location.state.arrData;
+
+  const arr = JSON.parse(sessionStorage.getItem("selected"));
 
   function processMajorMgt(dataObject) {
     const processedMajorMgt = [];
