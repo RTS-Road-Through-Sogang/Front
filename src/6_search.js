@@ -45,128 +45,7 @@ const major = [
   // },
 ];
 
-const curri1 = [
-  {
-    id: 1,
-    label: "성찰과성장",
-    value: "성성",
-  },
-  {
-    id: 2,
-    label: "알바트로스세미나",
-    value: "알세",
-  },
-  {
-    id: 3,
-    label: "어쩌고저쩌고",
-    value: "3",
-  },
-  {
-    id: 4,
-    label: "어쩌고저쩌고",
-    value: "성성4",
-  },
-  {
-    id: 5,
-    label: "어쩌고저쩌고",
-    value: "성성5",
-  },
-  {
-    id: 6,
-    label: "어쩌고저쩌고",
-    value: "성성6",
-  },
-  {
-    id: 7,
-    label: "어쩌고저쩌고",
-    value: "성성7",
-  },
-  {
-    id: 8,
-    label: "어쩌고저쩌고",
-    value: "성성8",
-  },
-  {
-    id: 9,
-    label: "어쩌고저쩌고",
-    value: "성성9",
-  },
-  {
-    id: 10,
-    label: "어쩌고저쩌고",
-    value: "성성10",
-  },
-  {
-    id: 11,
-    label: "어쩌고저쩌고",
-    value: "11",
-  },
-  {
-    id: 12,
-    label: "어쩌고저쩌고",
-    value: "성성12",
-  },
-];
 
-const curri2 = [
-  {
-    id: 7,
-    name: "자연계 글쓰기",
-  },
-  {
-    id: 8,
-    name: "인문계 글쓰기",
-  },
-];
-
-const curri3 = [
-  {
-    id: 9,
-    name: "영어글로벌의사소통1",
-  },
-  {
-    id: 10,
-    name: "영어글로벌의사소통2",
-  },
-];
-
-const curri4 = [
-  {
-    id: 11,
-    name: "영어글로벌의사소통1",
-  },
-  {
-    id: 12,
-    name: "영어글로벌의사소통2",
-  },
-  {
-    id: 13,
-    name: "000000",
-  },
-  {
-    id: 14,
-    name: "33333",
-  },
-];
-
-const curri5 = [
-  {
-    id: 15,
-    name: "컴퓨팅사고력",
-  },
-  {
-    id: 16,
-    name: "영어글로벌의사소통2",
-  },
-  {
-    id: 17,
-    name: "000000",
-  },
-  {
-    id: 18,
-    name: "33333",
-  },
-];
 
 const SelectContainer = ({
   id,
@@ -175,6 +54,9 @@ const SelectContainer = ({
   setSelect,
   select,
   setSelectEX,
+  code,
+  point,
+  ex_select,
 }) => {
   return (
     <>
@@ -192,13 +74,15 @@ const SelectSearch = () => {
   const navigate = useNavigate();
 
   const goNext = () => {
-    const dataWithAdditionalInfo = [
-      ["COR1012", 3],
-      ["HFS2001", 3],
-      ["ECO3008", 3],
-      ["ECO2004", 3],
-      ["ECO2003", 3],
-    ];
+    const dataWithAdditionalInfo = select.map((item) => [
+      item.code,
+      item.point,
+    ]);
+    console.log(select)
+    console.log(dataWithAdditionalInfo)
+
+    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+    sessionStorage.setItem("selected", serializedArray);
     navigate("/selectcommon", {
       state: { selectedData: dataWithAdditionalInfo },
     });
@@ -207,19 +91,13 @@ const SelectSearch = () => {
   //axios
   const [dataArray, setDataArray] = useState([]);
 
-  const maxSelect = [4, 1, 1, 3, 2];
-  // console.log(dataArray);
-
   const [select, setSelect] = useState([]);
   const [select1, setSelect1] = useState([]);
   const [select2, setSelect2] = useState([]);
   const [select3, setSelect3] = useState([]);
   const [select4, setSelect4] = useState([]);
   const [ex_select, setSelectEX] = useState([]);
-  const [ex_select1, setSelectEX1] = useState([]);
-  const [ex_select2, setSelectEX2] = useState([]);
-  const [ex_select3, setSelectEX3] = useState([]);
-  const [ex_select4, setSelectEX4] = useState([]);
+
   const [keyword, setKeyword] = useState("");
 
   const len = [
@@ -230,13 +108,6 @@ const SelectSearch = () => {
     select4.length,
   ];
 
-  const c_select = [
-    94 + (100 / maxSelect[0]) * (maxSelect[0] - len[0]),
-    94 + (100 / maxSelect[1]) * (maxSelect[1] - len[1]),
-    94 + (100 / maxSelect[2]) * (maxSelect[2] - len[2]),
-    94 + (100 / maxSelect[3]) * (maxSelect[3] - len[3]),
-    94 + (100 / maxSelect[4]) * (maxSelect[4] - len[4]),
-  ];
   // useEffect(() => {
   //   handleData();
   // }, []);
@@ -246,7 +117,10 @@ const SelectSearch = () => {
   const searchedData = dataArray.map((subject) => ({
     value: subject.id,
     label: subject.title,
+    code: subject.code,
+    point: subject.point
   }));
+  console.log(searchedData)
   const handleData = async () => {
     try {
       const res = await axios.get(
@@ -300,7 +174,7 @@ const SelectSearch = () => {
             type="text"
             value={keyword}
             onChange={handleChange}
-            placeholder="과목을 검색하세요"
+            placeholder=" 과목을 검색하세요"
           />
           <SearchIcon icon={faMagnifyingGlass} onClick={handleData} />
         </SearchBar>
@@ -396,7 +270,9 @@ const SearchBar = styled.div`
 const StyledInput = styled.input`
   width: 100%;
   height: 80%;
-  border-radius: 60px;
+  border: 0.1rem solid #cccccc;
+  color: #cccccc;
+  border-radius: 3px;
 `;
 const SearchIcon = styled(FontAwesomeIcon)`
   position: absolute;

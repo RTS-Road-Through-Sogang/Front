@@ -177,7 +177,7 @@ export const Bar = styled.div`
   margin: 3% 3% 3% 3%;
 `;
 export const BarText = styled.div`
-  width: 40%;
+  width: 20%;
   margin: 3% auto;
   font-size: 0.9rem;
 `;
