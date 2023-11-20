@@ -100,9 +100,11 @@ const SelectSubCseGicho = () => {
     };
 
     handleData();
+
     const storedArray = sessionStorage.getItem("selected");
     const deserializedArray = JSON.parse(storedArray);
     setSelectedData(deserializedArray);
+
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
   const major_point = sessionStorage.getItem("major_point");

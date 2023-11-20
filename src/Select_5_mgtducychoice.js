@@ -324,7 +324,7 @@ const SelectmgtDutyChoice = () => {
                 </Bar>
               )}
               <Bar>
-                <BarText>필수이수학점</BarText>
+                <BarText>필수이수</BarText>
 
                 <MiniBar>
                   <Mini width={(pot1 * 100) / pot} bgColor={bg} />
