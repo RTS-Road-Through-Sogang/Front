@@ -56,8 +56,6 @@ const SelectEcoGicho = () => {
     navigate("/selectecoduty", {
       state: { selectedData: dataWithAdditionalInfo },
     });
-
-    
   };
 
   const goSave = () => {
@@ -100,10 +98,10 @@ const SelectEcoGicho = () => {
     };
 
     handleData();
-     const storedArray = sessionStorage.getItem("selected");
-     const deserializedArray = JSON.parse(storedArray);
-   
-     setSelectedData(deserializedArray);
+    const storedArray = sessionStorage.getItem("selected");
+    const deserializedArray = JSON.parse(storedArray);
+
+    setSelectedData(deserializedArray);
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
   const major_point = sessionStorage.getItem("major_point");
@@ -335,6 +333,5 @@ const SelectEcoGicho = () => {
     </>
   );
 };
-
 
 export default SelectEcoGicho;

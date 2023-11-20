@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -39,13 +39,15 @@ const LecturesCommon = () => {
     fetchData();
   }, []);
 
-  const location = useLocation();
-  const arr = location.state.arrData;
+  // const location = useLocation();
+  // const arr = location.state.arrData;
+
+  const arr = JSON.parse(sessionStorage.getItem("selected"));
+  console.log(arr);
 
   // 함수를 이용하여 데이터를 처리하는 부분
   function processCommon(dataObject) {
     const processedCommon = [];
-
     for (const category of dataObject) {
       // Check if category.lectures is an array before trying to iterate
       if (Array.isArray(category.lectures)) {

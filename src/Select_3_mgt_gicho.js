@@ -56,18 +56,16 @@ const SelectMgtGicho = () => {
     navigate("/selectmgtduty", {
       state: { selectedData: dataWithAdditionalInfo },
     });
-
-   
   };
-const goSave = () => {
-  sessionStorage.setItem("ex_complete_select", com);
-  sessionStorage.setItem("ex_major_select", maj);
-  sessionStorage.setItem("ex_sub_select", sub_select);
-  const dataWithAdditionalInfo = [...selectedData, ...select0];
-  const serializedArray = JSON.stringify(dataWithAdditionalInfo);
-  sessionStorage.setItem("selected", serializedArray);
-  alert("임시저장 되었습니다.");
-};
+  const goSave = () => {
+    sessionStorage.setItem("ex_complete_select", com);
+    sessionStorage.setItem("ex_major_select", maj);
+    sessionStorage.setItem("ex_sub_select", sub_select);
+    const dataWithAdditionalInfo = [...selectedData, ...select0];
+    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+    sessionStorage.setItem("selected", serializedArray);
+    alert("임시저장 되었습니다.");
+  };
   const [dataArray, setDataArray] = useState([]);
   const [pointArray, setpointArray] = useState([]);
   //전체 point 계산

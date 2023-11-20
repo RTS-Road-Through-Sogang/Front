@@ -3,8 +3,8 @@ import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
-import PageTitle from "./PageTitle";
-import SelectContainer from "./SelectContainer";
+import PageTitle from "./PageTitleSub";
+import SelectContainer from "./SelectSubContainer";
 import {
   Progress,
   ProgressBar,
@@ -28,42 +28,26 @@ import {
   PointDisplay,
   Save,
   Next,
-} from "./Select_styledcomponent";
+} from "./Select_sub_styledcomponent";
 
 import axios from "axios";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
 
-const SelectCseGicho = () => {
+const SelectSubCseGicho = () => {
   const maxItem = 5;
   let availableItem = 4;
-  const c = 194 - (100 / maxItem) * (maxItem - availableItem);
-  const bg = `rgb(255, ${c}, ${c})`;
+  const c = 175 - (55 / maxItem) * (maxItem - availableItem);
+  const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
+  const bg = `rgb(255, ${c}, ${c2})`;
+
   const { state } = useLocation();
 
   const [selectedData, setSelectedData] = useState([]);
   console.log(selectedData);
 
   const navigate = useNavigate();
-  const goNext = ({ com, maj, sub_select }) => {
-    console.log(localStorage.getItem("majorTitle"));
-
-    const dataWithAdditionalInfo = [...selectedData, ...select0];
-const serializedArray = JSON.stringify(dataWithAdditionalInfo);
-    sessionStorage.setItem("selected", serializedArray);
-    sessionStorage.setItem("ex_complete_select", com);
-    sessionStorage.setItem("ex_major_select", maj);
-    sessionStorage.setItem("ex_sub_select", sub_select);
-    navigate("/selectcseduty", {
-      state: { selectedData: dataWithAdditionalInfo },
-    });
-
-    
-
-    
-  };
-
   const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
@@ -71,8 +55,20 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
-    alert("임시저장 되었습니다.")
-  }
+    alert("임시저장 되었습니다.");
+  };
+
+  const goNext = () => {
+    sessionStorage.setItem("ex_complete_select", com);
+    sessionStorage.setItem("ex_major_select", maj);
+    sessionStorage.setItem("ex_sub_select", sub_select);
+    const dataWithAdditionalInfo = [...selectedData, ...select0];
+    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+    sessionStorage.setItem("selected", serializedArray);
+    navigate("/selectsubcseduty", {
+      state: { selectedData: dataWithAdditionalInfo },
+    });
+  };
 
   const [dataArray, setDataArray] = useState([]);
   const [pointArray, setpointArray] = useState([]);
@@ -104,11 +100,11 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     };
 
     handleData();
-     const storedArray = sessionStorage.getItem("selected");
-     const deserializedArray = JSON.parse(storedArray);
- 
+
+    const storedArray = sessionStorage.getItem("selected");
+    const deserializedArray = JSON.parse(storedArray);
     setSelectedData(deserializedArray);
-    console.log(selectedData)
+
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
   const major_point = sessionStorage.getItem("major_point");
@@ -157,20 +153,38 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
   ];
 
   const c_select = [
-    94 +
-      (100 / maxSelect[0]) *
+    175 +
+      (55 / maxSelect[0]) *
         (maxSelect[0] -
           select1.reduce((total, currentRow) => total + currentRow[1], 0)),
-    94 +
-      (100 / maxSelect[1]) *
+    175 +
+      (55 / maxSelect[1]) *
         (maxSelect[1] -
           select2.reduce((total, currentRow) => total + currentRow[1], 0)),
-    94 +
-      (100 / maxSelect[2]) *
+    175 +
+      (55 / maxSelect[2]) *
         (maxSelect[2] -
           select3.reduce((total, currentRow) => total + currentRow[1], 0)),
-    94 +
-      (100 / maxSelect[3]) *
+    175 +
+      (55 / maxSelect[3]) *
+        (maxSelect[3] -
+          select4.reduce((total, currentRow) => total + currentRow[1], 0)),
+  ];
+  const c_select2 = [
+    54 +
+      (146 / maxSelect[0]) *
+        (maxSelect[0] -
+          select1.reduce((total, currentRow) => total + currentRow[1], 0)),
+    54 +
+      (146 / maxSelect[1]) *
+        (maxSelect[1] -
+          select2.reduce((total, currentRow) => total + currentRow[1], 0)),
+    54 +
+      (146 / maxSelect[2]) *
+        (maxSelect[2] -
+          select3.reduce((total, currentRow) => total + currentRow[1], 0)),
+    54 +
+      (146 / maxSelect[3]) *
         (maxSelect[3] -
           select4.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];
@@ -184,6 +198,7 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
   let sum = sumOfFirstElements;
   let com = complete_select + sum;
   let maj = major_select;
+  let sub = sub_select;
   console.log(com, maj);
 
   sessionStorage.setItem("complete_select", com);
@@ -199,7 +214,7 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
         <PageTitle
           text={{
             left: "나의 수강할 ",
-            bold: "전공기초 교과를",
+            bold: "부전공 기초 교과를",
             right: " 선택하세요",
           }}
         />
@@ -267,7 +282,7 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
                   <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
                   <MiniBar>
-                    <Mini width={(sub_select * 100) / sub_point} bgColor={bg} />
+                    <Mini width={(sub * 100) / sub_point} bgColor={bg} />
                   </MiniBar>
                 </Bar>
               )}
@@ -290,7 +305,7 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
                               100) /
                             maxSelect[index]
                           }
-                          bgColor={`rgb(255, ${c_select[index]}, ${c_select[index]})`}
+                          bgColor={`rgb(255, ${c_select[index]}, ${c_select2[index]})`}
                           ex_width={
                             (ex_select[index].reduce(
                               (total, currentRow) => total + currentRow[1],
@@ -300,16 +315,16 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
                             maxSelect[index]
                           }
                           ex_bg={`rgb(255, ${
-                            94 +
-                            (100 / maxSelect[index]) *
+                            175 +
+                            (55 / maxSelect[index]) *
                               (maxSelect[index] -
                                 ex_select[index].reduce(
                                   (total, currentRow) => total + currentRow[1],
                                   0
                                 ))
                           }, ${
-                            94 +
-                            (100 / maxSelect[index]) *
+                            54 +
+                            (146 / maxSelect[index]) *
                               (maxSelect[index] -
                                 ex_select[index].reduce(
                                   (total, currentRow) => total + currentRow[1],
@@ -340,4 +355,4 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     </>
   );
 };
-export default SelectCseGicho;
+export default SelectSubCseGicho;
