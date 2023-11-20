@@ -50,8 +50,9 @@ const SelectCommon = () => {
   const goNext = ({ com, maj, sub_select }) => {
     console.log("hey");
     console.log(localStorage.getItem("majorTitle"));
-    const dataWithAdditionalInfo = [...selectedData, ...select0];
-    console.log(dataWithAdditionalInfo);
+     const dataWithAdditionalInfo = [...selectedData, ...select0];
+     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+     sessionStorage.setItem("selected", serializedArray);
 
     if (localStorage.getItem("majorTitle") == "경제") {
       navigate("/selectecogicho", {
