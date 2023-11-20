@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import backimg from "./images/main_background.jpg";
 import title from "./images/title.png";
 import RoadmapComponent from "./RoadmapComponent";
 import PageTitle from "./PageTitle";
+
+import axios from "axios";
+
+export const BASE_URL = process.env.REACT_APP_BASE_URL;
+const accessToken = localStorage.getItem("accessToken");
 const DummyData = [
   {
     student: "20210723",
@@ -338,6 +343,26 @@ const Roadmap = ({ data = [] }) => {
     }
     return false;
   }
+
+  const [data_default, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/roadmaps/`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setData(res.data);
+      } catch (e) {
+        console.log("error", e.response || e.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+  console.log("모든 로드맵: ", data_default);
+
   return (
     <>
       <TextWrapper>

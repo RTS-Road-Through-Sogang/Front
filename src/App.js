@@ -38,7 +38,8 @@ import SelectSubCseGicho from "./Select_sub_3_cse_gicho.js";
 import SelectSubMgtGicho from "./Select_sub_3_mgt_gicho.js";
 import SelectSubEcoGicho from "./Select_sub_3_eco_gicho.js";
 import CurrentStatus from "./19_currentstatus.js";
-import RoadmapCreate from "./20_roadmapcreate.js";
+import CreateRoadmapDetails from "./20_roadmapcreate.js";
+import CreateDefaultRoadmapDetails from "./20_roadmapdefaultcreate.js";
 export const URL = process.env.APIURL;
 
 function App() {
@@ -109,7 +110,11 @@ function App() {
           <Route path="/selectsubecochoice" element={<SelectSubEcoChoice />} />
 
           <Route path="/status" element={<CurrentStatus />} />
-          <Route path="/roadmapcreate" element={<RoadmapCreate />} />
+          <Route path="/roadmapcreate" element={<CreateRoadmapDetails />} />
+          <Route
+            path="/roadmapdefaultcreate"
+            element={<CreateDefaultRoadmapDetails />}
+          />
         </Routes>
       </BrowserRouter>
     </>
