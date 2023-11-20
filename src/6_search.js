@@ -108,11 +108,11 @@ const SelectSearch = () => {
     code: subject.code,
     point: subject.point,
   }));
-  console.log(searchedData);
+  // console.log(searchedData);
   const handleMajorChange = (newMajor) => {
     setSelect1(newMajor);
-    setDataArray([]);
-    setSelect([]);
+    // setDataArray([]);
+    // setSelect([]);
     setKeyword("");
   };
   const handleData = async () => {
@@ -121,10 +121,11 @@ const SelectSearch = () => {
       alert("전공을 선택해주세요");
       return;
     } else {
-      console.log(keyword);
       url += `${select1.value}/`;
-      if (keyword) {
-        url += `${keyword}/`;
+      if (!keyword) {
+        url += `None/`;
+      } else {
+        url += `${keyword}`;
       }
     }
     // if (select1 && select1.value && keyword) {
@@ -149,6 +150,13 @@ const SelectSearch = () => {
   const handleChange = (event) => {
     setKeyword(event.target.value);
   };
+  const handleSelectChange = (selectedOptions) => {
+    setSelect(selectedOptions);
+    // console.log("select :", select);
+  };
+  useEffect(() => {
+    console.log("select updated : ", select);
+  }, [select]);
 
   return (
     <>
@@ -189,7 +197,7 @@ const SelectSearch = () => {
         <MultiMajor
           options={searchedData}
           value={select}
-          onChange={setSelect}
+          onChange={handleSelectChange}
           labelledBy={"Select"}
           isCreatable={true}
           placeholder={"전공을 선택하세요"}
