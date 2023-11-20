@@ -71,7 +71,7 @@ const SelectSearch = () => {
 
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
-    navigate("/selectcommon", {
+    navigate("/roadmapdefaultcreate", {
       state: { selectedData: dataWithAdditionalInfo },
     });
   };
