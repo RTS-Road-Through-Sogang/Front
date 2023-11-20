@@ -348,7 +348,7 @@ const Roadmap = ({ data = [] }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/roadmaps/`, {
+        const res = await axios.get(`${BASE_URL}/roadmaps/default/`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
