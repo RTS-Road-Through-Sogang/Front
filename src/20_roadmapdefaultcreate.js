@@ -27,26 +27,26 @@ const CreateDefaultRoadmapDetails = () => {
   let uniqueCombinedDataMajor = [];
   let uniqueCombinedDataSub = [];
 
-  if (usersMajor === "경영") {
+  if (usersMajor === "컴퓨터공학") {
     uniqueCombinedDataMajor = LecturesMajorCse() || [];
     console.log("Combined Data Major Cse:", uniqueCombinedDataMajor);
   } else if (usersMajor === "경제") {
     uniqueCombinedDataMajor = LecturesMajorEco() || [];
     console.log("Combined Data Major Eco:", uniqueCombinedDataMajor);
-  } else if (usersMajor === "컴퓨터공학") {
+  } else if (usersMajor === "경영") {
     uniqueCombinedDataMajor = LecturesMajorMgt() || [];
     console.log("Combined Data Major Mgt:", uniqueCombinedDataMajor);
   } else {
     console.log("Invalid usersMajor value");
   }
 
-  if (usersSubmajor === "경영") {
+  if (usersSubmajor === "컴퓨터공학") {
     uniqueCombinedDataSub = LecturesSubCse() || [];
     console.log("Combined Data Sub Cse:", uniqueCombinedDataSub);
   } else if (usersSubmajor === "경제") {
     uniqueCombinedDataSub = LecturesSubEco() || [];
     console.log("Combined Data Sub Eco:", uniqueCombinedDataSub);
-  } else if (usersSubmajor === "컴퓨터공학") {
+  } else if (usersSubmajor === "경영") {
     uniqueCombinedDataSub = LecturesSubMgt() || [];
     console.log("Combined Data Sub Mgt:", uniqueCombinedDataSub);
   } else {
@@ -55,21 +55,15 @@ const CreateDefaultRoadmapDetails = () => {
 
   const semesters = [
     "1-1",
-    "1-하계",
     "1-2",
-    "1-동계",
     "2-1",
-    "2-하계",
     "2-2",
-    "2-동계",
     "3-1",
-    "3-하계",
     "3-2",
-    "3-동계",
     "4-1",
-    "4-하계",
     "4-2",
-    "4-동계",
+    "하계",
+    "동계",
   ];
   const [selectedLectures, setSelectedLectures] = useState([]);
   const [selectedSemester, setSelectedSemester] = useState(null);

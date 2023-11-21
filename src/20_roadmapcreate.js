@@ -27,26 +27,26 @@ const CreateRoadmapDetails = () => {
   let uniqueCombinedDataMajor = [];
   let uniqueCombinedDataSub = [];
 
-  if (usersMajor === "경영") {
+  if (usersMajor === "컴퓨터공학") {
     uniqueCombinedDataMajor = LecturesMajorCse() || [];
     console.log("Combined Data Major Cse:", uniqueCombinedDataMajor);
   } else if (usersMajor === "경제") {
     uniqueCombinedDataMajor = LecturesMajorEco() || [];
     console.log("Combined Data Major Eco:", uniqueCombinedDataMajor);
-  } else if (usersMajor === "컴퓨터공학") {
+  } else if (usersMajor === "경영") {
     uniqueCombinedDataMajor = LecturesMajorMgt() || [];
     console.log("Combined Data Major Mgt:", uniqueCombinedDataMajor);
   } else {
     console.log("Invalid usersMajor value");
   }
 
-  if (usersSubmajor === "경영") {
+  if (usersSubmajor === "컴퓨터공학") {
     uniqueCombinedDataSub = LecturesSubCse() || [];
     console.log("Combined Data Sub Cse:", uniqueCombinedDataSub);
   } else if (usersSubmajor === "경제") {
     uniqueCombinedDataSub = LecturesSubEco() || [];
     console.log("Combined Data Sub Eco:", uniqueCombinedDataSub);
-  } else if (usersSubmajor === "컴퓨터공학") {
+  } else if (usersSubmajor === "경영") {
     uniqueCombinedDataSub = LecturesSubMgt() || [];
     console.log("Combined Data Sub Mgt:", uniqueCombinedDataSub);
   } else {
@@ -55,21 +55,15 @@ const CreateRoadmapDetails = () => {
 
   const semesters = [
     "1-1",
-    "1-하계",
     "1-2",
-    "1-동계",
     "2-1",
-    "2-하계",
     "2-2",
-    "2-동계",
     "3-1",
-    "3-하계",
     "3-2",
-    "3-동계",
     "4-1",
-    "4-하계",
     "4-2",
-    "4-동계",
+    "하계",
+    "동계",
   ];
   const [selectedLectures, setSelectedLectures] = useState([]);
   const [selectedSemester, setSelectedSemester] = useState(null);
@@ -174,13 +168,74 @@ const CreateRoadmapDetails = () => {
     });
   };
 
+  const [selectedDefault, setSelectedDefault] = useState([]);
+  // const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/roadmaps/default/`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setSelectedDefault(res.data);
+      } catch (e) {
+        console.log("error", e.response || e.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const [defaultLecturesTitles, setDefaultLecturesTitles] = useState([]);
+  useEffect(() => {
+    const getLecturesTitlesBySemester = (selectedDefault) => {
+      const defaultLecturesTitles = [];
+
+      selectedDefault.forEach((semesterData) => {
+        const { roadmap_detail } = semesterData;
+
+        roadmap_detail.forEach((detail) => {
+          const { semester, lectures } = detail;
+
+          if (lectures.length > 0) {
+            const titles = lectures.map((lecture) => lecture.title);
+            defaultLecturesTitles.push({ [semester]: titles });
+          }
+        });
+      });
+
+      return defaultLecturesTitles;
+    };
+
+    const result = getLecturesTitlesBySemester(selectedDefault);
+    setDefaultLecturesTitles(result);
+  }, [selectedDefault]);
+
+  // useEffect(() => {
+  //   if (!loading && selectedDefault && selectedDefault.roadmap_detail) {
+  //     renderSemesterBlocks();
+  //   }
+  // }, [loading, selectedDefault]);
+  console.log(selectedDefault);
+
   const renderSemesterBlocks = () => {
+    const isSemesterDisabled = (semester) => {
+      const found = defaultLecturesTitles.find((item) =>
+        item.hasOwnProperty(semester)
+      );
+      return !!found;
+    };
     return semesters.map((semester, index) => (
       <SemesterBlock
         key={index}
         semester={semester}
-        onClick={() => handleSemesterClick(semester)}
+        onClick={() =>
+          !isSemesterDisabled(semester) && handleSemesterClick(semester)
+        }
         isSelected={selectedSemester === semester}
+        disabled={isSemesterDisabled(semester)}
       >
         <SemesterDiv>
           <SemesterTop>
@@ -196,20 +251,82 @@ const CreateRoadmapDetails = () => {
             }}
           >
             <SemesterCourses>
-              {selectedLectures.map((selected) => {
-                if (selected.semester === semester) {
-                  return selected.lectures.map((lecture, index) => (
-                    <li key={index}>{lecture.title}</li>
-                  ));
-                }
-                return null;
-              })}
+              {isSemesterDisabled(semester)
+                ? defaultLecturesTitles.map((titlesObj, i) => {
+                    if (titlesObj.hasOwnProperty(semester)) {
+                      return titlesObj[semester].map((title, j) => (
+                        <li key={j}>{title}</li>
+                      ));
+                    }
+                    return null;
+                  })
+                : selectedLectures
+                    .filter((selected) => selected.semester === semester)
+                    .map((selected) =>
+                      selected.lectures.map((lecture, index) => (
+                        <li key={index}>{lecture.title}</li>
+                      ))
+                    )}
             </SemesterCourses>
           </SemesterBottom>
         </SemesterDiv>
       </SemesterBlock>
     ));
   };
+
+  // const renderSemesterBlocks = () => {
+  //   if (loading) {
+  //     return <div>Loading...</div>; // 데이터 로딩 중일 때 표시할 내용
+  //   }
+
+  //   if (!selectedDefault || !selectedDefault.roadmap_detail) {
+  //     return <div>No data available</div>; // 데이터가 없을 때 표시할 내용
+  //   }
+
+  //   const roadmapDetails = selectedDefault.roadmap_detail;
+  //   const semesterDetails = roadmapDetails.filter(
+  //     (detail) => detail.lectures.length > 0
+  //   );
+
+  //   return semesters.map((semester, index) => {
+  //     const matchingSemester = semesterDetails.find(
+  //       (detail) => detail.semester === semester
+  //     );
+  //     const isDisabled = !!matchingSemester;
+
+  //     return (
+  //       <SemesterBlock
+  //         key={index}
+  //         semester={semester}
+  //         onClick={() => !isDisabled && handleSemesterClick(semester)}
+  //         isSelected={selectedSemester === semester}
+  //         disabled={isDisabled}
+  //       >
+  //         <SemesterDiv>
+  //           <SemesterTop>
+  //             <span>{semester}</span>
+  //           </SemesterTop>
+  //           <SemesterBottom
+  //             style={{
+  //               backgroundImage:
+  //                 selectedSemester === semester ? `url(${checkicon})` : "none",
+  //               backgroundRepeat: "no-repeat",
+  //               backgroundSize: "60%",
+  //               backgroundPosition: "center",
+  //             }}
+  //           >
+  //             <SemesterCourses>
+  //               {matchingSemester &&
+  //                 matchingSemester.lectures.map((lecture, index) => (
+  //                   <li key={index}>{lecture.title}</li>
+  //                 ))}
+  //             </SemesterCourses>
+  //           </SemesterBottom>
+  //         </SemesterDiv>
+  //       </SemesterBlock>
+  //     );
+  //   });
+  // };
 
   const openModal = (semester) => {
     if (semester) {
@@ -271,27 +388,9 @@ const CreateRoadmapDetails = () => {
 
   console.log("선택한 과목: ", selectedLectures);
 
-  const createRoadmap = async () => {
+  const submitRoadmap = async () => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/roadmaps/roadmap_roadmapdetail_create/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to create roadmap");
-      }
-      const responseData = await response.json();
-      console.log("Roadmap created:", responseData);
-
-      const { id: roadmapId } = responseData;
-      console.log("Roadmap ID:", roadmapId);
+      const roadmapId = 30;
 
       // Fetching roadmap data after creating it
       const roadmapResponse = await axios.get(`${BASE_URL}/roadmaps/`, {
@@ -392,7 +491,7 @@ const CreateRoadmapDetails = () => {
         </SemesterListMain>
         <SemesterListMain></SemesterListMain>
         <SemesterListSubmit>
-          <button type="submit" onClick={createRoadmap}>
+          <button type="submit" onClick={submitRoadmap}>
             완료
           </button>
         </SemesterListSubmit>
@@ -436,6 +535,15 @@ const SemesterDiv = styled.div`
     cursor: pointer;
     transform: scale(1.07);
   }
+  ${({ disabled }) =>
+    disabled &&
+    `
+    cursor: default;
+    &:hover {
+      cursor: default;
+      animation: none;
+    }
+  `}
 `;
 const SemesterTop = styled.div`
   width: 100%;

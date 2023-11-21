@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -9,6 +10,10 @@ import {
   faGear,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
+
+export const BASE_URL = process.env.REACT_APP_BASE_URL;
+const accessToken = localStorage.getItem("accessToken");
+
 const Semester = ({ semester, courses, deg, z }) => {
   return (
     <CourseBox
@@ -137,6 +142,38 @@ const RoadmapComponent = ({ data }) => {
       roadmaps.filter((_, index) => index !== idxDelete)
     );
   };
+
+  const saveRoadmapIdToSessionStorage = (roadmapId) => {
+    sessionStorage.setItem("roadmapId", roadmapId);
+  };
+
+  const createRoadmap = async () => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/roadmaps/roadmap_roadmapdetail_create/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to create roadmap");
+      }
+      const responseData = await response.json();
+      console.log("Roadmap created:", responseData);
+      const { id: roadmapId } = responseData;
+      console.log("Roadmap ID:", roadmapId);
+
+      saveRoadmapIdToSessionStorage(roadmapId);
+    } catch (error) {
+      console.error("Error creating roadmap:", error);
+      // 에러 처리 로직 추가
+    }
+  };
   return (
     <Container>
       <ButtonsForDefault>
@@ -150,7 +187,7 @@ const RoadmapComponent = ({ data }) => {
         <Button
           className="plus"
           style={{ color: "white" }}
-          onClick={addRoadmap}
+          onClick={createRoadmap}
         >
           <FontAwesomeIcon
             icon={faPlus}
