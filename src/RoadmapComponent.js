@@ -169,6 +169,25 @@ const RoadmapComponent = ({ data }) => {
       console.log("Roadmap ID:", roadmapId);
 
       saveRoadmapIdToSessionStorage(roadmapId);
+
+      const adjustResponse = await fetch(
+        `${BASE_URL}/roadmaps/default_adjust/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            new_roadmap_id: roadmapId,
+          }),
+        }
+      );
+      if (!adjustResponse.ok) {
+        throw new Error("Failed to adjust default roadmap");
+      }
+      const adjustData = await adjustResponse.json();
+      console.log("Default roadmap adjusted:", adjustData);
     } catch (error) {
       console.error("Error creating roadmap:", error);
       // 에러 처리 로직 추가
