@@ -71,6 +71,7 @@ const SelectContainer2 = ({ id, major, setSelect, select }) => {
     }
   };
   localStorage.setItem("submajorTrack", select);
+  console.log(major);
 
   return (
     <>
@@ -119,15 +120,14 @@ const SelecMajor = () => {
         });
 
         setDataArray(res.data);
-        console.log(dataArray)
+        console.log(dataArray);
       } catch (err) {
         console.log("getPost error: ", err);
       }
     };
     handleData();
-   
   }, []);
- console.log(dataArray);
+  console.log(dataArray);
   if (dataArray.major && dataArray.major.title) {
     const majorTitle = dataArray.major.title;
     localStorage.setItem("majorTitle", majorTitle);
@@ -210,7 +210,7 @@ const SelecMajor = () => {
           </BigBox>
         </>
       );
-    } else if (majorTitle == "컴퓨터공학과") {
+    } else if (majorTitle == "컴퓨터공학") {
       if (localStorage.getItem("submajorTrack")) {
         sessionStorage.setItem(
           "complete_point",
@@ -309,7 +309,7 @@ const SelecMajor = () => {
         );
         sessionStorage.setItem("major_point", point1[0].points.major_point);
       }
-     
+
       return (
         <>
           <ProgressBar>

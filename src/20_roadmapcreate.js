@@ -27,92 +27,43 @@ const CreateRoadmapDetails = () => {
   let uniqueCombinedDataMajor = [];
   let uniqueCombinedDataSub = [];
 
-  if (usersMajor === "경영") {
+  if (usersMajor === "컴퓨터공학") {
     uniqueCombinedDataMajor = LecturesMajorCse() || [];
     console.log("Combined Data Major Cse:", uniqueCombinedDataMajor);
   } else if (usersMajor === "경제") {
     uniqueCombinedDataMajor = LecturesMajorEco() || [];
     console.log("Combined Data Major Eco:", uniqueCombinedDataMajor);
-  } else if (usersMajor === "컴퓨터공학") {
+  } else if (usersMajor === "경영") {
     uniqueCombinedDataMajor = LecturesMajorMgt() || [];
     console.log("Combined Data Major Mgt:", uniqueCombinedDataMajor);
   } else {
     console.log("Invalid usersMajor value");
   }
 
-  if (usersSubmajor === "경영") {
+  if (usersSubmajor === "컴퓨터공학") {
     uniqueCombinedDataSub = LecturesSubCse() || [];
     console.log("Combined Data Sub Cse:", uniqueCombinedDataSub);
   } else if (usersSubmajor === "경제") {
     uniqueCombinedDataSub = LecturesSubEco() || [];
     console.log("Combined Data Sub Eco:", uniqueCombinedDataSub);
-  } else if (usersSubmajor === "컴퓨터공학") {
+  } else if (usersSubmajor === "경영") {
     uniqueCombinedDataSub = LecturesSubMgt() || [];
     console.log("Combined Data Sub Mgt:", uniqueCombinedDataSub);
   } else {
     console.log("Invalid usersSubmajor value");
   }
 
-  // useEffect(() => {
-  //   const createRoadmapDetails = async () => {
-  //     try {
-  //       // Replace 'your-api-endpoint' with the actual endpoint
-  //       const response = await fetch(
-  //         `${BASE_URL}/roadmaps/roadmap_roadmapdetail_create/`,
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             Authorization: `Bearer ${accessToken}`,
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: {
-  //             detail: "Not found.",
-  //           },
-  //         }
-  //       );
-  //       const data = await response.json();
-
-  //       // Replace 'your-roadmap-id' with the actual roadmap_id
-  //       const roadmapId = "새 로드맵";
-
-  //       // Array of semester titles
-  //       const titles = ["1-1", "1-2", "2-1", "2-2", "3-1", "3-2", "4-1", "4-2"];
-
-  //       // Loop through titles and create roadmap details
-  //       for (const title of titles) {
-  //         await axios.post(response, {
-  //           roadmap_id: roadmapId,
-  //           semester: title,
-  //         });
-  //       }
-
-  //       console.log("Roadmap details created successfully!");
-  //     } catch (error) {
-  //       console.error("Error creating roadmap details:", error);
-  //     }
-  //   };
-
-  //   // Call the function to create roadmap details when the component mounts
-  //   createRoadmapDetails();
-  // }, []);
-
   const semesters = [
     "1-1",
-    "1-하계",
     "1-2",
-    "1-동계",
     "2-1",
-    "2-하계",
     "2-2",
-    "2-동계",
     "3-1",
-    "3-하계",
     "3-2",
-    "3-동계",
     "4-1",
-    "4-하계",
     "4-2",
-    "4-동계",
+    "하계",
+    "동계",
   ];
   const [selectedLectures, setSelectedLectures] = useState([]);
   const [selectedSemester, setSelectedSemester] = useState(null);
@@ -217,13 +168,74 @@ const CreateRoadmapDetails = () => {
     });
   };
 
+  const [selectedDefault, setSelectedDefault] = useState([]);
+  // const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/roadmaps/default/`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setSelectedDefault(res.data);
+      } catch (e) {
+        console.log("error", e.response || e.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const [defaultLecturesTitles, setDefaultLecturesTitles] = useState([]);
+  useEffect(() => {
+    const getLecturesTitlesBySemester = (selectedDefault) => {
+      const defaultLecturesTitles = [];
+
+      selectedDefault.forEach((semesterData) => {
+        const { roadmap_detail } = semesterData;
+
+        roadmap_detail.forEach((detail) => {
+          const { semester, lectures } = detail;
+
+          if (lectures.length > 0) {
+            const titles = lectures.map((lecture) => lecture.title);
+            defaultLecturesTitles.push({ [semester]: titles });
+          }
+        });
+      });
+
+      return defaultLecturesTitles;
+    };
+
+    const result = getLecturesTitlesBySemester(selectedDefault);
+    setDefaultLecturesTitles(result);
+  }, [selectedDefault]);
+
+  // useEffect(() => {
+  //   if (!loading && selectedDefault && selectedDefault.roadmap_detail) {
+  //     renderSemesterBlocks();
+  //   }
+  // }, [loading, selectedDefault]);
+  console.log(selectedDefault);
+
   const renderSemesterBlocks = () => {
+    const isSemesterDisabled = (semester) => {
+      const found = defaultLecturesTitles.find((item) =>
+        item.hasOwnProperty(semester)
+      );
+      return !!found;
+    };
     return semesters.map((semester, index) => (
       <SemesterBlock
         key={index}
         semester={semester}
-        onClick={() => handleSemesterClick(semester)}
+        onClick={() =>
+          !isSemesterDisabled(semester) && handleSemesterClick(semester)
+        }
         isSelected={selectedSemester === semester}
+        disabled={isSemesterDisabled(semester)}
       >
         <SemesterDiv>
           <SemesterTop>
@@ -239,14 +251,22 @@ const CreateRoadmapDetails = () => {
             }}
           >
             <SemesterCourses>
-              {selectedLectures.map((selected) => {
-                if (selected.semester === semester) {
-                  return selected.lectures.map((lecture, index) => (
-                    <li key={index}>{lecture.title}</li>
-                  ));
-                }
-                return null;
-              })}
+              {isSemesterDisabled(semester)
+                ? defaultLecturesTitles.map((titlesObj, i) => {
+                    if (titlesObj.hasOwnProperty(semester)) {
+                      return titlesObj[semester].map((title, j) => (
+                        <li key={j}>{title}</li>
+                      ));
+                    }
+                    return null;
+                  })
+                : selectedLectures
+                    .filter((selected) => selected.semester === semester)
+                    .map((selected) =>
+                      selected.lectures.map((lecture, index) => (
+                        <li key={index}>{lecture.title}</li>
+                      ))
+                    )}
             </SemesterCourses>
           </SemesterBottom>
         </SemesterDiv>
@@ -314,77 +334,47 @@ const CreateRoadmapDetails = () => {
 
   console.log("선택한 과목: ", selectedLectures);
 
-  const createRoadmap = async () => {
+  const submitRoadmap = async () => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/roadmaps/roadmap_roadmapdetail_create/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const roadmapId = sessionStorage.getItem("roadmapId");
 
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("Roadmap created:", responseData);
+      // Fetching roadmap data after creating it
+      const roadmapResponse = await axios.get(`${BASE_URL}/roadmaps/`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log(roadmapResponse.data);
+      const roadmapData = roadmapResponse.data;
+      console.log("Roadmap data:", roadmapData);
 
-        const { id: roadmapId } = responseData;
-        console.log("Roadmap ID:", roadmapId);
-
-        // Fetching roadmap data after creating it
-        const roadmapResponse = await axios.get(`${BASE_URL}/roadmaps/`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        console.log(roadmapResponse.data);
-        const roadmapData = roadmapResponse.data;
-        console.log("Roadmap data:", roadmapData);
-
-        const findRoadmapDetailById = (roadmapData, targetRoadmapId) => {
-          const roadmap = roadmapData.find(
-            (item) => item.roadmap_id === targetRoadmapId
-          );
-
-          if (!roadmap) {
-            console.log(`Roadmap with ID ${targetRoadmapId} not found.`);
-            return {};
-          }
-
-          const detailArray = roadmap.roadmap_detail;
-          const findRoadmapDetailId = {};
-
-          detailArray.forEach((detail) => {
-            findRoadmapDetailId[detail.semester] = detail.roadmap_detail_id;
-          });
-
-          return findRoadmapDetailId;
-        };
-
-        const targetRoadmapId = roadmapId;
-        const detailsForRoadmapId = findRoadmapDetailById(
-          roadmapData,
-          targetRoadmapId
+      const findRoadmapDetailById = (roadmapData, targetRoadmapId) => {
+        const roadmap = roadmapData.find(
+          (item) => item.roadmap_id === targetRoadmapId
         );
-        console.log("Details for Roadmap ID:", detailsForRoadmapId);
 
-        await createRoadmapDetailAndAddLectures(detailsForRoadmapId);
-      } else {
-        throw new Error("Failed to create roadmap");
-      }
-    } catch (error) {
-      console.error("Error creating roadmap:", error);
-    }
-  };
+        if (!roadmap) {
+          console.log(`Roadmap with ID ${targetRoadmapId} not found.`);
+          return {};
+        }
 
-  // Call the function to create the roadmap
+        const detailArray = roadmap.roadmap_detail;
+        const findRoadmapDetailId = {};
 
-  const createRoadmapDetailAndAddLectures = async (detailsForRoadmapId) => {
-    try {
-      for (const semesterData of selectedLectures) {
+        detailArray.forEach((detail) => {
+          findRoadmapDetailId[detail.semester] = detail.roadmap_detail_id;
+        });
+
+        return findRoadmapDetailId;
+      };
+
+      const targetRoadmapId = roadmapId;
+      const detailsForRoadmapId = findRoadmapDetailById(
+        roadmapData,
+        targetRoadmapId
+      );
+      console.log("Details for Roadmap ID:", detailsForRoadmapId);
+      const promises = selectedLectures.map(async (semesterData) => {
         const semester = semesterData.semester;
         const roadmapDetailId = detailsForRoadmapId[semester];
 
@@ -396,25 +386,36 @@ const CreateRoadmapDetails = () => {
             lecture_type: lecture.lecture_type,
             lecture_id: lecture.id,
           };
-          console.log("과목 정보: ", RequestData)
+          console.log("과목 정보: ", RequestData);
 
-          const response = await axios.post(
-            `${BASE_URL}/roadmaps/roadmapdetaillecture_create/`,
-            RequestData,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          );
+          try {
+            await axios.post(
+              `${BASE_URL}/roadmaps/roadmapdetaillecture_create/`,
+              RequestData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              }
+            );
+          } catch (error) {
+            console.error("Error response:", error.response);
+            console.error("API로 데이터 전송 중 에러 발생:", error);
+            // 에러 처리
+          }
         }
+      });
+      // 비동기 작업들을 일정 간격으로 실행하기 위해 setTimeout 사용
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      for (const promise of promises) {
+        await promise;
+        await delay(100); // 100ms 간격으로 작업을 실행하도록 지연시간 추가
       }
+
       console.log("모든 API 요청이 성공적으로 완료되었습니다!");
     } catch (error) {
-      console.error("Error response:", error.response);
-      console.error("API로 데이터 전송 중 에러 발생:", error);
-      // 에러 처리
+      console.error("Error creating roadmap:", error);
     }
   };
 
@@ -436,7 +437,7 @@ const CreateRoadmapDetails = () => {
         </SemesterListMain>
         <SemesterListMain></SemesterListMain>
         <SemesterListSubmit>
-          <button type="submit" onClick={createRoadmap}>
+          <button type="submit" onClick={submitRoadmap}>
             완료
           </button>
         </SemesterListSubmit>
@@ -480,6 +481,15 @@ const SemesterDiv = styled.div`
     cursor: pointer;
     transform: scale(1.07);
   }
+  ${({ disabled }) =>
+    disabled &&
+    `
+    cursor: default;
+    &:hover {
+      cursor: default;
+      animation: none;
+    }
+  `}
 `;
 const SemesterTop = styled.div`
   width: 100%;

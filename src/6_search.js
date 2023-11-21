@@ -33,6 +33,16 @@ const major = [
     label: "공통",
     value: "공통",
   },
+  // {
+  //   id: 5,
+  //   label: "유럽문화",
+  //   value: "성성5",
+  // },
+  // {
+  //   id: 6,
+  //   label: "커뮤니케이션학과",
+  //   value: "성성6",
+  // },
 ];
 
 const SelectContainer = ({
@@ -66,11 +76,12 @@ const SelectSearch = () => {
       item.code,
       item.point,
     ]);
-    // console.log(select);
-    // console.log(dataWithAdditionalInfo);
+    console.log(select);
+    console.log(dataWithAdditionalInfo);
 
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
+    sessionStorage.setItem("Defaultselected", serializedArray);
     navigate("/selectcommon", {
       state: { selectedData: dataWithAdditionalInfo },
     });
@@ -80,21 +91,21 @@ const SelectSearch = () => {
   const [dataArray, setDataArray] = useState([]);
 
   const [select, setSelect] = useState([]);
-  const [select1, setSelect1] = useState(null);
+  const [select1, setSelect1] = useState([]);
   const [select2, setSelect2] = useState([]);
   const [select3, setSelect3] = useState([]);
   const [select4, setSelect4] = useState([]);
   const [ex_select, setSelectEX] = useState([]);
 
-  const [keyword, setKeyword] = useState(null);
+  const [keyword, setKeyword] = useState("");
 
-  // const len = [
-  //   select.length,
-  //   select1.length,
-  //   select2.length,
-  //   select3.length,
-  //   select4.length,
-  // ];
+  const len = [
+    select.length,
+    select1.length,
+    select2.length,
+    select3.length,
+    select4.length,
+  ];
 
   // useEffect(() => {
   //   handleData();
@@ -108,41 +119,20 @@ const SelectSearch = () => {
     code: subject.code,
     point: subject.point,
   }));
-  // console.log(searchedData);
-  const handleMajorChange = (newMajor) => {
-    setSelect1(newMajor);
-    // setDataArray([]);
-    // setSelect([]);
-    setKeyword("");
-  };
+  console.log(searchedData);
   const handleData = async () => {
-    let url = `${BASE_URL}/roadmaps/completed_lecture_search/`;
-    if (!select1) {
-      alert("전공을 선택해주세요");
-      return;
-    } else {
-      url += `${select1.value}/`;
-      if (!keyword) {
-        url += `None/`;
-      } else {
-        url += `${keyword}`;
-      }
-    }
-    // if (select1 && select1.value && keyword) {
-    //   console.log(select1);
-    // } else if (select1 && select1.value) {
-    //   url += `${select1.value}/`;
-    // } else {
-    //   alert("전공을 선택해주세요");
-    // }
     try {
-      const res = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const res = await axios.get(
+        `${BASE_URL}/roadmaps/completed_lecture_search/${select1.value}/${keyword}/`,
+        // `${BASE_URL}/roadmaps/completed_lecture_search/${"경제"}/${"금융"}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       setDataArray(res.data);
-      // console.log(res.data);
+      console.log(res.data);
     } catch (err) {
       console.log("getPost error: ", err);
     }
@@ -150,13 +140,6 @@ const SelectSearch = () => {
   const handleChange = (event) => {
     setKeyword(event.target.value);
   };
-  const handleSelectChange = (selectedOptions) => {
-    setSelect(selectedOptions);
-    // console.log("select :", select);
-  };
-  useEffect(() => {
-    console.log("select updated : ", select);
-  }, [select]);
 
   return (
     <>
@@ -177,7 +160,7 @@ const SelectSearch = () => {
         <SelectMajor
           options={major}
           value={select1}
-          onChange={handleMajorChange}
+          onChange={setSelect1}
           labelledBy={"Select"}
           isCreatable={true}
           components={{
@@ -197,7 +180,7 @@ const SelectSearch = () => {
         <MultiMajor
           options={searchedData}
           value={select}
-          onChange={handleSelectChange}
+          onChange={setSelect}
           labelledBy={"Select"}
           isCreatable={true}
           placeholder={"전공을 선택하세요"}
