@@ -100,6 +100,7 @@ const SelectSubCseGicho = () => {
     };
 
     handleData();
+
     const storedArray = sessionStorage.getItem("selected");
     const deserializedArray = JSON.parse(storedArray);
     setSelectedData(deserializedArray);

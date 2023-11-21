@@ -51,7 +51,8 @@ const SelectCommon = () => {
     console.log("hey");
     console.log(localStorage.getItem("majorTitle"));
     const dataWithAdditionalInfo = [...selectedData, ...select0];
-    console.log(dataWithAdditionalInfo);
+    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+    sessionStorage.setItem("selected", serializedArray);
 
     if (localStorage.getItem("majorTitle") == "경제") {
       navigate("/selectecogicho", {
@@ -82,7 +83,6 @@ const SelectCommon = () => {
     sessionStorage.setItem("selected", serializedArray);
     alert("임시저장 되었습니다.");
   };
-
 
   const [dataArray, setDataArray] = useState([]);
   const [pointArray, setpointArray] = useState([]);
