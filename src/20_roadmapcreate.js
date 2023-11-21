@@ -274,60 +274,6 @@ const CreateRoadmapDetails = () => {
     ));
   };
 
-  // const renderSemesterBlocks = () => {
-  //   if (loading) {
-  //     return <div>Loading...</div>; // 데이터 로딩 중일 때 표시할 내용
-  //   }
-
-  //   if (!selectedDefault || !selectedDefault.roadmap_detail) {
-  //     return <div>No data available</div>; // 데이터가 없을 때 표시할 내용
-  //   }
-
-  //   const roadmapDetails = selectedDefault.roadmap_detail;
-  //   const semesterDetails = roadmapDetails.filter(
-  //     (detail) => detail.lectures.length > 0
-  //   );
-
-  //   return semesters.map((semester, index) => {
-  //     const matchingSemester = semesterDetails.find(
-  //       (detail) => detail.semester === semester
-  //     );
-  //     const isDisabled = !!matchingSemester;
-
-  //     return (
-  //       <SemesterBlock
-  //         key={index}
-  //         semester={semester}
-  //         onClick={() => !isDisabled && handleSemesterClick(semester)}
-  //         isSelected={selectedSemester === semester}
-  //         disabled={isDisabled}
-  //       >
-  //         <SemesterDiv>
-  //           <SemesterTop>
-  //             <span>{semester}</span>
-  //           </SemesterTop>
-  //           <SemesterBottom
-  //             style={{
-  //               backgroundImage:
-  //                 selectedSemester === semester ? `url(${checkicon})` : "none",
-  //               backgroundRepeat: "no-repeat",
-  //               backgroundSize: "60%",
-  //               backgroundPosition: "center",
-  //             }}
-  //           >
-  //             <SemesterCourses>
-  //               {matchingSemester &&
-  //                 matchingSemester.lectures.map((lecture, index) => (
-  //                   <li key={index}>{lecture.title}</li>
-  //                 ))}
-  //             </SemesterCourses>
-  //           </SemesterBottom>
-  //         </SemesterDiv>
-  //       </SemesterBlock>
-  //     );
-  //   });
-  // };
-
   const openModal = (semester) => {
     if (semester) {
       setSelectedSemester(semester);
@@ -390,7 +336,7 @@ const CreateRoadmapDetails = () => {
 
   const submitRoadmap = async () => {
     try {
-      const roadmapId = 30;
+      const roadmapId = sessionStorage.getItem("roadmapId");
 
       // Fetching roadmap data after creating it
       const roadmapResponse = await axios.get(`${BASE_URL}/roadmaps/`, {
