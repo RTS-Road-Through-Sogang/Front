@@ -82,7 +82,7 @@ const SignUp = () => {
           student_number: studentid,
           major: major,
           password: password,
-          email: email,
+          email: email + "@sogang.ac.kr",
         }),
       });
       const data = await response.json();
