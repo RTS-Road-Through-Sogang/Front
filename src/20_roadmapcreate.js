@@ -336,7 +336,7 @@ const CreateRoadmapDetails = () => {
 
   const submitRoadmap = async () => {
     try {
-      const roadmapId = sessionStorage.getItem("roadmapId");
+      const roadmapId = parseInt(sessionStorage.getItem("roadmapId"), 10);
 
       // Fetching roadmap data after creating it
       const roadmapResponse = await axios.get(`${BASE_URL}/roadmaps/`, {
@@ -413,7 +413,11 @@ const CreateRoadmapDetails = () => {
         await delay(100); // 100ms 간격으로 작업을 실행하도록 지연시간 추가
       }
 
-      console.log("모든 API 요청이 성공적으로 완료되었습니다!");
+      // 모든 API 요청이 완료되면 1초 후에 alert을 띄우고 페이지 이동
+      setTimeout(() => {
+        alert("로드맵 저장 완료! 전체 로드맵 페이지로 이동하기");
+        window.location.href = "/roadmap"; // "/roadmap" 페이지로 이동
+      }, 1000);
     } catch (error) {
       console.error("Error creating roadmap:", error);
     }

@@ -41,6 +41,7 @@ import SelectSubEcoGicho from "./Select_sub_3_eco_gicho.js";
 import CurrentStatus from "./19_currentstatus.js";
 import CreateRoadmapDetails from "./20_roadmapcreate.js";
 import CreateDefaultRoadmapDetails from "./20_roadmapdefaultcreate.js";
+// import UpdateRoadmapDetails from "./20_roadmapdefaultupdate.js";
 export const URL = process.env.APIURL;
 
 function App() {
@@ -113,6 +114,10 @@ function App() {
 
           <Route path="/status" element={<CurrentStatus />} />
           <Route path="/roadmapcreate" element={<CreateRoadmapDetails />} />
+          {/* <Route
+            path="/roadmapdefaultupdate"
+            element={<UpdateRoadmapDetails />}
+          /> */}
           <Route
             path="/roadmapdefaultcreate"
             element={<CreateDefaultRoadmapDetails />}
