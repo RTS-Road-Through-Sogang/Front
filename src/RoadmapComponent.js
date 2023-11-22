@@ -80,6 +80,7 @@ const Semester = ({ semester, courses, deg, z }) => {
         {isModalOpen && (
           <Modal onClose={closeModal}>
             <h2>{selectedCourse.title}</h2>
+            <p>학점 : {selectedCourse.point}</p>
             <p>선수과목 : {selectedCourse.former || "X"}</p>
             <p>권장학년: {selectedCourse.grade_recommend || "X"}</p>
             {/* 모달 내용을 더 추가할 수 있습니다. */}
@@ -177,8 +178,8 @@ const RoadmapComponent = ({ data }) => {
   const goEditDefault = () => {
     navigate("/roadmapdefaultcreate");
   };
-  const goEdit = () => {
-    navigate("/selectcommon");
+  const goMajorTrack = () => {
+    navigate("/majortrack");
   };
 
   const [roadmaps, setRoadmaps] = useState(data);
@@ -188,11 +189,19 @@ const RoadmapComponent = ({ data }) => {
   };
   const handleIdx = ({ index }) => {
     const selectedRoadmap = roadmaps[index];
-    // console.log("선택한것 ", selectedRoadmap.roadmap_id);
+    console.log("선택한 로드맵", selectedRoadmap);
+
+    const coursesData = selectedRoadmap.roadmap_detail.flatMap((detail) =>
+      detail.lectures.map(({ code, point }) => [code, point])
+    );
+
+    sessionStorage.setItem("roadmap_courses", JSON.stringify(coursesData));
     sessionStorage.setItem("roadmap_idx", index + 1);
     sessionStorage.setItem("roadmapId", selectedRoadmap.roadmap_id);
-    goEdit();
+
+    // goMajorTrack();
   };
+
   const createRoadmap = async () => {
     try {
       const response = await fetch(
