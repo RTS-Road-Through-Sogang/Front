@@ -1,6 +1,10 @@
 import React from "react";
 import { SelectBox, InsideBar, Semester1, Semester2, Progress2, ProgressBar2 } from "./Select_styledcomponent";
 import { useEffect, useState, useRef } from "react";
+import noteta from "./images/not_eta.png"
+import yeseta from "./images/maj_eta.png"
+
+import styled from "styled-components";
 const SelectContainer = ({
   id,
   title,
@@ -21,6 +25,7 @@ const SelectContainer = ({
   teamplay
 }) => {
   const [isClicked, setisClicked] = useState(false);
+  const [currentImage, setCurrentImage] = useState(noteta);
   //new
   
   useEffect(() => {
@@ -50,6 +55,9 @@ const SelectContainer = ({
 
   const onClick = () => {
     setSelectEX(select);
+    setCurrentImage(
+      currentImage === noteta ? yeseta : noteta
+     );
 
     setisClicked((prevIsClicked) => !prevIsClicked);
     if (isClicked) {
@@ -84,7 +92,7 @@ const SelectContainer = ({
    
     const stars = Array.from({ length: rating }, (_, index) => (
       <span key={index}>
-        {index === 0 ? <span>팀플: &#9733; </span> : <span>&#9733; </span>}
+        {index === 0 ? <span>팀플: &#8859; </span> : <span> &#8859; </span>}
       </span>
     ));
 
@@ -96,12 +104,14 @@ const SelectContainer = ({
   return (
     <>
       <SelectBox onClick={onClick} isClicked={isClicked}>
-        {title}
+        <Title1>{title}</Title1>
         <br />
+        수강 오픈 비율
         <br />
-        - 수강 오픈 비율
-        <br />- 과목 코드: {code}
-        <br />- 학점: {point}학점 <br />- 계절: {season}
+        과목 코드: {code}
+        <br />
+        학점: {point}학점 <br />
+        계절: {season}
         <InsideBar>
           <Semester1>1학기</Semester1>
           <Semester2>2학기</Semester2>
@@ -113,23 +123,49 @@ const SelectContainer = ({
           />
         </ProgressBar2>
         <p>
-        <StarRating rating={teamplay} />
+          <StarRating rating={teamplay} />
         </p>
-     
-        <span
-          style={{
-            textDecoration: "underline",
-
-            cursor: "pointer",
-          }}
-          onClick={handleLinkClick}
-        >
-          에브리타임 바로가기
-        </span>
+        <Eta>
+          <span
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            에브리타임 &#8599;
+          </span>
+          <ClickableImage
+            src={currentImage}
+            isClicked={isClicked}
+            onClick={handleLinkClick}
+            style={{ marginTop: "4px" }}
+          />
+        </Eta>
         <br />
       </SelectBox>
     </>
   );
 };
+
+const Title1 = styled.div`
+  font-size: 1.1rem;
+  
+`;
+
+
+const ClickableImage = styled.img`
+  /* 다른 스타일을 추가하세요 */
+  position: absolute;
+  cursor: pointer;
+  width: 25px;
+  top: -25%;
+  
+  textdecoration: "underline";
+  aspect-ratio: 1; /* 이 숫자는 가로세로 비율입니다. 예를 들어, 1은 1:1 비율을 의미합니다. */
+`;
+
+const Eta = styled.div`
+  position: relative;
+ 
+`;
 
 export default SelectContainer;

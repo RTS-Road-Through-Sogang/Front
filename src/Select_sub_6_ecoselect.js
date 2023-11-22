@@ -33,11 +33,15 @@ import axios from "axios";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
+const pk = localStorage.getItem("subpk");
+
 const SelectSubEcoChoice = () => {
-  const maxItem = 5;
-  let availableItem = 4;
-  const c = 175 - (55 / maxItem) * (maxItem - availableItem);
-  const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
+  const maxItem = localStorage.getItem("bar");
+  let availableItem = localStorage.getItem("bar") - 10;
+  const bar_av = 4;
+  const bar_max = 5;
+  const c = 175 - (55 / bar_max) * (bar_max - bar_av);
+  const c2 = 54 - (146 / bar_max) * (bar_max - bar_av);
   const bg = `rgb(255, ${c}, ${c2})`;
 
   const { state } = useLocation();
@@ -83,7 +87,7 @@ const SelectSubEcoChoice = () => {
     const handleData = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URL}/roadmaps/eco_choice_lecture/1`,
+          `${BASE_URL}/roadmaps/eco_choice_lecture/${pk}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -92,6 +96,7 @@ const SelectSubEcoChoice = () => {
         );
 
         setDataArray(res.data);
+        
       } catch (err) {
         console.log("getPost error: ", err);
       }
@@ -260,13 +265,17 @@ const SelectSubEcoChoice = () => {
     });
     return acc;
   }, 0);
-  const sumOfFirstElements2 = select0.reduce(
+  const sumOfFirstElements2 = selectedData.reduce(
     (accumulator, item) => accumulator + item[1],
     0
   );
-
-  let sum = sumOfFirstElements;
-  let com = complete_select + sum;
+  const sumOfFirstElements3 = select0.reduce(
+    (accumulator, item) => accumulator + item[1],
+    0
+  );
+  let sum = sumOfFirstElements3;
+  let sum2 = sumOfFirstElements2;
+  let com = sum2 + sum;
   let maj = major_select;
   let sub = sub_select + sum;
 
@@ -307,7 +316,7 @@ const SelectSubEcoChoice = () => {
                     <Icon>
                       <FontAwesomeIcon
                         icon={faCheck}
-                        style={{ color: "#FF6262", fontSize: "1.7rem" }}
+                        style={{ color: "#FFAF36", fontSize: "1.7rem" }}
                       />
                     </Icon>
                     <TitleText>

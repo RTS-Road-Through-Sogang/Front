@@ -45,6 +45,8 @@ const major = [
   // },
 ];
 
+
+
 const SelectContainer = ({
   id,
   label,
@@ -76,12 +78,12 @@ const SelectSearch = () => {
       item.code,
       item.point,
     ]);
-    console.log(select);
-    console.log(dataWithAdditionalInfo);
+    console.log(select)
+    console.log(dataWithAdditionalInfo)
 
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
-    sessionStorage.setItem("Defaultselected", serializedArray);
+     sessionStorage.setItem("Defaultselected", serializedArray);
     navigate("/selectcommon", {
       state: { selectedData: dataWithAdditionalInfo },
     });
@@ -117,9 +119,9 @@ const SelectSearch = () => {
     value: subject.id,
     label: subject.title,
     code: subject.code,
-    point: subject.point,
+    point: subject.point
   }));
-  console.log(searchedData);
+  console.log(searchedData)
   const handleData = async () => {
     try {
       const res = await axios.get(
@@ -143,9 +145,7 @@ const SelectSearch = () => {
 
   return (
     <>
-      <ProgressBar>
-        <Progress width={100 - (availableItem * 100) / maxItem} bgColor={bg} />
-      </ProgressBar>
+      
       <BigTitles>
         <PageTitle
           text={{
@@ -297,7 +297,7 @@ const Icon = styled.div`
 `;
 
 const TitleText = styled.div`
-  background-color: white;
+ 
   margin-bottom: 2%;
   width: 100%;
 `;

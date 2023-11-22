@@ -35,11 +35,15 @@ import { useFetch } from "react-async";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
+const pk = localStorage.getItem("trackpk");
 
 const SelectmgtDutyChoice = () => {
-  const maxItem = 5;
-  let availableItem = 4;
-  const c = 194 - (100 / maxItem) * (maxItem - availableItem);
+  const maxItem = localStorage.getItem("bar");
+  let availableItem = localStorage.getItem("bar") - 5;
+  const bar_av = 4;
+  const bar_max = 5;
+
+  const c = 194 - (100 / bar_max) * (bar_max - bar_av);
   const bg = `rgb(255, ${c}, ${c})`;
 
   const { state } = useLocation();
@@ -47,8 +51,7 @@ const SelectmgtDutyChoice = () => {
   const [selectedData, setSelectedData] = useState([]);
   console.log(selectedData);
 
-  const navigate = useNavigate();
-  const goSave = () => {
+  const navigate = useNavigate();const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
     sessionStorage.setItem("ex_sub_select", sub_select);
@@ -68,6 +71,7 @@ const SelectmgtDutyChoice = () => {
     navigate("/selectmgtchoice", {
       state: { selectedData: dataWithAdditionalInfo },
     });
+
   };
 
   const [dataArray, setDataArray] = useState([]);
@@ -85,7 +89,7 @@ const SelectmgtDutyChoice = () => {
     const handleData = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URL}/roadmaps/mgt_duty_choice_lecture/1`,
+          `${BASE_URL}/roadmaps/mgt_duty_choice_lecture/${pk}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -213,15 +217,22 @@ const SelectmgtDutyChoice = () => {
     });
     return acc;
   }, 0);
-  const sumOfFirstElements2 = select0.reduce(
+  const sumOfFirstElements2 = selectedData.reduce(
+    (accumulator, item) => accumulator + item[1],
+    0
+
+  );const sumOfFirstElements3 = select0.reduce(
     (accumulator, item) => accumulator + item[1],
     0
   );
-
-  console.log(select);
-  let sum = sumOfFirstElements;
-  let com = complete_select + sum;
+  let sum = sumOfFirstElements3;
+  let sum2 = sumOfFirstElements2;
+  let com = sum2 + sum;
   let maj = major_select + sum;
+  console.log(com, maj);
+  
+
+  
 
   let pot1 = sumOfFirstElements;
 

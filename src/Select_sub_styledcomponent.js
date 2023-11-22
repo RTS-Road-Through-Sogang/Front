@@ -51,7 +51,7 @@ export const Icon = styled.div`
 
 export const TitleText = styled.div`
   font-size: 1.3rem;
-  background-color: white;
+ 
   margin-bottom: 2%;
   width: 100%;
 `;
@@ -60,13 +60,17 @@ export const SmallBox = styled.div`
   width: auto%;
   margin-top: 3%;
 `;
-export const XSmaillBox = styled.div``;
+export const XSmaillBox = styled.div`
+  overflow-x: auto; // 가로 스크롤을 허용
+  white-space: nowrap; // 텍스트 줄 바꿈 방지
+  margin-right: 100px;
+`;
 export const SelectBox = styled.button`
  font-size: 0.9rem;
   font-family: "Noto Sans KR";
   font-weight: 500;
   margin-right: 4%;
-
+text-align: left;
   margin-bottom: 2%;
 
   padding: 3% 3%;
@@ -136,7 +140,7 @@ export const Bar = styled.div`
 `;
 
 export const BarText = styled.div`
-  width: 20%;
+  width: 30%;
   margin: 3% auto;
   font-size: 0.9rem;
 `;

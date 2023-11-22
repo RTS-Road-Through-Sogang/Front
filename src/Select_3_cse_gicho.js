@@ -3,8 +3,8 @@ import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
-import PageTitle from "./PageTitleSub";
-import SelectContainer from "./SelectSubContainer";
+import PageTitle from "./PageTitle";
+import SelectContainer from "./SelectContainer";
 import {
   Progress,
   ProgressBar,
@@ -28,26 +28,46 @@ import {
   PointDisplay,
   Save,
   Next,
-} from "./Select_sub_styledcomponent";
+} from "./Select_styledcomponent";
 
 import axios from "axios";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
+const pk=localStorage.getItem("trackpk")
 
-const SelectSubCseGicho = () => {
-  const maxItem = 5;
-  let availableItem = 4;
-  const c = 175 - (55 / maxItem) * (maxItem - availableItem);
-  const c2 = 54 - (146 / maxItem) * (maxItem - availableItem);
-  const bg = `rgb(255, ${c}, ${c2})`;
+const SelectCseGicho = () => {
+   const maxItem = localStorage.getItem("bar");
+   let availableItem = localStorage.getItem("bar") - 3;
+   const bar_av = 4;
+   const bar_max = 5;
 
+   const c = 194 - (100 / bar_max) * (bar_max - bar_av);
+   const bg = `rgb(255, ${c}, ${c})`;
   const { state } = useLocation();
 
   const [selectedData, setSelectedData] = useState([]);
   console.log(selectedData);
 
   const navigate = useNavigate();
+  const goNext = ({ com, maj, sub_select }) => {
+    console.log(localStorage.getItem("majorTitle"));
+
+    const dataWithAdditionalInfo = [...selectedData, ...select0];
+const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+    sessionStorage.setItem("selected", serializedArray);
+    sessionStorage.setItem("ex_complete_select", com);
+    sessionStorage.setItem("ex_major_select", maj);
+    sessionStorage.setItem("ex_sub_select", sub_select);
+    navigate("/selectcseduty", {
+      state: { selectedData: dataWithAdditionalInfo },
+    });
+
+    
+
+    
+  };
+
   const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
@@ -55,20 +75,8 @@ const SelectSubCseGicho = () => {
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
-    alert("임시저장 되었습니다.");
-  };
-
-  const goNext = () => {
-    sessionStorage.setItem("ex_complete_select", com);
-    sessionStorage.setItem("ex_major_select", maj);
-    sessionStorage.setItem("ex_sub_select", sub_select);
-    const dataWithAdditionalInfo = [...selectedData, ...select0];
-    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
-    sessionStorage.setItem("selected", serializedArray);
-    navigate("/selectsubcseduty", {
-      state: { selectedData: dataWithAdditionalInfo },
-    });
-  };
+    alert("임시저장 되었습니다.")
+  }
 
   const [dataArray, setDataArray] = useState([]);
   const [pointArray, setpointArray] = useState([]);
@@ -85,7 +93,7 @@ const SelectSubCseGicho = () => {
     const handleData = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URL}/roadmaps/cse_gicho_lecture/1`,
+          `${BASE_URL}/roadmaps/cse_gicho_lecture/${pk}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -94,17 +102,18 @@ const SelectSubCseGicho = () => {
         );
 
         setDataArray(res.data);
+        console.log(res.data)
       } catch (err) {
         console.log("getPost error: ", err);
       }
     };
 
     handleData();
-
-    const storedArray = sessionStorage.getItem("selected");
-    const deserializedArray = JSON.parse(storedArray);
+     const storedArray = sessionStorage.getItem("selected");
+     const deserializedArray = JSON.parse(storedArray);
+ 
     setSelectedData(deserializedArray);
-
+    console.log(selectedData)
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
   const major_point = sessionStorage.getItem("major_point");
@@ -153,38 +162,20 @@ const SelectSubCseGicho = () => {
   ];
 
   const c_select = [
-    175 +
-      (55 / maxSelect[0]) *
+    94 +
+      (100 / maxSelect[0]) *
         (maxSelect[0] -
           select1.reduce((total, currentRow) => total + currentRow[1], 0)),
-    175 +
-      (55 / maxSelect[1]) *
+    94 +
+      (100 / maxSelect[1]) *
         (maxSelect[1] -
           select2.reduce((total, currentRow) => total + currentRow[1], 0)),
-    175 +
-      (55 / maxSelect[2]) *
+    94 +
+      (100 / maxSelect[2]) *
         (maxSelect[2] -
           select3.reduce((total, currentRow) => total + currentRow[1], 0)),
-    175 +
-      (55 / maxSelect[3]) *
-        (maxSelect[3] -
-          select4.reduce((total, currentRow) => total + currentRow[1], 0)),
-  ];
-  const c_select2 = [
-    54 +
-      (146 / maxSelect[0]) *
-        (maxSelect[0] -
-          select1.reduce((total, currentRow) => total + currentRow[1], 0)),
-    54 +
-      (146 / maxSelect[1]) *
-        (maxSelect[1] -
-          select2.reduce((total, currentRow) => total + currentRow[1], 0)),
-    54 +
-      (146 / maxSelect[2]) *
-        (maxSelect[2] -
-          select3.reduce((total, currentRow) => total + currentRow[1], 0)),
-    54 +
-      (146 / maxSelect[3]) *
+    94 +
+      (100 / maxSelect[3]) *
         (maxSelect[3] -
           select4.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];
@@ -195,10 +186,18 @@ const SelectSubCseGicho = () => {
     });
     return acc;
   }, 0);
-  let sum = sumOfFirstElements;
-  let com = complete_select + sum;
-  let maj = major_select;
-  let sub = sub_select;
+ const sumOfFirstElements2 = selectedData.reduce(
+   (accumulator, item) => accumulator + item[1],
+   0
+ );
+ const sumOfFirstElements3 = select0.reduce(
+   (accumulator, item) => accumulator + item[1],
+   0
+ );
+ let sum = sumOfFirstElements3;
+ let sum2 = sumOfFirstElements2;
+ let com = sum2 + sum;
+ let maj = major_select + sum;
   console.log(com, maj);
 
   sessionStorage.setItem("complete_select", com);
@@ -214,7 +213,7 @@ const SelectSubCseGicho = () => {
         <PageTitle
           text={{
             left: "나의 수강할 ",
-            bold: "부전공 기초 교과를",
+            bold: "전공기초 교과를",
             right: " 선택하세요",
           }}
         />
@@ -282,7 +281,7 @@ const SelectSubCseGicho = () => {
                   <BarText>{localStorage.getItem("submajorTrack")}</BarText>
 
                   <MiniBar>
-                    <Mini width={(sub * 100) / sub_point} bgColor={bg} />
+                    <Mini width={(sub_select * 100) / sub_point} bgColor={bg} />
                   </MiniBar>
                 </Bar>
               )}
@@ -305,7 +304,7 @@ const SelectSubCseGicho = () => {
                               100) /
                             maxSelect[index]
                           }
-                          bgColor={`rgb(255, ${c_select[index]}, ${c_select2[index]})`}
+                          bgColor={`rgb(255, ${c_select[index]}, ${c_select[index]})`}
                           ex_width={
                             (ex_select[index].reduce(
                               (total, currentRow) => total + currentRow[1],
@@ -315,16 +314,16 @@ const SelectSubCseGicho = () => {
                             maxSelect[index]
                           }
                           ex_bg={`rgb(255, ${
-                            175 +
-                            (55 / maxSelect[index]) *
+                            94 +
+                            (100 / maxSelect[index]) *
                               (maxSelect[index] -
                                 ex_select[index].reduce(
                                   (total, currentRow) => total + currentRow[1],
                                   0
                                 ))
                           }, ${
-                            54 +
-                            (146 / maxSelect[index]) *
+                            94 +
+                            (100 / maxSelect[index]) *
                               (maxSelect[index] -
                                 ex_select[index].reduce(
                                   (total, currentRow) => total + currentRow[1],
@@ -355,4 +354,4 @@ const SelectSubCseGicho = () => {
     </>
   );
 };
-export default SelectSubCseGicho;
+export default SelectCseGicho;

@@ -11,6 +11,7 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { type } from "@testing-library/user-event/dist/type";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
@@ -196,10 +197,12 @@ const RoadmapComponent = ({ data }) => {
     }
   };
   const deleteRoadmap = async (idxDelete, roadmap_id) => {
-    console.log(roadmap_id);
+    // roadmap_id = 25;
+    // console.log(typeof roadmap_id);
+    // console.log(roadmap_id);
     try {
       const response = await fetch(
-        `${BASE_URL}/roadmap_update_delete/${roadmap_id}/`,
+        `${BASE_URL}/roadmaps/roadmap_update_delete/${roadmap_id}/`,
         {
           method: "DELETE",
           headers: {
@@ -208,16 +211,16 @@ const RoadmapComponent = ({ data }) => {
           },
         }
       );
-      // console.log("response : ", response);
+      console.log("response : ", response);
       if (!response.ok) {
         throw new Error("Failed to delete the roadmap from the server.");
       }
+      setRoadmaps((roadmaps) =>
+        roadmaps.filter((_, index) => index !== idxDelete)
+      );
     } catch (error) {
       console.error("Error reading roadmap:", error);
     }
-    setRoadmaps((roadmaps) =>
-      roadmaps.filter((_, index) => index !== idxDelete)
-    );
   };
 
   return (
