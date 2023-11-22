@@ -18,6 +18,24 @@ const accessToken = localStorage.getItem("accessToken");
 
 const Semester = ({ semester, courses, deg, z }) => {
   // console.log("courses:", courses);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const openModal = (course) => {
+    setSelectedCourse(course);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const toggleModal = (course) => {
+    if (isModalOpen && selectedCourse && selectedCourse.id === course.id) {
+      setIsModalOpen(false);
+      setSelectedCourse(null);
+    } else {
+      setSelectedCourse(course);
+      setIsModalOpen(true);
+    }
+  };
   return (
     <CourseBox
       style={{
@@ -33,15 +51,40 @@ const Semester = ({ semester, courses, deg, z }) => {
 
         <CourseBottomBox>
           {courses.map((course, idx) => {
-            const { id, title } = course;
+            const {
+              id,
+              title,
+              former,
+              semester_one,
+              semester_two,
+              grade_recommend,
+              point,
+              eta,
+              code,
+            } = course;
 
             return (
-              <SemesterText>
-                <div key={id}>{title}</div>
+              <SemesterText className="Modal">
+                <div key={id} onClick={() => toggleModal(course)}>
+                  {title}
+                </div>
+                {/* <Hovermessage>
+                  선수과목 : {former || "X"}
+                  <br />
+                  권장학년: {grade_recommend || "X"}
+                </Hovermessage> */}
               </SemesterText>
             );
           })}
         </CourseBottomBox>
+        {isModalOpen && (
+          <Modal onClose={closeModal}>
+            <h2>{selectedCourse.title}</h2>
+            <p>선수과목 : {selectedCourse.former || "X"}</p>
+            <p>권장학년: {selectedCourse.grade_recommend || "X"}</p>
+            {/* 모달 내용을 더 추가할 수 있습니다. */}
+          </Modal>
+        )}
       </CourseWrapper>
     </CourseBox>
   );
@@ -132,14 +175,14 @@ const editDefault = () => {};
 const RoadmapComponent = ({ data }) => {
   const navigate = useNavigate();
   const goEditDefault = () => {
-    navigate("roadmapdefaultcreate");
+    navigate("/roadmapdefaultcreate");
   };
   const goEdit = () => {
     navigate("/selectcommon");
   };
 
   const [roadmaps, setRoadmaps] = useState(data);
-  // console.log("roadmaps :", roadmaps);
+  console.log("roadmaps :", roadmaps);
   const saveRoadmapIdToSessionStorage = (roadmapId) => {
     sessionStorage.setItem("roadmapId", roadmapId);
   };
@@ -167,7 +210,7 @@ const RoadmapComponent = ({ data }) => {
         throw new Error("Failed to create roadmap");
       }
       const responseData = await response.json();
-      // console.log("Roadmap created:", responseData);
+      console.log("Roadmap created:", responseData);
       const { id: roadmapId } = responseData;
       // console.log("Roadmap ID:", roadmapId);
 
@@ -190,7 +233,21 @@ const RoadmapComponent = ({ data }) => {
         throw new Error("Failed to adjust default roadmap");
       }
       const adjustData = await adjustResponse.json();
-      console.log("Default roadmap adjusted:", adjustData);
+      // console.log("Default roadmap adjusted:", adjustData);
+
+      // const detailsResponse = await fetch(
+      //   `${BASE_URL}/roadmaps/${roadmapId}/details`,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${accessToken}`,
+      //     },
+      //   }
+      // );
+      // const detailsData = await detailsResponse.json();
+      // setRoadmaps((prevRoadmaps) => [
+      //   ...prevRoadmaps,
+      //   { id: roadmapId, ...detailsData },
+      // ]);
     } catch (error) {
       console.error("Error creating roadmap:", error);
       // 에러 처리 로직 추가
@@ -308,7 +365,7 @@ const RoadmapComponent = ({ data }) => {
   );
 };
 const Container = styled.div`
-  height: 100vh;
+  // height: 100%;
   margin: 0;
   padding: 5%;
   display: flex;
@@ -341,6 +398,7 @@ const SemesterBox = styled.div`
   justify-content: center;
   //   margin: 10px;
   position: relative;
+  background: #e0c8d8;
 `;
 
 const ButtonWrapper = styled.div`
@@ -348,7 +406,9 @@ const ButtonWrapper = styled.div`
   // border-radius: 34px 0px;
   // background-color: #ff6262;
   // cursor: pointer;
-  padding: 1em;
+  margin-left: 90%;
+  flex-direction: column;
+  padding: 0em;
 `;
 
 const Tooltip = styled.div`
@@ -369,8 +429,8 @@ const Tooltip = styled.div`
   // visibility: hidden;
 `;
 const Button = styled.div`
-  width: 3em;
-  height: 3em;
+  width: 2.5em;
+  height: 1em;
 
   display: flex;
   justify-content: center;
@@ -383,7 +443,13 @@ const Button = styled.div`
     margin-bottom: 0.8rem;
   }
   &.setting {
+    width: 3em;
+    height: 3em;
     margin-bottom: 0.8rem;
+  }
+  &.plus {
+    width: 3em;
+    height: 3em;
   }
 
   box-shadow: 3px 3px 4px 0px rgba(0, 0, 0, 0.18);
@@ -563,6 +629,24 @@ const CourseBottomBox = styled.div`
   @media screen and (max-width: 1000px) {
   }
 `;
+const Modal = styled.div`
+  display: block;
+  position: absolute;
+  top: -10%;
+  right: 100%;
+  width: 70%;
+  height: 100%;
+  z-index: 5;
+  border-radius: 32px;
+  background: white;
+  border: 0.2rem solid #ababab;
+`;
+const Hovermessage = styled.div`
+  display: None;
+  padding: 0.1em auto;
+  // background: tomato;
+  border: 1px solid black;
+`;
 
 const SemesterText = styled.span`
   //   width: 5vw;
@@ -574,6 +658,17 @@ const SemesterText = styled.span`
   justify-content: center;
   align-items: center;
   font-weight: 650;
+  position: relative;
+  cursor: pointer;
+  &:hover ${Hovermessage} {
+    display: block;
+    position: absolute;
+    top: -150%;
+    right: 100%;
+    width: 70%;
+    height: 500%;
+    // z-index: 999;
+  }
 `;
 
 const MoveButton = styled.div`
