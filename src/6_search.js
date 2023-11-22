@@ -45,8 +45,6 @@ const major = [
   // },
 ];
 
-
-
 const SelectContainer = ({
   id,
   label,
@@ -78,13 +76,13 @@ const SelectSearch = () => {
       item.code,
       item.point,
     ]);
-    console.log(select)
-    console.log(dataWithAdditionalInfo)
+    console.log(select);
+    console.log(dataWithAdditionalInfo);
 
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
-     sessionStorage.setItem("Defaultselected", serializedArray);
-    navigate("/selectcommon", {
+    sessionStorage.setItem("Defaultselected", serializedArray);
+    navigate("/roadmapdefaultcreate", {
       state: { selectedData: dataWithAdditionalInfo },
     });
   };
@@ -119,20 +117,28 @@ const SelectSearch = () => {
     value: subject.id,
     label: subject.title,
     code: subject.code,
-    point: subject.point
+    point: subject.point,
   }));
-  console.log(searchedData)
+  console.log(searchedData);
   const handleData = async () => {
+    let url = `${BASE_URL}/roadmaps/completed_lecture_search/`;
+    if (!select1) {
+      alert("전공을 선택해주세요");
+      return;
+    } else {
+      url += `${select1.value}/${keyword}/`;
+      if (!keyword) {
+        url += `None/`;
+      } else {
+        url += `${keyword}`;
+      }
+    }
     try {
-      const res = await axios.get(
-        `${BASE_URL}/roadmaps/completed_lecture_search/${select1.value}/${keyword}/`,
-        // `${BASE_URL}/roadmaps/completed_lecture_search/${"경제"}/${"금융"}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       setDataArray(res.data);
       console.log(res.data);
     } catch (err) {
@@ -145,12 +151,11 @@ const SelectSearch = () => {
 
   return (
     <>
-      
       <BigTitles>
         <PageTitle
           text={{
-            left: "나의 교과 과정과 ",
-            bold: "부전공을",
+            left: "",
+            bold: "이미 이수한 과목을",
             right: " 선택하세요",
           }}
         />
@@ -297,7 +302,6 @@ const Icon = styled.div`
 `;
 
 const TitleText = styled.div`
- 
   margin-bottom: 2%;
   width: 100%;
 `;
@@ -319,7 +323,7 @@ const SelectBox = styled.button`
   border-radius: 60px;
   display: inline-block;
 
-  background-color: white;
+  // background-color: white;
   border: 0.2rem solid #ff6262;
   color: #ff6262;
   font-weight: 700;
