@@ -87,7 +87,7 @@ const Introduce = () => {
       <BackgroundWrapper>
         <MainSection>
           <MainImageWrapper>
-            {/* <MainImage src={sign_image} alt="Main" /> */}
+            <MainImage src={sign_image} alt="Main" />
           </MainImageWrapper>
           <MainText>
             {title.split("").map((char, index) =>

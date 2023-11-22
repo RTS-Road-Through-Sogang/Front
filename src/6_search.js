@@ -323,7 +323,7 @@ const SelectBox = styled.button`
   border-radius: 60px;
   display: inline-block;
 
-  // background-color: white;
+  background-color: white;
   border: 0.2rem solid #ff6262;
   color: #ff6262;
   font-weight: 700;
