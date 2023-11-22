@@ -328,23 +328,21 @@ const DummyData = [
   },
 ];
 const EmptyData = [];
-const Roadmap = ({ data = [] }) => {
-  function hasCoursesTaken(data) {
-    if (!Array.isArray(data)) {
-      return false;
-    }
-    for (let roadmap of data) {
-      for (let detail of roadmap.roadmap_detail) {
-        const semester = Object.keys(detail)[0];
-        if (detail[semester].length > 0) {
-          return true;
-        }
-      }
-    }
+const hasCoursesTaken = (data) => {
+  if (!Array.isArray(data)) {
     return false;
   }
-
-  const [data_default, setData] = useState([]);
+  for (let roadmap of data) {
+    for (let detail of roadmap.roadmap_detail) {
+      if (detail.lectures.length > 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+const Roadmap = () => {
+  const [defaultData, setDefaultData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -353,7 +351,7 @@ const Roadmap = ({ data = [] }) => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        setData(res.data);
+        setDefaultData(res.data);
       } catch (e) {
         console.log("error", e.response || e.message);
       }
@@ -361,8 +359,7 @@ const Roadmap = ({ data = [] }) => {
 
     fetchData();
   }, []);
-  console.log("모든 로드맵: ", data_default);
-
+  // console.log("모든 로드맵: ", defaultData);
   return (
     <>
       <TextWrapper>
@@ -372,8 +369,8 @@ const Roadmap = ({ data = [] }) => {
           }}
         />
       </TextWrapper>
-      {hasCoursesTaken(DummyData) ? (
-        <RoadmapComponent data={DummyData} />
+      {hasCoursesTaken(defaultData) ? (
+        <RoadmapComponent data={defaultData} />
       ) : (
         <EmptyRoadmap>
           <BackgroundWrapper>
@@ -443,7 +440,7 @@ const TextOverlay = styled.div`
   transform: translate(-50%, -50%);
   color: #242424;
   text-align: center;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   font-family: BM JUA_TTF;
   font-weight: 600;
   font-size: 26px;

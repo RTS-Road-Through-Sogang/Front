@@ -10,17 +10,20 @@ import {
   faGear,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
 
 const Semester = ({ semester, courses, deg, z }) => {
+  // console.log("courses:", courses);
   return (
     <CourseBox
       style={{
         transform: `rotateY(${deg}deg) translateZ(${z}px)`,
       }}
     >
+      {/* {courses && courses.length > 0 ? () : null} */}
       <CourseWrapper>
         <CourseTopBox>
           {/* {semester} */}
@@ -29,13 +32,11 @@ const Semester = ({ semester, courses, deg, z }) => {
 
         <CourseBottomBox>
           {courses.map((course, idx) => {
-            const { id, common_name, cse_name, mgt_name, eco_name } = course;
+            const { id, title } = course;
 
             return (
               <SemesterText>
-                <div key={id}>
-                  {common_name || cse_name || mgt_name || eco_name}
-                </div>
+                <div key={id}>{title}</div>
               </SemesterText>
             );
           })}
@@ -83,7 +84,7 @@ const RoadmapDetail = ({ detail }) => {
       };
     }
   }, []);
-
+  // console.log(detail)
   return (
     <Scene>
       <MoveButton className="left" onClick={() => handleClickChevron(true)}>
@@ -97,14 +98,18 @@ const RoadmapDetail = ({ detail }) => {
         }}
       >
         {detail.map((detailData, idx) => {
-          const semester = Object.keys(detailData)[0];
+          // console.log("디테일 data : ", detailData);
+          // const semester = Object.keys(detailData)[0];
+          const semester = detailData.semester;
+          // console.log("semester", semester);
+          // console.log("여기야 : ", detailData.lectures);
 
           return (
             <Semester
               key={`${semester}${idx}`}
               deg={idx * theta}
               semester={semester}
-              courses={detailData[semester]}
+              courses={detailData.lectures}
               z={z}
             />
           );
@@ -121,32 +126,29 @@ const RoadmapDetail = ({ detail }) => {
   );
 };
 
-const handleIdx = ({ index }) => {
-  sessionStorage.setItem("roadmap_idx", index + 1);
-  console.log(sessionStorage);
-};
+const editDefault = () => {};
 
 const RoadmapComponent = ({ data }) => {
-  const [roadmaps, setRoadmaps] = useState(data);
-  const addRoadmap = () => {
-    const newRoadmap = {
-      student: "New Student",
-      title: "New Title",
-      track: "New Track",
-      roadmap_detail: [],
-    };
-    setRoadmaps([...roadmaps, newRoadmap]);
+  const navigate = useNavigate();
+  const goEditDefault = () => {
+    navigate("roadmapdefaultcreate");
   };
-  const deleteRoadmap = (idxDelete) => {
-    setRoadmaps((roadmaps) =>
-      roadmaps.filter((_, index) => index !== idxDelete)
-    );
+  const goEdit = () => {
+    navigate("/selectcommon");
   };
 
+  const [roadmaps, setRoadmaps] = useState(data);
+  // console.log("roadmaps :", roadmaps);
   const saveRoadmapIdToSessionStorage = (roadmapId) => {
     sessionStorage.setItem("roadmapId", roadmapId);
   };
-
+  const handleIdx = ({ index }) => {
+    const selectedRoadmap = roadmaps[index];
+    // console.log("선택한것 ", selectedRoadmap.roadmap_id);
+    sessionStorage.setItem("roadmap_idx", index + 1);
+    sessionStorage.setItem("roadmapId", selectedRoadmap.roadmap_id);
+    goEdit();
+  };
   const createRoadmap = async () => {
     try {
       const response = await fetch(
@@ -164,9 +166,9 @@ const RoadmapComponent = ({ data }) => {
         throw new Error("Failed to create roadmap");
       }
       const responseData = await response.json();
-      console.log("Roadmap created:", responseData);
+      // console.log("Roadmap created:", responseData);
       const { id: roadmapId } = responseData;
-      console.log("Roadmap ID:", roadmapId);
+      // console.log("Roadmap ID:", roadmapId);
 
       saveRoadmapIdToSessionStorage(roadmapId);
 
@@ -193,10 +195,39 @@ const RoadmapComponent = ({ data }) => {
       // 에러 처리 로직 추가
     }
   };
+  const deleteRoadmap = async (idxDelete, roadmap_id) => {
+    console.log(roadmap_id);
+    try {
+      const response = await fetch(
+        `${BASE_URL}/roadmap_update_delete/${roadmap_id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      // console.log("response : ", response);
+      if (!response.ok) {
+        throw new Error("Failed to delete the roadmap from the server.");
+      }
+    } catch (error) {
+      console.error("Error reading roadmap:", error);
+    }
+    setRoadmaps((roadmaps) =>
+      roadmaps.filter((_, index) => index !== idxDelete)
+    );
+  };
+
   return (
     <Container>
       <ButtonsForDefault>
-        <Button className="setting" style={{ color: "white" }}>
+        <Button
+          className="setting"
+          style={{ color: "white" }}
+          onClick={goEditDefault}
+        >
           <FontAwesomeIcon
             icon={faGear}
             // style={{ marginLeft: "35%" }}
@@ -216,7 +247,8 @@ const RoadmapComponent = ({ data }) => {
         </Button>
       </ButtonsForDefault>
       {roadmaps.map((roadmap, index) => {
-        const { student, title, track, roadmap_detail } = roadmap;
+        const { student, title, track, roadmap_detail, roadmap_id } = roadmap;
+        // console.log(roadmap_id);
         return (
           <RoadmapContainer key={`${student}${track}`}>
             {/* 공통 */}
@@ -249,7 +281,7 @@ const RoadmapComponent = ({ data }) => {
                   className="delete"
                   style={{ color: "white" }}
                   onClick={() => {
-                    deleteRoadmap(index);
+                    deleteRoadmap(index, roadmap_id);
                   }}
                 >
                   <FontAwesomeIcon
@@ -554,10 +586,10 @@ const MoveButton = styled.div`
   justify-content: center;
   position: relative;
   &.left {
-    left: -90px;
+    left: -25%;
   }
   &.right {
-    right: -90px;
+    right: -25%;
   }
 `;
 const ButtonsForDefault = styled.div`
