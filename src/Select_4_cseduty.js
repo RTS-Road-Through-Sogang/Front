@@ -34,12 +34,17 @@ import axios from "axios";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
+const pk = localStorage.getItem("trackpk");
+console.log(pk)
 
 const SelectCseDuty = () => {
-  const maxItem = 5;
-  let availableItem = 4;
-  const c = 194 - (100 / maxItem) * (maxItem - availableItem);
-  const bg = `rgb(255, ${c}, ${c})`;
+ const maxItem = localStorage.getItem("bar");
+ let availableItem = localStorage.getItem("bar") - 4;
+ const bar_av = 4;
+ const bar_max = 5;
+
+ const c = 194 - (100 / bar_max) * (bar_max - bar_av);
+ const bg = `rgb(255, ${c}, ${c})`;
 
   const { state } = useLocation();
 
@@ -83,7 +88,7 @@ const SelectCseDuty = () => {
   useEffect(() => {
     const handleData = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/roadmaps/cse_duty_lecture/1`, {
+        const res = await axios.get(`${BASE_URL}/roadmaps/cse_duty_lecture/${pk}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -172,8 +177,17 @@ const SelectCseDuty = () => {
     });
     return acc;
   }, 0);
-  let sum = sumOfFirstElements;
-  let com = complete_select + sum;
+  const sumOfFirstElements2 = selectedData.reduce(
+    (accumulator, item) => accumulator + item[1],
+    0
+  );
+  const sumOfFirstElements3 = select0.reduce(
+    (accumulator, item) => accumulator + item[1],
+    0
+  );
+  let sum = sumOfFirstElements3;
+  let sum2 = sumOfFirstElements2;
+  let com = sum2 + sum;
   let maj = major_select + sum;
   console.log(com, maj);
 

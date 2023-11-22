@@ -44,9 +44,12 @@ const accessToken = localStorage.getItem("accessToken");
 
 
 const SelectCommon = () => {
-  const maxItem = 5;
-  let availableItem = 4;
-  const c = 194 - (100 / maxItem) * (maxItem - availableItem);
+  const maxItem = localStorage.getItem("bar");
+  let availableItem = localStorage.getItem("bar")-1;
+  const  bar_av = 4;
+  const bar_max=5
+  
+  const c = 194 - (100 / bar_max) * (bar_max - bar_av);
   const bg = `rgb(255, ${c}, ${c})`;
 
   const { state } = useLocation();

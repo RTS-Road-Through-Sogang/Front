@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes, faUser, faLayerGroup, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import { faApple } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +28,7 @@ const Header = () => {
           <FontAwesomeIcon icon={!isMenuOpen ? faBars : faTimes} />
         </MenuToggle>
         <Logo onClick={goToIntro}>
-          <FontAwesomeIcon icon={faApple} />
+          <FontAwesomeIcon icon={faGraduationCap} /> RTS
         </Logo>
         <UserToggle onClick={() => setIsUserOptionsOpen(!isUserOptionsOpen)}>
           <FontAwesomeIcon icon={!isUserOptionsOpen ? faUser : faTimes} />
@@ -57,14 +57,17 @@ const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
-  background-color: black;
+
+  box-shadow: 0 4px 4px -4px #ccc;
 `;
 //#e0c0d4
 const Logo = styled.div`
-  margin: 0 1rem;
-  font-size: 2rem;
+  margin: 0 3rem;
+  margin-top: 0.5rem;
+  font-size: 1.7rem;
   cursor: pointer;
+  font-family: "BMJUA";
+  color: rgb(30, 48, 80);
 `;
 
 const MenuToggle = styled.div`
@@ -99,7 +102,7 @@ const UserOptions = styled.ul`
 
 const OptionItem = styled.li`
   padding: 0 1rem;
-  color: white;
+  color: black;
   cursor: pointer;
   font-weight: 700;
   &:hover {

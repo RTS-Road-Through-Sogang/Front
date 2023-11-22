@@ -57,10 +57,53 @@ const point2 = [
     },
   },
 ];
+const mgt_arr = [
+  [1, 21, "다전공 1전공"],
+  [2, 22, "다전공 1전공"],
+  [3, 23, "다전공 1전공"],
+  [4, 21, "다전공 타전공"],
+  [5, 22, "다전공 타전공"],
+  [6, 23, "다전공 타전공"],
+  [7, 21, "단일전공"],
+  [8, 22, "단일전공"],
+  [9, 23, "단일전공"],
+];
 
+const eco_arr = [
+  [1, 21, "다전공 1전공"],
+  [2, 22, "다전공 1전공"],
+  [3, 23, "다전공 1전공"],
+  [4, 21, "다전공 타전공"],
+  [5, 22, "다전공 타전공"],
+  [6, 23, "다전공 타전공"],
+  [7, 21, "단일전공"],
+  [8, 22, "단일전공"],
+  [9, 23, "단일전공"],
+  [10, 21, "Honors Program"],
+  [11, 22, "Honors Program"],
+  [12, 23, "Honors Program"],
+];
+const cse_arr = [
+  [1, 23, "단일전공"],
+  [2, 23, "융합과정"],
+  [3, 23, "다전공 1전공"],
+  [4, 23, "다전공 타전공"],
+  [5, 23, "교직과정"],
+  [6, 22, "단일전공"],
+  [7, 22, "융합과정"],
+  [8, 22, "다전공 1전공"],
+  [9, 22, "다전공 타전공"],
+  [10, 22, "교직과정"],
+  [11, 21, "단일전공"],
+  [12, 21, "융합과정"],
+  [13, 21, "다전공 1전공"],
+  [14, 21, "다전공 타전공"],
+  [15, 21, "교직과정"],
+];
 const SelectContainer2 = ({ id, major, setSelect, select }) => {
   const [isclicked, setisclicked] = useState(false);
 
+  const major_year = localStorage.getItem("year");
   const onClick = () => {
     setisclicked(!isclicked);
     if (isclicked) {
@@ -70,6 +113,41 @@ const SelectContainer2 = ({ id, major, setSelect, select }) => {
       setSelect([...select, major]);
     }
   };
+
+  if (major == "컴퓨터공학") {
+    if (major_year == 23) {
+      localStorage.setItem("subpk", 4);
+    }
+    if (major_year == 22) {
+      localStorage.setItem("subpk", 9);
+    }
+    if (major_year == 21) {
+      localStorage.setItem("subpk", 14);
+    }
+  }
+  if (major == "경제") {
+    if (major_year == 23) {
+      localStorage.setItem("subpk", 6);
+    }
+    if (major_year == 22) {
+      localStorage.setItem("subpk", 5);
+    }
+    if (major_year == 21) {
+      localStorage.setItem("subpk", 4);
+    }
+  }
+  if (major == "경영") {
+    if (major_year == 23) {
+      localStorage.setItem("subpk", 6);
+    }
+    if (major_year == 22) {
+      localStorage.setItem("subpk", 5);
+    }
+    if (major_year == 21) {
+      localStorage.setItem("subpk", 4);
+    }
+  }
+
   localStorage.setItem("submajorTrack", select);
   console.log(major);
 
@@ -92,19 +170,65 @@ const SelecMajor = () => {
 
   const [select, setSelect] = useState("");
   const [select1, setSelect1] = useState([]);
-  const SelectContainer = (name) => {
-    setSelect(name);
+  const SelectContainer = (name, majorTitle) => {
+    setSelect(name.title);
+    console.log(name.student_year.student_year);
 
-    localStorage.setItem("majorTrack", name);
+    localStorage.setItem("majorTrack", name.title);
+    localStorage.setItem("year", name.student_year.student_year);
+    if (majorTitle == "경영") {
+      for (const record of mgt_arr) {
+        const student_year = record[1];
+        const major_type = record[2];
+
+        if (
+          student_year === name.student_year.student_year &&
+          major_type === name.title
+        ) {
+          localStorage.setItem("trackpk", record[0]);
+        }
+      }
+    }
+    if (majorTitle == "경제") {
+      for (const record of eco_arr) {
+        const student_year = record[1];
+        const major_type = record[2];
+
+        if (
+          student_year === name.student_year.student_year &&
+          major_type === name.title
+        ) {
+          localStorage.setItem("trackpk", record[0]);
+        }
+      }
+    }
+    if (majorTitle == "컴퓨터공학") {
+      for (const record of cse_arr) {
+        const student_year = record[1];
+        const major_type = record[2];
+
+        if (
+          student_year === name.student_year.student_year &&
+          major_type === name.title
+        ) {
+          localStorage.setItem("trackpk", record[0]);
+        }
+      }
+    }
   };
-  const SelectContainer3 = (name) => {
-    setSelect1(name);
+  const SelectContainer3 = (name, majorTitle) => {
+    setSelect1(name.title);
 
     localStorage.setItem("submajorTrack", name);
   };
 
   const navigate = useNavigate();
   const goNext = () => {
+    if (localStorage.getItem("submajorTrack")) {
+      localStorage.setItem("bar", 10);
+    } else {
+      localStorage.setItem("bar", 6);
+    }
     navigate("/selectsearch");
   };
 
@@ -172,7 +296,7 @@ const SelecMajor = () => {
                     <XSmaillBox>
                       {dataArray.major_tracks[0].MGT_tracks.map((item) => (
                         <SelectBox
-                          onClick={() => SelectContainer(item.title)}
+                          onClick={() => SelectContainer(item, majorTitle)}
                           isclicked={select === item.title}
                         >
                           {item.title}
@@ -194,12 +318,11 @@ const SelecMajor = () => {
                   <SmallBox>
                     <XSmaillBox>
                       {dataArray.major_tracks[1].second_major.map((item) => (
-                        <SelectBox
-                          onClick={() => SelectContainer3(item.major)}
-                          isclicked={select1 === item.major}
-                        >
-                          {item.major}
-                        </SelectBox>
+                        <SelectContainer2
+                          {...item}
+                          setSelect={setSelect1}
+                          select={select1}
+                        />
                       ))}
                     </XSmaillBox>
                   </SmallBox>
@@ -227,12 +350,7 @@ const SelecMajor = () => {
       }
       return (
         <>
-          <ProgressBar>
-            <Progress
-              width={100 - (availableItem * 100) / maxItem}
-              bgcolor={bg}
-            />
-          </ProgressBar>
+        
           <BigTitles>
             <PageTitle
               text={{
@@ -257,7 +375,7 @@ const SelecMajor = () => {
                     <XSmaillBox>
                       {dataArray.major_tracks[0].CSE_tracks.map((item) => (
                         <SelectBox
-                          onClick={() => SelectContainer(item.title)}
+                          onClick={() => SelectContainer(item, majorTitle)}
                           isclicked={select === item.title}
                         >
                           {item.title}
@@ -342,7 +460,7 @@ const SelecMajor = () => {
                     <XSmaillBox>
                       {dataArray.major_tracks[0].ECO_tracks.map((item) => (
                         <SelectBox
-                          onClick={() => SelectContainer(item.title)}
+                          onClick={() => SelectContainer(item, majorTitle)}
                           isclicked={select === item.title}
                         >
                           {item.title}
@@ -447,7 +565,7 @@ const Icon = styled.div`
 `;
 
 const TitleText = styled.div`
-  background-color: white;
+
   margin-bottom: 2%;
   width: 100%;
   font-family: "BMJUA";

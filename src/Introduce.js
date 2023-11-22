@@ -87,7 +87,7 @@ const Introduce = () => {
       <BackgroundWrapper>
         <MainSection>
           <MainImageWrapper>
-            <MainImage src={sign_image} alt="Main" />
+            {/* <MainImage src={sign_image} alt="Main" /> */}
           </MainImageWrapper>
           <MainText>
             {title.split("").map((char, index) =>
@@ -141,6 +141,8 @@ const GlobalStyles = createGlobalStyle`
       padding: 0;
       
     }
+    
+    
     .fadeInRight {
       from {
         opacity: 0;
@@ -167,10 +169,11 @@ const MainSection = styled.div.attrs({ id: "MainSection" })`
 const BackgroundWrapper = styled.div`
   width: 100%;
   height: 100 vh;
-  background-image: url(${background_image});
+  // background-image: url(${background_image});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background: linear-gradient(#e0c8d8, white);
 `;
 const AnimatedSpan = styled.span`
   display: inline-block; // 각 span이 별도의 블록으로 처리되도록 설정
