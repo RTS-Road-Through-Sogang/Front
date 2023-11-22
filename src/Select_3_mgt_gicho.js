@@ -34,11 +34,15 @@ import axios from "axios";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
+const pk = localStorage.getItem("trackpk");
 
 const SelectMgtGicho = () => {
-  const maxItem = 5;
-  let availableItem = 4;
-  const c = 194 - (100 / maxItem) * (maxItem - availableItem);
+  const maxItem = localStorage.getItem("bar");
+  let availableItem = localStorage.getItem("bar") - 3;
+  const bar_av = 4;
+  const bar_max = 5;
+
+  const c = 194 - (100 / bar_max) * (bar_max - bar_av);
   const bg = `rgb(255, ${c}, ${c})`;
   const { state } = useLocation();
 
@@ -56,16 +60,18 @@ const SelectMgtGicho = () => {
     navigate("/selectmgtduty", {
       state: { selectedData: dataWithAdditionalInfo },
     });
+
+   
   };
-  const goSave = () => {
-    sessionStorage.setItem("ex_complete_select", com);
-    sessionStorage.setItem("ex_major_select", maj);
-    sessionStorage.setItem("ex_sub_select", sub_select);
-    const dataWithAdditionalInfo = [...selectedData, ...select0];
-    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
-    sessionStorage.setItem("selected", serializedArray);
-    alert("임시저장 되었습니다.");
-  };
+const goSave = () => {
+  sessionStorage.setItem("ex_complete_select", com);
+  sessionStorage.setItem("ex_major_select", maj);
+  sessionStorage.setItem("ex_sub_select", sub_select);
+  const dataWithAdditionalInfo = [...selectedData, ...select0];
+  const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+  sessionStorage.setItem("selected", serializedArray);
+  alert("임시저장 되었습니다.");
+};
   const [dataArray, setDataArray] = useState([]);
   const [pointArray, setpointArray] = useState([]);
   //전체 point 계산
@@ -81,7 +87,7 @@ const SelectMgtGicho = () => {
     const handleData = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URL}/roadmaps/mgt_gicho_lecture/1`,
+          `${BASE_URL}/roadmaps/mgt_gicho_lecture/${pk}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -172,9 +178,18 @@ const SelectMgtGicho = () => {
     });
     return acc;
   }, 0);
-  let sum = sumOfFirstElements;
-  let com = complete_select + sum;
-  let maj = major_select;
+  const sumOfFirstElements2 = selectedData.reduce(
+    (accumulator, item) => accumulator + item[1],
+    0
+  );
+  const sumOfFirstElements3 = select0.reduce(
+    (accumulator, item) => accumulator + item[1],
+    0
+  );
+  let sum = sumOfFirstElements3;
+  let sum2 = sumOfFirstElements2;
+  let com = sum2 + sum;
+  let maj = major_select + sum;
   console.log(com, maj);
 
   sessionStorage.setItem("complete_select", com);

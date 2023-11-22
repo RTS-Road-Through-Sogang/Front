@@ -82,7 +82,7 @@ const SelectSearch = () => {
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
     sessionStorage.setItem("Defaultselected", serializedArray);
-    navigate("/selectcommon", {
+    navigate("/roadmapdefaultcreate", {
       state: { selectedData: dataWithAdditionalInfo },
     });
   };
@@ -121,16 +121,24 @@ const SelectSearch = () => {
   }));
   console.log(searchedData);
   const handleData = async () => {
+    let url = `${BASE_URL}/roadmaps/completed_lecture_search/`;
+    if (!select1) {
+      alert("전공을 선택해주세요");
+      return;
+    } else {
+      url += `${select1.value}/${keyword}/`;
+      if (!keyword) {
+        url += `None/`;
+      } else {
+        url += `${keyword}`;
+      }
+    }
     try {
-      const res = await axios.get(
-        `${BASE_URL}/roadmaps/completed_lecture_search/${select1.value}/${keyword}/`,
-        // `${BASE_URL}/roadmaps/completed_lecture_search/${"경제"}/${"금융"}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       setDataArray(res.data);
       console.log(res.data);
     } catch (err) {
@@ -143,14 +151,11 @@ const SelectSearch = () => {
 
   return (
     <>
-      <ProgressBar>
-        <Progress width={100 - (availableItem * 100) / maxItem} bgColor={bg} />
-      </ProgressBar>
       <BigTitles>
         <PageTitle
           text={{
-            left: "나의 교과 과정과 ",
-            bold: "부전공을",
+            left: "",
+            bold: "이미 이수한 과목을",
             right: " 선택하세요",
           }}
         />
@@ -297,7 +302,6 @@ const Icon = styled.div`
 `;
 
 const TitleText = styled.div`
-  background-color: white;
   margin-bottom: 2%;
   width: 100%;
 `;

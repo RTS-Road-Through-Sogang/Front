@@ -34,11 +34,15 @@ import axios from "axios";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
+const pk = localStorage.getItem("trackpk");
 
 const SelectEcoGicho = () => {
-  const maxItem = 5;
-  let availableItem = 4;
-  const c = 194 - (100 / maxItem) * (maxItem - availableItem);
+  const maxItem = localStorage.getItem("bar");
+  let availableItem = localStorage.getItem("bar") - 3;
+  const bar_av = 4;
+  const bar_max = 5;
+
+  const c = 194 - (100 / bar_max) * (bar_max - bar_av);
   const bg = `rgb(255, ${c}, ${c})`;
   const { state } = useLocation();
 
@@ -83,7 +87,7 @@ const SelectEcoGicho = () => {
     const handleData = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URL}/roadmaps/eco_gicho_lecture/1`,
+          `${BASE_URL}/roadmaps/eco_gicho_lecture/${pk}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -174,10 +178,18 @@ const SelectEcoGicho = () => {
     });
     return acc;
   }, 0);
-  let sum = sumOfFirstElements;
-  let com = complete_select + sum;
-  let maj = major_select;
-  console.log(com, maj);
+  const sumOfFirstElements2 = selectedData.reduce(
+    (accumulator, item) => accumulator + item[1],
+    0
+  );
+  const sumOfFirstElements3 = select0.reduce(
+    (accumulator, item) => accumulator + item[1],
+    0
+  );
+  let sum = sumOfFirstElements3;
+  let sum2 = sumOfFirstElements2;
+  let com = sum2 + sum;
+  let maj = major_select + sum;
 
   sessionStorage.setItem("complete_select", com);
   sessionStorage.setItem("major_select", maj);

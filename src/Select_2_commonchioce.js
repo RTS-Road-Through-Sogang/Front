@@ -36,9 +36,12 @@ import axios from "axios";
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
 const SelectCommon = () => {
-  const maxItem = 5;
-  let availableItem = 4;
-  const c = 194 - (100 / maxItem) * (maxItem - availableItem);
+  const maxItem = localStorage.getItem("bar");
+  let availableItem = localStorage.getItem("bar") - 2;
+  const bar_av = 4;
+  const bar_max = 5;
+
+  const c = 194 - (100 / bar_max) * (bar_max - bar_av);
   const bg = `rgb(255, ${c}, ${c})`;
   //new
   const { state } = useLocation();
@@ -83,6 +86,7 @@ const SelectCommon = () => {
     sessionStorage.setItem("selected", serializedArray);
     alert("임시저장 되었습니다.");
   };
+
 
   const [dataArray, setDataArray] = useState([]);
   const [pointArray, setpointArray] = useState([]);

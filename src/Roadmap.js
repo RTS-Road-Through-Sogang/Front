@@ -6,6 +6,7 @@ import RoadmapComponent from "./RoadmapComponent";
 import PageTitle from "./PageTitle";
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
@@ -328,6 +329,7 @@ const DummyData = [
   },
 ];
 const EmptyData = [];
+
 const hasCoursesTaken = (data) => {
   if (!Array.isArray(data)) {
     return false;
@@ -342,6 +344,10 @@ const hasCoursesTaken = (data) => {
   return false;
 };
 const Roadmap = () => {
+  const navigate = useNavigate();
+  const handleDefaultSubject = () => {
+    navigate("/majortrack");
+  };
   const [defaultData, setDefaultData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -383,7 +389,7 @@ const Roadmap = () => {
               이미 수강한 과목을 추가하러 가볼까요?
             </TextOverlay>
           </BackgroundWrapper>
-          <StyledButton>
+          <StyledButton onClick={handleDefaultSubject}>
             <span>이수과목 추가하러 가기</span>
           </StyledButton>
         </EmptyRoadmap>
