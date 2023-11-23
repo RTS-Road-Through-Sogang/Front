@@ -403,9 +403,10 @@ const FONT_FAMILY = "Noto Sans";
 const TextWrapper = styled.div`
   display: flex;
   justify-content: center;
-  height: 5vh;
-  margin-top: 30px;
-  position: relative;
+  min-height: 5%;
+  // margin-top: 30px;
+  // position: relative;
+  margin-bottom: -90px;
 `;
 
 const TitleImage = styled.img`
