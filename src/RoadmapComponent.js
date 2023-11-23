@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import currentImage from "./images/maj_eta.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -12,6 +13,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { type } from "@testing-library/user-event/dist/type";
+import {
+  ClickableImage,
+  InsideBar,
+  Progress2,
+  ProgressBar2,
+  Semester1,
+  Semester2,
+} from "./Select_styledcomponent";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const accessToken = localStorage.getItem("accessToken");
@@ -36,6 +45,7 @@ const Semester = ({ semester, courses, deg, z }) => {
       setIsModalOpen(true);
     }
   };
+
   return (
     <CourseBox
       style={{
@@ -79,15 +89,57 @@ const Semester = ({ semester, courses, deg, z }) => {
         </CourseBottomBox>
         {isModalOpen && (
           <Modal onClose={closeModal}>
-            <h2>{selectedCourse.title}</h2>
-            <p>학점 : {selectedCourse.point}</p>
             <p>선수과목 : {selectedCourse.former || "X"}</p>
             <p>권장학년: {selectedCourse.grade_recommend || "X"}</p>
-            {/* 모달 내용을 더 추가할 수 있습니다. */}
+            <RatioBar
+              rate1={selectedCourse.semester_one}
+              rate2={selectedCourse.semester_two}
+            />
+            <Eta>
+              <span
+                style={{
+                  cursor: "pointer",
+                }}
+              >
+                에브리타임 &#8599;
+              </span>
+              <ClickableImage
+                src={currentImage}
+                // isClicked={isClicked}
+                // onClick={handleLinkClick}
+                // style={{ marginTop: "4px" }}
+              />
+            </Eta>
           </Modal>
         )}
       </CourseWrapper>
     </CourseBox>
+  );
+};
+const RatioBar = ({ children, message, rate1, rate2 }) => {
+  console.log("Rate 1 : ", rate1); // 0
+  console.log("Rate 2 : ", rate2); // 6
+  console.log(100 * (rate1 / (rate1 + rate2)));
+  return (
+    <BarContainer>
+      {children}
+      <div className="tooltip">
+        {message}
+        <br></br>
+        - 수강 오픈 비율
+        <br />
+        <InsideBar>
+          <Semester1>1학기</Semester1>
+          <Semester2>2학기</Semester2>
+        </InsideBar>
+        <ProgressBar2>
+          <Progress2
+            width={100 * (rate1 / (rate1 + rate2))}
+            bgColor={"#ffe7f3"}
+          />
+        </ProgressBar2>
+      </div>
+    </BarContainer>
   );
 };
 const RoadmapDetail = ({ detail }) => {
@@ -178,8 +230,8 @@ const RoadmapComponent = ({ data }) => {
   const goEditDefault = () => {
     navigate("/roadmapdefaultcreate");
   };
-  const goMajorTrack = () => {
-    navigate("/majortrack");
+  const goAfter = () => {
+    navigate("/afterdefault");
   };
 
   const [roadmaps, setRoadmaps] = useState(data);
@@ -199,7 +251,7 @@ const RoadmapComponent = ({ data }) => {
     sessionStorage.setItem("roadmap_idx", index + 1);
     sessionStorage.setItem("roadmapId", selectedRoadmap.roadmap_id);
 
-    // goMajorTrack();
+    goAfter();
   };
 
   const createRoadmap = async () => {
@@ -242,20 +294,12 @@ const RoadmapComponent = ({ data }) => {
         throw new Error("Failed to adjust default roadmap");
       }
       const adjustData = await adjustResponse.json();
-      // console.log("Default roadmap adjusted:", adjustData);
+      console.log("Default roadmap adjusted:", adjustData);
+      window.location.reload();
 
-      // const detailsResponse = await fetch(
-      //   `${BASE_URL}/roadmaps/${roadmapId}/details`,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${accessToken}`,
-      //     },
-      //   }
-      // );
-      // const detailsData = await detailsResponse.json();
       // setRoadmaps((prevRoadmaps) => [
       //   ...prevRoadmaps,
-      //   { id: roadmapId, ...detailsData },
+
       // ]);
     } catch (error) {
       console.error("Error creating roadmap:", error);
@@ -263,9 +307,6 @@ const RoadmapComponent = ({ data }) => {
     }
   };
   const deleteRoadmap = async (idxDelete, roadmap_id) => {
-    // roadmap_id = 25;
-    // console.log(typeof roadmap_id);
-    // console.log(roadmap_id);
     try {
       const response = await fetch(
         `${BASE_URL}/roadmaps/roadmap_update_delete/${roadmap_id}/`,
@@ -436,6 +477,44 @@ const Tooltip = styled.div`
   padding: 1rem;
   color: black;
   // visibility: hidden;
+`;
+const BarContainer = styled.div`
+  position: relative;
+
+  display: flex;
+
+  // &:hover > .tooltip,
+  // &:active > .tooltip {
+  //   display: block;
+  // }
+
+  .tooltip {
+    white-space: pre-line;
+    // display: none;
+    // position: absolute;
+    // bottom: -30%;
+    // left: 50%;
+    // background-color: #fff8f8;
+    // border: #ff7474 solid 1px;
+    border-radius: 5px;
+    color: #453e3e;
+    font-size: 0.9rem;
+    font-weight: 500;
+    height: auto;
+
+    // padding: 10% 10%;
+    // margin-left: 40%;
+    margin-bottom: 10%;
+
+    width: max-content;
+    z-index: 5;
+
+    // transform: translate(-44%, 110%);
+  }
+`;
+
+const Eta = styled.div`
+  position: relative;
 `;
 const Button = styled.div`
   width: 2.5em;
@@ -643,12 +722,21 @@ const Modal = styled.div`
   position: absolute;
   top: -10%;
   right: 100%;
-  width: 70%;
-  height: 100%;
-  z-index: 5;
+  width: 45%;
+  height: 80%;
+  z-index: 100;
   border-radius: 32px;
   background: white;
   border: 0.2rem solid #ababab;
+  font-size: 0.9rem;
+  padding: 1em;
+  p {
+    margin-bottom: 1em;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 `;
 const Hovermessage = styled.div`
   display: None;

@@ -8,7 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import background_image from "./images/background.jpg";
 import sign_image from "./images/sign.jpg";
 
-import feature_image1 from "./images/main.jpeg";
+import feature_image1 from "./images/feature_1.png";
 import feature_image2 from "./images/main.jpeg";
 import Feature from "./Feature";
 import { useNavigate } from "react-router-dom";
@@ -86,9 +86,6 @@ const Introduce = () => {
       <GlobalStyles />
       <BackgroundWrapper>
         <MainSection>
-          <MainImageWrapper>
-            <MainImage src={sign_image} alt="Main" />
-          </MainImageWrapper>
           <MainText>
             {title.split("").map((char, index) =>
               char === " " ? (
@@ -105,6 +102,9 @@ const Introduce = () => {
               )
             )}
           </MainText>
+          <MainImageWrapper>
+            <MainImage src={sign_image} alt="Main" />
+          </MainImageWrapper>
         </MainSection>
         <IntroSection>
           <IntroDescription id="IntroDescription">
@@ -158,17 +158,22 @@ const GlobalStyles = createGlobalStyle`
 
 const MainSection = styled.div.attrs({ id: "MainSection" })`
   display: flex;
-  height: 90vh;
+  flex-direction: column;
+  height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  position: relative;
-  margin: 0 auto;
+  // position: relative;
+  // margin: 0 auto;
+  // background: black;
+  justify-content: center;
+  align-items: center;
+  // text-align: center;
 `;
 
 const BackgroundWrapper = styled.div`
   width: 100%;
-  height: 100 vh;
+  height: 100%;
   // background-image: url(${background_image});
   background-position: center;
   background-repeat: no-repeat;
@@ -190,15 +195,19 @@ const MainText = styled.div`
   color: white;
   font-weight: bold;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  position: absolute;
-  top: 10%;
-  left: 25.5%;
+  margin-top: 5%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  // position: absolute;
+  // top: 10%;
+  // left: 25.5%;
 `;
 
 const MainImageWrapper = styled.div`
   width: 20%;
-  margin-top: 20%;
-  margin-left: 38%;
+  margin-top: 10%;
+  // margin-left: 38%;
 `;
 
 const MainImage = styled.img.attrs({ id: "MainImage" })`

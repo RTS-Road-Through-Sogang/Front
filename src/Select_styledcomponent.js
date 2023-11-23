@@ -73,7 +73,18 @@ export const InsideBar = styled.div`
   color: #453e3e;
   padding: 0 15%;
 `;
+export const Eta = styled.div`
+  position: relative;
+`;
+export const ClickableImage = styled.img`
+  position: absolute;
+  cursor: pointer;
+  width: 25px;
+  top: -25%;
 
+  textdecoration: "underline";
+  aspect-ratio: 1; /* 이 숫자는 가로세로 비율입니다. 예를 들어, 1은 1:1 비율을 의미합니다. */
+`;
 export const Semester1 = styled.div`
   float: left;
 `;
@@ -92,7 +103,6 @@ export const Icon = styled.div`
 `;
 
 export const TitleText = styled.div`
- 
   margin-bottom: 2%;
   width: 100%;
   font-family: "BMJUA";

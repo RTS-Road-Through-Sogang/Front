@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import feature_image1 from "./images/main.jpeg";
+import feature_image1 from "./images/feature_1.png";
 import feature_image2 from "./images/main.jpeg";
 import AOS from "aos";
 import "aos/dist/aos.css"; // AOS styles
@@ -60,7 +60,7 @@ const FeatureContainer = styled.div`
 const FeatureImage = styled.img`
   width: 50%;
   object-fit: cover;
-  opacity: 0.9;
+  opacity: 1;
   margin-left: ${(props) => props.marginLeft || "0%"};
 `;
 

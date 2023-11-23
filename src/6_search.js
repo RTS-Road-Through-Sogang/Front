@@ -126,11 +126,11 @@ const SelectSearch = () => {
       alert("전공을 선택해주세요");
       return;
     } else {
-      url += `${select1.value}/${keyword}/`;
+      url += `${select1.value}/`;
       if (!keyword) {
         url += `None/`;
       } else {
-        url += `${keyword}`;
+        url += `${keyword}/`;
       }
     }
     try {
