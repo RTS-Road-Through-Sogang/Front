@@ -266,12 +266,7 @@ const SelecMajor = () => {
     if (majorTitle == "경영") {
       return (
         <>
-          <ProgressBar>
-            <Progress
-              width={100 - (availableItem * 100) / maxItem}
-              bgcolor={bg}
-            />
-          </ProgressBar>
+         
           <BigTitles>
             <PageTitle
               text={{

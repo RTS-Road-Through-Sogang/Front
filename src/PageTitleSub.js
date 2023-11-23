@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import titleicon from "./images/titleicon.svg";
+import titleicon from "./images/titleicon2.svg";
 
 const PageTitle = ({ text }) => {
   return (

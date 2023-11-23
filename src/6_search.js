@@ -275,7 +275,7 @@ const StyledInput = styled.input`
   width: 100%;
   height: 80%;
   border: 0.1rem solid #cccccc;
-  color: #cccccc;
+
   border-radius: 3px;
 `;
 const SearchIcon = styled(FontAwesomeIcon)`

@@ -89,8 +89,8 @@ const Semester = ({ semester, courses, deg, z }) => {
         </CourseBottomBox>
         {isModalOpen && (
           <Modal onClose={closeModal}>
-            <p>선수과목 : {selectedCourse.former || "X"}</p>
-            <p>권장학년: {selectedCourse.grade_recommend || "X"}</p>
+            <div>선수과목 : {selectedCourse.former || "X"}</div>
+            <div>권장학년: {selectedCourse.grade_recommend || "X"}</div>
             <RatioBar
               rate1={selectedCourse.semester_one}
               rate2={selectedCourse.semester_two}
@@ -124,10 +124,7 @@ const RatioBar = ({ children, message, rate1, rate2 }) => {
     <BarContainer>
       {children}
       <div className="tooltip">
-        {message}
-        <br></br>
-        - 수강 오픈 비율
-        <br />
+        <div className="ratio">수강 오픈 비율</div>
         <InsideBar>
           <Semester1>1학기</Semester1>
           <Semester2>2학기</Semester2>
@@ -401,8 +398,9 @@ const RoadmapComponent = ({ data }) => {
                   {/* <Tooltip>로드맵을 삭제할 수 있어요</Tooltip> */}
                 </Button>
               </ButtonWrapper>
-
-              {/* <MyRoadmapText>로드맵 이름</MyRoadmapText> */}
+              {index === 0 && (
+                <MyRoadmapText>현재까지 이수한 과목들이에요!</MyRoadmapText>
+              )}
             </SemesterBox>
 
             {roadmap_detail && roadmap_detail.length > 0 && (
@@ -430,7 +428,7 @@ const RoadmapContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1em;
+  margin-bottom: 5em;
 `;
 
 const SemesterBox = styled.div`
@@ -440,7 +438,7 @@ const SemesterBox = styled.div`
   padding: 1rem 1.5rem;
   border-radius: 41px 0px;
   border: 5px solid #fff;
-  background: #ffaec6;
+  // background: #ffaec6;
   box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
@@ -448,7 +446,8 @@ const SemesterBox = styled.div`
   justify-content: center;
   //   margin: 10px;
   position: relative;
-  background: #e0c8d8;
+  // background: smoke-white;
+  margin-bottom: 2em;
 `;
 
 const ButtonWrapper = styled.div`
@@ -487,6 +486,10 @@ const BarContainer = styled.div`
   // &:active > .tooltip {
   //   display: block;
   // }
+  // box-sizing: border-box;
+  // .ratio {
+  //   font-size: 0.9em;
+  // }
 
   .tooltip {
     white-space: pre-line;
@@ -499,7 +502,7 @@ const BarContainer = styled.div`
     border-radius: 5px;
     color: #453e3e;
     font-size: 0.9rem;
-    font-weight: 500;
+    // font-weight: 500;
     height: auto;
 
     // padding: 10% 10%;
@@ -518,7 +521,7 @@ const Eta = styled.div`
 `;
 const Button = styled.div`
   width: 2.5em;
-  height: 1em;
+  height: 1.5em;
 
   display: flex;
   justify-content: center;
@@ -555,7 +558,7 @@ const SemesterInfo = styled.div`
   //   margin-right: 10px; // 필요에 따라 간격 조정
 
   transform: translate(-50%, -50%);
-  background: yellow;
+  // background: yellow;
 `;
 
 const RoadmapWrapper = styled.div`
@@ -565,13 +568,15 @@ const RoadmapWrapper = styled.div`
   //   position: relative;
   //   margin-left: 30%;
 
-  background-color: #ff6262;
+  // background-color: #ff6262;
   width: max-content;
-  height: max-content;
-  height: 1rem;
+  height: auto;
+  border-radius: 50%;
   position: relative;
   display: flex;
   align-items: center;
+  border-radius: 34px 0px;
+  background-color: #ff6262;
 `;
 
 const SemesterNumber = styled.span`
@@ -585,27 +590,29 @@ const SemesterNumber = styled.span`
   //   right: 30%;
 
   display: inline-block;
-  color: #fff;
-  font-size: 2rem;
-  padding: 0 1rem;
+  // color: #ff6262;
+  font-size: 1.5rem;
+  padding: 0.5rem 1.3rem;
   //   background-color: rgba(0, 0, 0, 0.3);
+  color: white;
 `;
 
 const MyRoadmapText = styled.span`
   color: #fff;
   font-family: "Cafe24 Ohsquare";
   font-weight: 700;
-  line-height: 106.5%;
+  line-height: 103%;
   position: absolute;
-  top: 25%;
+  top: 28%;
   left: 20%;
   align-items: center;
   justify-content: center;
-  background: black;
-  text-align: center;
+  text-align: start;
   padding: 0.5em;
-  width: 60%;
-  font-size: 1.5rem;
+  width: 70%;
+  font-size: 1.3rem;
+  color: #9a9a9a;
+  margin-left: 15%;
 `;
 
 const Scene = styled.div`
@@ -718,24 +725,32 @@ const CourseBottomBox = styled.div`
   }
 `;
 const Modal = styled.div`
-  display: block;
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  top: -10%;
-  right: 100%;
+  // box-sizing: border-box;
+  top: 10%;
+  right: 80%;
   width: 45%;
-  height: 80%;
+  justify-content: start;
+  align-items: start;
+  min-width: 40px;
+  height: 60%;
   z-index: 100;
   border-radius: 32px;
   background: white;
-  border: 0.2rem solid #ababab;
+  color: #453e3e;
+  // border: 0.2rem solid #ababab;
   font-size: 0.9rem;
-  padding: 1em;
-  p {
-    margin-bottom: 1em;
+  padding: 3em 1.2em 2em 1.2em;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  div {
+    // margin-bottom: 1em;
     text-align: left;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    font-family: "Noto Sans KR";
   }
 `;
 const Hovermessage = styled.div`
@@ -789,12 +804,9 @@ const MoveButton = styled.div`
 `;
 const ButtonsForDefault = styled.div`
   display: flex;
+  box-sizing: border-box;
   width: 100%;
   flex-direction: column;
-  &:hover ${Tooltip} {
-    visibility: visible;
-    opacity: 1;
-    font-color: black;
-  }
+  // background: black;
 `;
 export default RoadmapComponent;
