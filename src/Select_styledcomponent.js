@@ -69,7 +69,7 @@ export const InsideBar = styled.div`
   font-size: 0.7rem;
 
   margin-top: 2%;
-  line-height: 25px;
+  line-height: 15px;
   color: #453e3e;
   padding: 0 15%;
 `;
@@ -84,13 +84,18 @@ export const ClickableImage = styled.img`
 
   textdecoration: "underline";
   aspect-ratio: 1; /* 이 숫자는 가로세로 비율입니다. 예를 들어, 1은 1:1 비율을 의미합니다. */
+  z-index: 1000;
 `;
 export const Semester1 = styled.div`
   float: left;
+  box-shadow: inset 0 -10px 0 #ffe7f3;
+  margin-bottom: 4%;
 `;
 
 export const Semester2 = styled.div`
   float: right;
+  box-shadow: inset 0 -10px 0 #ffabd5;
+  margin-bottom: 4%;
 `;
 
 export const Title = styled.div`
