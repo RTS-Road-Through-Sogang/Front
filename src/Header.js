@@ -17,7 +17,7 @@ const Header = () => {
   const { isLoggedIn, logout } = useAuth();
 
   const goToIntro = () => {
-    navigate("/intro");
+    navigate("/");
   };
   const goToLogin = () => {
     navigate("/login");
