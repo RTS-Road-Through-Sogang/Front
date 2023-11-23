@@ -49,7 +49,6 @@ const SelectMgtChoice = () => {
 
   const [selectedData, setSelectedData] = useState([]);
   console.log(selectedData);
-  
 
   const navigate = useNavigate();
   const goSave = () => {
@@ -58,7 +57,7 @@ const SelectMgtChoice = () => {
     sessionStorage.setItem("ex_sub_select", sub_select);
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     console.log(selectedData);
-    
+
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
     alert("임시저장 되었습니다.");
@@ -72,20 +71,23 @@ const SelectMgtChoice = () => {
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
 
-    if (localStorage.getItem("submajorTrack") == "경제") {
-      navigate("/selectsubecogicho", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
-    }
-    if (localStorage.getItem("submajorTrack") == "경영") {
-      navigate("/selectsubmgtgicho", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
-    }
-    if (localStorage.getItem("submajorTrack") == "컴퓨터공학") {
-      navigate("/selectsubcsegicho", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
+    if (!localStorage.getItem("submajorTrack")) {
+      navigate("/status", { state: { selectedData: dataWithAdditionalInfo } });
+    } else {
+      const submajorTrack = localStorage.getItem("submajorTrack");
+      if (submajorTrack === "경제") {
+        navigate("/selectsubecogicho", {
+          state: { selectedData: dataWithAdditionalInfo },
+        });
+      } else if (submajorTrack === "경영") {
+        navigate("/selectsubmgtgicho", {
+          state: { selectedData: dataWithAdditionalInfo },
+        });
+      } else if (submajorTrack === "컴퓨터공학") {
+        navigate("/selectsubcsegicho", {
+          state: { selectedData: dataWithAdditionalInfo },
+        });
+      }
     }
   };
 
@@ -292,15 +294,15 @@ const SelectMgtChoice = () => {
     0
   );
   let sum = sumOfFirstElements3;
-  let sum2=sumOfFirstElements2
+  let sum2 = sumOfFirstElements2;
   let com = sum2 + sum;
   let maj = major_select + sum;
- 
-  console.log(com, maj)
+
+  console.log(com, maj);
 
   let pot1 = sumOfFirstElements;
   let pot = 0;
-  
+
   const credit = dataArray.find((item) => item.hasOwnProperty("이수 학점"));
   if (credit) {
     console.log(credit["이수 학점"]); // 이수 학점 값 출력

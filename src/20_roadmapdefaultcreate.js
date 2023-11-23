@@ -245,14 +245,16 @@ const CreateDefaultRoadmapDetails = () => {
               />
               {renderButtons(uniqueCombinedDataMajor, "Major")}
             </Major>
-            <SubMajor>
-              <CoursesType
-                text={{
-                  title: usersSubmajor,
-                }}
-              />
-              {renderButtons(uniqueCombinedDataSub, "Sub")}
-            </SubMajor>
+            {usersSubmajor && (
+              <SubMajor>
+                <CoursesType
+                  text={{
+                    title: usersSubmajor,
+                  }}
+                />
+                {renderButtons(uniqueCombinedDataSub, "Sub")}
+              </SubMajor>
+            )}
           </EachSemesterMain>
           <EachSemesterSubmit>
             <button onClick={closeModal}>선택 완료</button>
@@ -266,48 +268,6 @@ const CreateDefaultRoadmapDetails = () => {
   console.log(usersMajor);
   console.log(usersSubmajor);
   console.log("선택한 과목: ", selectedLectures);
-
-  // const [creatingRoadmap, setCreatingRoadmap] = useState(false);
-
-  // const createRoadmap = async () => {
-  //   setCreatingRoadmap(true);
-
-  //   try {
-  //     const roadmapData = {};
-
-  //     const response = await axios.post(
-  //       `${BASE_URL}/roadmaps/roadmap_roadmapdetail_create`,
-  //       roadmapData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       }
-  //     );
-
-  //     const roadmapId = response.data.id;
-  //     console.log("Roadmap 생성 완료:", roadmapId);
-
-  //     const roadmapDetailResponse = await axios.get(
-  //       `${BASE_URL}/roadmaps/`,
-  //       roadmapData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       }
-  //     );
-
-  //     await createRoadmapDetailAndAddLectures(roadmapId);
-  //   } catch (error) {
-  //     console.error("Roadmap 생성 중 에러 발생:", error);
-  //     // 에러 처리
-  //   } finally {
-  //     setCreatingRoadmap(false);
-  //   }
-  // };
 
   const createDefaultRoadmap = async () => {
     try {
@@ -434,7 +394,7 @@ const CreateDefaultRoadmapDetails = () => {
 
       // 모든 API 요청이 완료되면 1초 후에 alert을 띄우고 페이지 이동
       setTimeout(() => {
-        alert("로드맵 저장 완료! 전체 로드맵 페이지로 이동하기");
+        alert("이수한 과목 저장 완료! 전체 로드맵 페이지로 이동하기");
         window.location.href = "/roadmap"; // "/roadmap" 페이지로 이동
       }, 1000);
     } catch (error) {
@@ -448,7 +408,7 @@ const CreateDefaultRoadmapDetails = () => {
         <PageTitle
           text={{
             left: "학기를 클릭해 ",
-            bold: "과목을 배치해",
+            bold: "이수한 과목을 배치해",
             right: " 보세요",
           }}
         />

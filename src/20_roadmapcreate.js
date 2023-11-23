@@ -213,11 +213,6 @@ const CreateRoadmapDetails = () => {
     setDefaultLecturesTitles(result);
   }, [selectedDefault]);
 
-  // useEffect(() => {
-  //   if (!loading && selectedDefault && selectedDefault.roadmap_detail) {
-  //     renderSemesterBlocks();
-  //   }
-  // }, [loading, selectedDefault]);
   console.log(selectedDefault);
 
   const renderSemesterBlocks = () => {
@@ -237,8 +232,18 @@ const CreateRoadmapDetails = () => {
         isSelected={selectedSemester === semester}
         disabled={isSemesterDisabled(semester)}
       >
-        <SemesterDiv>
-          <SemesterTop>
+        <SemesterDiv
+          style={{
+            cursor: isSemesterDisabled(semester) ? "default" : "pointer",
+          }}
+        >
+          <SemesterTop
+            style={{
+              backgroundColor: isSemesterDisabled(semester)
+                ? "#8bb8aa"
+                : "##ff8c8c",
+            }}
+          >
             <span>{semester}</span>
           </SemesterTop>
           <SemesterBottom
@@ -314,14 +319,16 @@ const CreateRoadmapDetails = () => {
               />
               {renderButtons(uniqueCombinedDataMajor, "Major")}
             </Major>
-            <SubMajor>
-              <CoursesType
-                text={{
-                  title: usersSubmajor,
-                }}
-              />
-              {renderButtons(uniqueCombinedDataSub, "Sub")}
-            </SubMajor>
+            {usersSubmajor && (
+              <SubMajor>
+                <CoursesType
+                  text={{
+                    title: usersSubmajor,
+                  }}
+                />
+                {renderButtons(uniqueCombinedDataSub, "Sub")}
+              </SubMajor>
+            )}
           </EachSemesterMain>
           <EachSemesterSubmit>
             <button onClick={closeModal}>선택 완료</button>
@@ -485,15 +492,6 @@ const SemesterDiv = styled.div`
     cursor: pointer;
     transform: scale(1.07);
   }
-  ${({ disabled }) =>
-    disabled &&
-    `
-    cursor: default;
-    &:hover {
-      cursor: default;
-      animation: none;
-    }
-  `}
 `;
 const SemesterTop = styled.div`
   width: 100%;

@@ -49,43 +49,47 @@ const SelectCseChoice = () => {
   console.log(selectedData);
 
   const navigate = useNavigate();
- const goSave = () => {
-   sessionStorage.setItem("ex_complete_select", com);
-   sessionStorage.setItem("ex_major_select", maj);
-   sessionStorage.setItem("ex_sub_select", sub_select);
-   const dataWithAdditionalInfo = [...selectedData, ...select0];
-   const serializedArray = JSON.stringify(dataWithAdditionalInfo);
-   sessionStorage.setItem("selected", serializedArray);
-   alert("임시저장 되었습니다.");
- };
+  const goSave = () => {
+    sessionStorage.setItem("ex_complete_select", com);
+    sessionStorage.setItem("ex_major_select", maj);
+    sessionStorage.setItem("ex_sub_select", sub_select);
+    const dataWithAdditionalInfo = [...selectedData, ...select0];
+    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+    sessionStorage.setItem("selected", serializedArray);
+    alert("임시저장 되었습니다.");
+  };
 
- const goNext = () => {
-   sessionStorage.setItem("ex_complete_select", com);
-   sessionStorage.setItem("ex_major_select", maj);
-   sessionStorage.setItem("ex_sub_select", sub_select);
-   const dataWithAdditionalInfo = [...selectedData, ...select0];
-   const serializedArray = JSON.stringify(dataWithAdditionalInfo);
-   sessionStorage.setItem("selected", serializedArray);
-   if (localStorage.getItem("submajorTrack") == "경제") {
-     navigate("/selectsubecogicho", {
-       state: { selectedData: dataWithAdditionalInfo },
-     });
-   }
-   if (localStorage.getItem("submajorTrack") == "경영") {
-     navigate("/selectsubmgtgicho", {
-       state: { selectedData: dataWithAdditionalInfo },
-     });
-   }
-   if (localStorage.getItem("submajorTrack") == "컴퓨터공학") {
-     navigate("/selectsubcsegicho", {
-       state: { selectedData: dataWithAdditionalInfo },
-     });
-   }
+  const goNext = () => {
+    sessionStorage.setItem("ex_complete_select", com);
+    sessionStorage.setItem("ex_major_select", maj);
+    sessionStorage.setItem("ex_sub_select", sub_select);
+    const dataWithAdditionalInfo = [...selectedData, ...select0];
+    const serializedArray = JSON.stringify(dataWithAdditionalInfo);
+    sessionStorage.setItem("selected", serializedArray);
+    
+    if (!localStorage.getItem("submajorTrack")) {
+      navigate("/status", { state: { selectedData: dataWithAdditionalInfo } });
+    } else {
+      const submajorTrack = localStorage.getItem("submajorTrack");
+      if (submajorTrack === "경제") {
+        navigate("/selectsubecogicho", {
+          state: { selectedData: dataWithAdditionalInfo },
+        });
+      } else if (submajorTrack === "경영") {
+        navigate("/selectsubmgtgicho", {
+          state: { selectedData: dataWithAdditionalInfo },
+        });
+      } else if (submajorTrack === "컴퓨터공학") {
+        navigate("/selectsubcsegicho", {
+          state: { selectedData: dataWithAdditionalInfo },
+        });
+      }
+    }
 
-   sessionStorage.setItem("ex_complete_select", com);
-   sessionStorage.setItem("ex_major_select", maj);
-   sessionStorage.setItem("ex_sub_select", sub_select);
- };
+    sessionStorage.setItem("ex_complete_select", com);
+    sessionStorage.setItem("ex_major_select", maj);
+    sessionStorage.setItem("ex_sub_select", sub_select);
+  };
 
   const [dataArray, setDataArray] = useState([]);
   const [pointArray, setpointArray] = useState([]);
@@ -120,7 +124,6 @@ const SelectCseChoice = () => {
     const storedArray = sessionStorage.getItem("selected");
     const deserializedArray = JSON.parse(storedArray);
     setSelectedData(deserializedArray);
- 
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
   const major_point = sessionStorage.getItem("major_point");
