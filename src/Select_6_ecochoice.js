@@ -37,13 +37,13 @@ const accessToken = localStorage.getItem("accessToken");
 const pk = localStorage.getItem("trackpk");
 
 const SelectEcoChoice = () => {
- const maxItem = localStorage.getItem("bar");
- let availableItem = localStorage.getItem("bar") - 6;
- const bar_av = 4;
- const bar_max = 5;
+  const maxItem = localStorage.getItem("bar");
+  let availableItem = localStorage.getItem("bar") - 6;
+  const bar_av = 4;
+  const bar_max = 5;
 
- const c = 194 - (100 / bar_max) * (bar_max - bar_av);
- const bg = `rgb(255, ${c}, ${c})`;
+  const c = 194 - (100 / bar_max) * (bar_max - bar_av);
+  const bg = `rgb(255, ${c}, ${c})`;
 
   const { state } = useLocation();
 
@@ -69,22 +69,24 @@ const SelectEcoChoice = () => {
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
 
-    if (localStorage.getItem("submajorTrack") == "경제") {
-      navigate("/selectsubecogicho", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
+    if (!localStorage.getItem("submajorTrack")) {
+      navigate("/status", { state: { selectedData: dataWithAdditionalInfo } });
+    } else {
+      const submajorTrack = localStorage.getItem("submajorTrack");
+      if (submajorTrack === "경제") {
+        navigate("/selectsubecogicho", {
+          state: { selectedData: dataWithAdditionalInfo },
+        });
+      } else if (submajorTrack === "경영") {
+        navigate("/selectsubmgtgicho", {
+          state: { selectedData: dataWithAdditionalInfo },
+        });
+      } else if (submajorTrack === "컴퓨터공학") {
+        navigate("/selectsubcsegicho", {
+          state: { selectedData: dataWithAdditionalInfo },
+        });
+      }
     }
-    if (localStorage.getItem("submajorTrack") == "경영") {
-      navigate("/selectsubmgtgicho", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
-    }
-    if (localStorage.getItem("submajorTrack") == "컴퓨터공학") {
-      navigate("/selectsubcsegicho", {
-        state: { selectedData: dataWithAdditionalInfo },
-      });
-    }
-
   };
 
   const [dataArray, setDataArray] = useState([]);
@@ -117,9 +119,9 @@ const SelectEcoChoice = () => {
       }
     };
     handleData();
-const storedArray = sessionStorage.getItem("selected");
-const deserializedArray = JSON.parse(storedArray);
-setSelectedData(deserializedArray);
+    const storedArray = sessionStorage.getItem("selected");
+    const deserializedArray = JSON.parse(storedArray);
+    setSelectedData(deserializedArray);
   }, []);
   const complete_point = sessionStorage.getItem("complete_point");
   const major_point = sessionStorage.getItem("major_point");
