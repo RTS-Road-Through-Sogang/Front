@@ -60,7 +60,7 @@ const FeatureContainer = styled.div`
 const FeatureImage = styled.img`
   width: 50%;
   object-fit: cover;
-  opacity: 0.9;
+  opacity: 1;
   margin-left: ${(props) => props.marginLeft || "0%"};
 `;
 
