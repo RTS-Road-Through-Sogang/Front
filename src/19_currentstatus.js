@@ -58,7 +58,7 @@ const CurrentStatus = () => {
     majorP = parseInt(sessionStorage.getItem("major_point"), 10);
     majorSelectedP = parseInt(sessionStorage.getItem("major_select"), 10);
     subP = parseInt(sessionStorage.getItem("sub_point"), 10);
-    subSelectedP = parseInt(sessionStorage.getItem("sub_select"), 10);
+    subSelectedP = parseInt(sessionStorage.getItem("ex_sub_select"), 10);
 
     gitaSelectedP = completeSelectedP - majorSelectedP - subSelectedP;
     gitaP = completeP - majorP - subP;

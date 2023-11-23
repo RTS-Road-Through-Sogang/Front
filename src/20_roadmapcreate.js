@@ -126,48 +126,6 @@ const CreateRoadmapDetails = () => {
     }
   };
 
-  const renderButtons = (data, category) => {
-    return data.map((item, index) => {
-      const isSelectedSemester = selectedSemester === null ? true : false;
-      const isAlreadySelected = selectedLectures.some(
-        (lecture) =>
-          lecture.semester === selectedSemester &&
-          lecture.lectures.some((l) => l.code === item.lecture.code)
-      );
-
-      const isCodeAlreadySelected = selectedLectures.some(
-        (lecture) =>
-          lecture.semester !== selectedSemester &&
-          lecture.lectures.some((l) => l.code === item.lecture.code)
-      );
-
-      let buttonStyle = "btn";
-      if ((isSelectedSemester && !isAlreadySelected) || isCodeAlreadySelected) {
-        buttonStyle += " unselected";
-      } else if (selectedSemester && isAlreadySelected) {
-        buttonStyle += " selected";
-      }
-
-      return (
-        <button
-          key={index}
-          className={buttonStyle}
-          onClick={() =>
-            handleButtonClick(
-              item.lecture.lecture_type,
-              item.lecture.id,
-              item.lecture.title,
-              item.lecture.code,
-              item.lecture.point
-            )
-          }
-        >
-          {item.lecture.title}
-        </button>
-      );
-    });
-  };
-
   const [selectedDefault, setSelectedDefault] = useState([]);
   // const [loading, setLoading] = useState(true);
 
@@ -213,12 +171,61 @@ const CreateRoadmapDetails = () => {
     setDefaultLecturesTitles(result);
   }, [selectedDefault]);
 
-  // useEffect(() => {
-  //   if (!loading && selectedDefault && selectedDefault.roadmap_detail) {
-  //     renderSemesterBlocks();
-  //   }
-  // }, [loading, selectedDefault]);
-  console.log(selectedDefault);
+  const isTitleIncluded = (title) => {
+    return defaultLecturesTitles.some((titlesObj) =>
+      Object.values(titlesObj).flat().includes(title)
+    );
+  };
+
+  const renderButtons = (data, category) => {
+    return data.map((item, index) => {
+      const isSelectedSemester = selectedSemester === null ? true : false;
+      const isAlreadySelected = selectedLectures.some(
+        (lecture) =>
+          lecture.semester === selectedSemester &&
+          lecture.lectures.some((l) => l.code === item.lecture.code)
+      );
+
+      const isCodeAlreadySelected = selectedLectures.some(
+        (lecture) =>
+          lecture.semester !== selectedSemester &&
+          lecture.lectures.some((l) => l.code === item.lecture.code)
+      );
+
+      const isTitleDuplication = isTitleIncluded(item.lecture.title);
+
+      let buttonStyle = "btn";
+      if (
+        (isSelectedSemester && !isAlreadySelected) ||
+        isCodeAlreadySelected ||
+        isTitleDuplication
+      ) {
+        buttonStyle += " unselected";
+      } else if (selectedSemester && isAlreadySelected) {
+        buttonStyle += " selected";
+      }
+
+      return (
+        !isTitleDuplication && (
+          <button
+            key={index}
+            className={buttonStyle}
+            onClick={() =>
+              handleButtonClick(
+                item.lecture.lecture_type,
+                item.lecture.id,
+                item.lecture.title,
+                item.lecture.code,
+                item.lecture.point
+              )
+            }
+          >
+            {item.lecture.title}
+          </button>
+        )
+      );
+    });
+  };
 
   const renderSemesterBlocks = () => {
     const isSemesterDisabled = (semester) => {
@@ -237,8 +244,18 @@ const CreateRoadmapDetails = () => {
         isSelected={selectedSemester === semester}
         disabled={isSemesterDisabled(semester)}
       >
-        <SemesterDiv>
-          <SemesterTop>
+        <SemesterDiv
+          style={{
+            cursor: isSemesterDisabled(semester) ? "default" : "pointer",
+          }}
+        >
+          <SemesterTop
+            style={{
+              backgroundColor: isSemesterDisabled(semester)
+                ? "#afafaf"
+                : "#ff8c8c",
+            }}
+          >
             <span>{semester}</span>
           </SemesterTop>
           <SemesterBottom
@@ -435,9 +452,9 @@ const CreateRoadmapDetails = () => {
         />
         <SemesterListMain>
           <SemesterBlocks>{renderSemesterBlocks()}</SemesterBlocks>
-          <SemesterAdd>
+          {/* <SemesterAdd>
             <button>추가학기</button>
-          </SemesterAdd>
+          </SemesterAdd> */}
         </SemesterListMain>
         <SemesterListMain></SemesterListMain>
         <SemesterListSubmit>
@@ -542,24 +559,24 @@ const SemesterCourses = styled.ul`
     line-height: 1.2em;
   }
 `;
-const SemesterAdd = styled.div`
-  width: 100%;
-  > button {
-    float: right;
-    background: none;
-    border: none;
-    text-decoration: underline;
-    color: #747474;
-    font-family: "BMJUA";
-    font-size: 1em;
-    font-weight: normal;
-    margin: 0.2em;
-    &:hover {
-      cursor: pointer;
-      color: #929292;
-    }
-  }
-`;
+// const SemesterAdd = styled.div`
+//   width: 100%;
+//   > button {
+//     float: right;
+//     background: none;
+//     border: none;
+//     text-decoration: underline;
+//     color: #747474;
+//     font-family: "BMJUA";
+//     font-size: 1em;
+//     font-weight: normal;
+//     margin: 0.2em;
+//     &:hover {
+//       cursor: pointer;
+//       color: #929292;
+//     }
+//   }
+// `;
 const SemesterListSubmit = styled.div`
   width: 100%;
   display: flex;

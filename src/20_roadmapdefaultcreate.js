@@ -414,9 +414,9 @@ const CreateDefaultRoadmapDetails = () => {
         />
         <SemesterListMain>
           <SemesterBlocks>{renderSemesterBlocks()}</SemesterBlocks>
-          <SemesterAdd>
+          {/* <SemesterAdd>
             <button>추가학기</button>
-          </SemesterAdd>
+          </SemesterAdd> */}
         </SemesterListMain>
         <SemesterListMain></SemesterListMain>
         <SemesterListSubmit>
@@ -512,24 +512,24 @@ const SemesterCourses = styled.ul`
     line-height: 1.2em;
   }
 `;
-const SemesterAdd = styled.div`
-  width: 100%;
-  > button {
-    float: right;
-    background: none;
-    border: none;
-    text-decoration: underline;
-    color: #747474;
-    font-family: "BMJUA";
-    font-size: 1em;
-    font-weight: normal;
-    margin: 0.2em;
-    &:hover {
-      cursor: pointer;
-      color: #929292;
-    }
-  }
-`;
+// const SemesterAdd = styled.div`
+//   width: 100%;
+//   > button {
+//     float: right;
+//     background: none;
+//     border: none;
+//     text-decoration: underline;
+//     color: #747474;
+//     font-family: "BMJUA";
+//     font-size: 1em;
+//     font-weight: normal;
+//     margin: 0.2em;
+//     &:hover {
+//       cursor: pointer;
+//       color: #929292;
+//     }
+//   }
+// `;
 const SemesterListSubmit = styled.div`
   width: 100%;
   display: flex;
