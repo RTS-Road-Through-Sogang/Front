@@ -81,7 +81,8 @@ const Logo = styled.div`
   font-size: 1.7rem;
   cursor: pointer;
   font-family: "BMJUA";
-  color: rgb(30, 48, 80);
+  // color: rgb(30, 48, 80);
+  color: #2d0202;
 `;
 
 const MenuToggle = styled.div`
@@ -116,7 +117,7 @@ const UserOptions = styled.ul`
 
 const OptionItem = styled.li`
   padding: 0 1rem;
-  color: black;
+  color: #2d0202;
   cursor: pointer;
   font-weight: 700;
   &:hover {

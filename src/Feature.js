@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import feature_image1 from "./images/feature_1.png";
-import feature_image2 from "./images/main.jpeg";
+import feature_image2 from "./images/feature_2.png";
 import AOS from "aos";
 import "aos/dist/aos.css"; // AOS styles
 import Aos from "aos";
@@ -35,6 +35,7 @@ const FeatureSection = styled.div.attrs({ id: "FeatureSection" })`
   justify-content: center;
   width: 100%;
   margin-top: 20%;
+  font-family: "GangwonEdu_OTFLightA";
 
   @media (max-width: 768px) {
     width: 100%;

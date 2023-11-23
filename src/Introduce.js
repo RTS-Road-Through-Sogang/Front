@@ -8,8 +8,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import background_image from "./images/background.jpg";
 import sign_image from "./images/sign.jpg";
 
-import feature_image1 from "./images/feature_1.png";
-import feature_image2 from "./images/main.jpeg";
 import Feature from "./Feature";
 import { useNavigate } from "react-router-dom";
 import "aos/dist/aos.css"; // AOS styles
@@ -139,7 +137,7 @@ const GlobalStyles = createGlobalStyle`
     body {
       margin: 0;
       padding: 0;
-      
+
     }
     
     
@@ -178,7 +176,7 @@ const BackgroundWrapper = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background: linear-gradient(#e0c8d8, white);
+  background: linear-gradient(#f7edef, white);
 `;
 const AnimatedSpan = styled.span`
   display: inline-block; // 각 span이 별도의 블록으로 처리되도록 설정
@@ -190,11 +188,10 @@ const AnimatedSpan = styled.span`
 `;
 
 const MainText = styled.div`
-  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
-  font-size: 4.3em;
+  font-family: "Yellowtail-Regular";
+  font-size: 6em;
   color: white;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 4px 5px 15px rgba(0, 0, 0, 0.2);
   margin-top: 5%;
   justify-content: center;
   align-items: center;
@@ -250,6 +247,7 @@ const IntroDescriptionLine = styled.span`
   opacity: 0;
   margin-bottom: 35%;
   transition: all 1s;
+  font-family: "GangwonEdu_OTFLightA";
   span {
     color: #ff6262;
   }
@@ -263,7 +261,7 @@ const StartSection = styled.div`
   align-items: center;
 `;
 const StyledButton = styled.button`
-  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+  font-family: "Noto Sans KR";
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
   width: 30vw;
@@ -295,10 +293,10 @@ const StyledButton = styled.button`
   span {
     color: #fff;
     text-align: center;
-    font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+    font-family: "Noto Sans KR";
     font-size: 1.3rem;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 600;
     line-height: normal;
   }
 `;

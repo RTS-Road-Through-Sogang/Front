@@ -225,7 +225,7 @@ const CreateDefaultRoadmapDetails = () => {
           <PageTitle
             text={{
               bold: `${selectedSemester}에`,
-              right: " 수강하고 싶은 과목을 선택하세요",
+              right: " 수강한 과목을 선택하세요",
             }}
           />
           <EachSemesterMain>

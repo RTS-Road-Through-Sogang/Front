@@ -173,7 +173,7 @@ const StatusMain = styled.div`
 `;
 const StatusPie = styled.div`
   width: 38%;
-  height: 18em;
+  height: 21em;
   border-radius: 50px 0px;
   border: 0.08em solid #cdcdcd;
   display: flex;
@@ -195,7 +195,7 @@ const StatusBar = styled.ul`
   list-style: none;
   padding: 0;
   width: 57%;
-  height: 18em;
+  height: 21em;
   border-radius: 0px 50px;
   border: 0.08em solid #cdcdcd;
   display: flex;
@@ -204,7 +204,9 @@ const StatusBar = styled.ul`
   justify-content: center;
   background-color: #fff;
 `;
-const StatusSubmit = styled.div``;
+const StatusSubmit = styled.div`
+  margin-top: 3em;
+`;
 const StatusMore = styled.button`
   width: 24em;
   height: 3em;
