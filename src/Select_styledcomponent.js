@@ -69,7 +69,7 @@ export const InsideBar = styled.div`
   font-size: 0.7rem;
 
   margin-top: 2%;
-  line-height: 25px;
+  line-height: 15px;
   color: #453e3e;
   padding: 0 15%;
 `;
@@ -87,10 +87,17 @@ export const ClickableImage = styled.img`
 `;
 export const Semester1 = styled.div`
   float: left;
+  box-shadow: inset 0 -10px 0 #ffe7f3;
+  margin-bottom: 4%;
+  margin-top: 2%;
 `;
 
 export const Semester2 = styled.div`
   float: right;
+
+  box-shadow: inset 0 -10px 0 #ffabd5;
+  margin-bottom: 4%;
+  margin-top: 2%;
 `;
 
 export const Title = styled.div`

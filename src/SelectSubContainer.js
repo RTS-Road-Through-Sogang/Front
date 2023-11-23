@@ -54,6 +54,7 @@ const SelectContainer = ({
     selectedData.forEach((item) => {
       if (item[0] == code) {
         setisClicked(!isClicked);
+        setCurrentImage(currentImage === noteta ? yeseta : noteta);
       }
     });
   }, []);

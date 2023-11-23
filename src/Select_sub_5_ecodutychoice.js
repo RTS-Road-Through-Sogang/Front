@@ -413,7 +413,7 @@ const SelectSubEcoDutyChoice = () => {
                     <Icon>
                       <FontAwesomeIcon
                         icon={faCheck}
-                        style={{ color: "#FF6262", fontSize: "1.7rem" }}
+                        style={{ color: "#FFAF36", fontSize: "1.7rem" }}
                       />
                     </Icon>
                     <TitleText>
@@ -595,9 +595,7 @@ const SelectSubEcoDutyChoice = () => {
             </SecondBar>
           </SelectBar>
           <Save onClick={goSave}>임시저장</Save>
-          <Next onClick={() => goNext({ com, maj, sub })}>
-            다음으로
-          </Next>{" "}
+          <Next onClick={() => goNext({ com, maj, sub })}>다음으로</Next>{" "}
         </RightBox>
       </BigBox>
     </>
