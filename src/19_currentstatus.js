@@ -23,24 +23,66 @@ const CurrentStatus = () => {
   const GoCreateRoadmap = () => {
     navigate("/roadmapcreate", { state: { arrData } });
   };
-  const completeP = parseInt(sessionStorage.getItem("complete_point"), 10);
-  const completeSelectedP = parseInt(
-    sessionStorage.getItem("complete_select"),
-    10
-  );
-  const majorP = parseInt(sessionStorage.getItem("major_point"), 10);
-  const majorSelectedP = parseInt(sessionStorage.getItem("major_select"), 10);
-  const subP = parseInt(sessionStorage.getItem("sub_point"), 10);
-  const subSelectedP = parseInt(sessionStorage.getItem("sub_select"), 10);
+  // const completeP = parseInt(sessionStorage.getItem("complete_point"), 10);
+  // const completeSelectedP = parseInt(
+  //   sessionStorage.getItem("complete_select"),
+  //   10
+  // );
+  // const majorP = parseInt(sessionStorage.getItem("major_point"), 10);
+  // const majorSelectedP = parseInt(sessionStorage.getItem("major_select"), 10);
+  // const subP = parseInt(sessionStorage.getItem("sub_point"), 10);
+  // const subSelectedP = parseInt(sessionStorage.getItem("sub_select"), 10);
 
-  const gitaSelectedP = completeSelectedP - majorSelectedP - subSelectedP;
-  const gitaP = completeP - majorP - subP;
+  // const gitaSelectedP = completeSelectedP - majorSelectedP - subSelectedP;
+  // const gitaP = completeP - majorP - subP;
 
-  const completePercent =
-    completeSelectedP >= completeP
-      ? 100
-      : (completeSelectedP / completeP) * 100;
-  const completePercentRounded = Math.round(completePercent * 10) / 10;
+  // const completePercent =
+  //   completeSelectedP >= completeP
+  //     ? 100
+  //     : (completeSelectedP / completeP) * 100;
+  // const completePercentRounded = Math.round(completePercent * 10) / 10;
+  let completeP,
+    completeSelectedP,
+    majorP,
+    majorSelectedP,
+    subP,
+    subSelectedP,
+    gitaSelectedP,
+    gitaP,
+    completePercent,
+    completePercentRounded;
+
+  if (localStorage.getItem("submajorTrack")) {
+    completeP = parseInt(sessionStorage.getItem("complete_point"), 10);
+    completeSelectedP = parseInt(sessionStorage.getItem("complete_select"), 10);
+    majorP = parseInt(sessionStorage.getItem("major_point"), 10);
+    majorSelectedP = parseInt(sessionStorage.getItem("major_select"), 10);
+    subP = parseInt(sessionStorage.getItem("sub_point"), 10);
+    subSelectedP = parseInt(sessionStorage.getItem("sub_select"), 10);
+
+    gitaSelectedP = completeSelectedP - majorSelectedP - subSelectedP;
+    gitaP = completeP - majorP - subP;
+
+    completePercent =
+      completeSelectedP >= completeP
+        ? 100
+        : (completeSelectedP / completeP) * 100;
+    completePercentRounded = Math.round(completePercent * 10) / 10;
+  } else {
+    completeP = parseInt(sessionStorage.getItem("complete_point"), 10);
+    completeSelectedP = parseInt(sessionStorage.getItem("complete_select"), 10);
+    majorP = parseInt(sessionStorage.getItem("major_point"), 10);
+    majorSelectedP = parseInt(sessionStorage.getItem("major_select"), 10);
+
+    gitaSelectedP = completeSelectedP - majorSelectedP;
+    gitaP = completeP - majorP;
+
+    completePercent =
+      completeSelectedP >= completeP
+        ? 100
+        : (completeSelectedP / completeP) * 100;
+    completePercentRounded = Math.round(completePercent * 10) / 10;
+  }
 
   return (
     <>
@@ -86,16 +128,18 @@ const CurrentStatus = () => {
                 total: majorP,
               }}
             />
+            {usersSubmajor && (
+              <BarList
+                barli={{
+                  title: usersSubmajor,
+                  credits: subSelectedP,
+                  total: subP,
+                }}
+              />
+            )}
             <BarList
               barli={{
-                title: usersSubmajor,
-                credits: subSelectedP,
-                total: subP,
-              }}
-            />
-            <BarList
-              barli={{
-                title: "기타",
+                title: "공통/기타",
                 credits: gitaSelectedP,
                 total: gitaP,
               }}
@@ -103,7 +147,7 @@ const CurrentStatus = () => {
           </StatusBar>
         </StatusMain>
         <StatusSubmit>
-          <StatusMore onClick={GoBack}>더 선택하기</StatusMore>
+          <StatusMore onClick={GoBack}>다시 선택하기</StatusMore>
           <StatusNext onClick={GoCreateRoadmap}>다음으로</StatusNext>
         </StatusSubmit>
       </StatusContainer>

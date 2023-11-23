@@ -55,7 +55,7 @@ const SelectSubmgtDutyChoice = () => {
   const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
-    sessionStorage.setItem("ex_sub_select", sub_select);
+    sessionStorage.setItem("ex_sub_select", sub);
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
@@ -65,7 +65,7 @@ const SelectSubmgtDutyChoice = () => {
   const goNext = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
-    sessionStorage.setItem("ex_sub_select", sub_select);
+    sessionStorage.setItem("ex_sub_select", sub);
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
@@ -255,7 +255,7 @@ const SelectSubmgtDutyChoice = () => {
   let sum2 = sumOfFirstElements2;
   let com = sum2 + sum;
   let maj = major_select;
-  let sub = sumOfFirstElements + sum;
+  let sub = sub_select + sum;
   console.log(com, sub)
 
   let pot1 = sumOfFirstElements;

@@ -90,12 +90,14 @@ export const Semester1 = styled.div`
   float: left;
   box-shadow: inset 0 -10px 0 #ffe7f3;
   margin-bottom: 4%;
+  margin-top: 2%;
 `;
 
 export const Semester2 = styled.div`
   float: right;
   box-shadow: inset 0 -10px 0 #ffabd5;
   margin-bottom: 4%;
+  margin-top: 2%;
 `;
 
 export const Title = styled.div`
