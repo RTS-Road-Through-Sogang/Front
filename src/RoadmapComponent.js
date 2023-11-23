@@ -23,6 +23,7 @@ import {
 } from "./Select_styledcomponent";
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const accessToken = localStorage.getItem("accessToken");
 
 const Semester = ({ semester, courses, deg, z }) => {
@@ -45,7 +46,11 @@ const Semester = ({ semester, courses, deg, z }) => {
       setIsModalOpen(true);
     }
   };
-
+  const handleLinkClick = (link_data) => {
+    const link = link_data.selectedCourse.eta;
+    // console.log("여기야", link);
+    window.open(link, "_blank");
+  };
   return (
     <CourseBox
       style={{
@@ -69,7 +74,7 @@ const Semester = ({ semester, courses, deg, z }) => {
               semester_two,
               grade_recommend,
               point,
-              eta,
+              // eta,
               code,
             } = course;
 
@@ -95,6 +100,7 @@ const Semester = ({ semester, courses, deg, z }) => {
               rate1={selectedCourse.semester_one}
               rate2={selectedCourse.semester_two}
             />
+
             <Eta>
               <span
                 style={{
@@ -104,9 +110,11 @@ const Semester = ({ semester, courses, deg, z }) => {
                 에브리타임 &#8599;
               </span>
               <ClickableImage
+                // src={`${process.env.PUBLIC_URL}/images/maj_eta.png`}
                 src={currentImage}
                 // isClicked={isClicked}
-                // onClick={handleLinkClick}
+                onClick={() => handleLinkClick({ selectedCourse })}
+
                 // style={{ marginTop: "4px" }}
               />
             </Eta>
@@ -518,6 +526,7 @@ const BarContainer = styled.div`
 
 const Eta = styled.div`
   position: relative;
+  display: flex;
 `;
 const Button = styled.div`
   width: 2.5em;
@@ -577,6 +586,8 @@ const RoadmapWrapper = styled.div`
   align-items: center;
   border-radius: 34px 0px;
   background-color: #ff6262;
+  font-family: "BMJUA";
+  box-shadow: 3px 3px 4px 0px rgba(0, 0, 0, 0.18);
 `;
 
 const SemesterNumber = styled.span`

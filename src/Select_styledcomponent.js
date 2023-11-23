@@ -77,10 +77,10 @@ export const Eta = styled.div`
   position: relative;
 `;
 export const ClickableImage = styled.img`
-  position: absolute;
+  // position: absolute;
   cursor: pointer;
   width: 25px;
-  top: -25%;
+  // top: -40%;
 
   textdecoration: "underline";
   aspect-ratio: 1; /* 이 숫자는 가로세로 비율입니다. 예를 들어, 1은 1:1 비율을 의미합니다. */
