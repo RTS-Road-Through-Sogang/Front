@@ -55,7 +55,7 @@ const SelectSubCseDutyChoice = () => {
   const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
-    sessionStorage.setItem("ex_sub_select", sub_select);
+    sessionStorage.setItem("ex_sub_select", sub);
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
@@ -65,7 +65,7 @@ const SelectSubCseDutyChoice = () => {
   const goNext = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
-    sessionStorage.setItem("ex_sub_select", sub_select);
+    sessionStorage.setItem("ex_sub_select", sub);
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);

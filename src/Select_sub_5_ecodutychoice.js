@@ -54,7 +54,7 @@ const SelectSubEcoDutyChoice = () => {
   const goSave = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
-    sessionStorage.setItem("ex_sub_select", sub_select);
+    sessionStorage.setItem("ex_sub_select", sub);
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
@@ -64,7 +64,7 @@ const SelectSubEcoDutyChoice = () => {
   const goNext = () => {
     sessionStorage.setItem("ex_complete_select", com);
     sessionStorage.setItem("ex_major_select", maj);
-    sessionStorage.setItem("ex_sub_select", sub_select);
+    sessionStorage.setItem("ex_sub_select", sub);
     const dataWithAdditionalInfo = [...selectedData, ...select0];
     const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     sessionStorage.setItem("selected", serializedArray);
@@ -356,7 +356,7 @@ const SelectSubEcoDutyChoice = () => {
   }
   sessionStorage.setItem("complete_select", com);
   sessionStorage.setItem("major_select", maj);
-  sessionStorage.setItem("sub_select", sub_select);
+  sessionStorage.setItem("sub_select", sub);
 
   return (
     <>
@@ -595,7 +595,7 @@ const SelectSubEcoDutyChoice = () => {
             </SecondBar>
           </SelectBar>
           <Save onClick={goSave}>임시저장</Save>
-          <Next onClick={() => goNext({ com, maj, sub_select })}>
+          <Next onClick={() => goNext({ com, maj, sub })}>
             다음으로
           </Next>{" "}
         </RightBox>
