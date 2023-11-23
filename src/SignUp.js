@@ -310,13 +310,14 @@ const StyledIcon = styled(FontAwesomeIcon)`
 
 const StyledButton = styled.button`
   cursor: pointer;
-  width: 20.5vw;
+  width: 90%;
   height: 6vh;
   border-radius: 60px;
   border: 2px solid #ff6262;
   background: #ff6262;
   margin-top: 10px;
   margin-bottom: 10px;
+  margin: 10px auto;
 
   @media (max-width: 768px) {
     width: 50vw;

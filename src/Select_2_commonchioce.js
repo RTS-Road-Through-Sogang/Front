@@ -263,7 +263,7 @@ const SelectCommon = () => {
               </Bar>
 
               <Bar>
-                <BarText>{localStorage.getItem("majorTrack")}</BarText>
+                <BarText>{localStorage.getItem("majorTitle")}</BarText>
 
                 <MiniBar>
                   <Mini width={(maj * 100) / major_point} bgColor={bg} />
