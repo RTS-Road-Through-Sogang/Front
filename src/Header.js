@@ -1,12 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes, faUser, faLayerGroup, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
-import { faApple } from "@fortawesome/free-brands-svg-icons";
+import {
+  faBars,
+  faTimes,
+  faUser,
+  faLayerGroup,
+  faGraduationCap,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 const Header = () => {
   const navigate = useNavigate();
+
+  const { isLoggedIn, logout } = useAuth();
+
   const goToIntro = () => {
     navigate("/intro");
   };
@@ -18,12 +27,11 @@ const Header = () => {
   };
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserOptionsOpen, setIsUserOptionsOpen] = useState(false);
+
   return (
     <>
       <GlobalStyles />
       <StyledHeader>
-        {" "}
-        {/* 여기서 `isUserOptionsOpen` prop을 제거합니다. */}
         <MenuToggle onClick={() => setIsMenuOpen(!isMenuOpen)}>
           <FontAwesomeIcon icon={!isMenuOpen ? faBars : faTimes} />
         </MenuToggle>
@@ -34,10 +42,16 @@ const Header = () => {
           <FontAwesomeIcon icon={!isUserOptionsOpen ? faUser : faTimes} />
         </UserToggle>
         <UserOptions open={isUserOptionsOpen}>
-          {" "}
-          {/* `open` prop으로 변경합니다. */}
-          <OptionItem onClick={goToLogin}>Login</OptionItem>
-          <OptionItem onClick={goToSign}>Register</OptionItem>
+          {isLoggedIn ? (
+            <>
+              <OptionItem onClick={logout}>Logout</OptionItem>
+            </>
+          ) : (
+            <>
+              <OptionItem onClick={goToLogin}>Login</OptionItem>
+              <OptionItem onClick={goToSign}>Register</OptionItem>
+            </>
+          )}
         </UserOptions>
       </StyledHeader>
     </>

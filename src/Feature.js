@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import feature_image1 from "./images/main.jpeg";
+import feature_image1 from "./images/feature_1.png";
 import feature_image2 from "./images/main.jpeg";
 import AOS from "aos";
 import "aos/dist/aos.css"; // AOS styles

@@ -90,6 +90,33 @@ const Semester = ({ semester, courses, deg, z }) => {
     </CourseBox>
   );
 };
+const RatioBar = ({ children, message, rate1, rate2 }) => {
+  console.log("Rate 1 : ", rate1); // 0
+  console.log("Rate 2 : ", rate2); // 6
+  console.log(100 * (rate1 / (rate1 + rate2)));
+  return (
+    <BarContainer>
+      {children}
+      <div className="tooltip">
+        {message}
+        <br></br>
+        - 수강 오픈 비율
+        <br />
+        <InsideBar>
+          <Semester1>1학기</Semester1>
+          <Semester2>2학기</Semester2>
+        </InsideBar>
+        <ProgressBar2>
+          <Progress2
+            width={100 * (rate1 / (rate1 + rate2))}
+            bgColor={"#ffe7f3"}
+          />
+          여기야
+        </ProgressBar2>
+      </div>
+    </BarContainer>
+  );
+};
 const RoadmapDetail = ({ detail }) => {
   const ref = useRef();
   const len = detail.length;

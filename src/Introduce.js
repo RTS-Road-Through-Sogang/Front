@@ -8,7 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import background_image from "./images/background.jpg";
 import sign_image from "./images/sign.jpg";
 
-import feature_image1 from "./images/main.jpeg";
+import feature_image1 from "./images/feature_1.png";
 import feature_image2 from "./images/main.jpeg";
 import Feature from "./Feature";
 import { useNavigate } from "react-router-dom";

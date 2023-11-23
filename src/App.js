@@ -41,83 +41,96 @@ import SelectSubEcoGicho from "./Select_sub_3_eco_gicho.js";
 import CurrentStatus from "./19_currentstatus.js";
 import CreateRoadmapDetails from "./20_roadmapcreate.js";
 import CreateDefaultRoadmapDetails from "./20_roadmapdefaultcreate.js";
+import SelectMajor2 from "./6_roadmap_major.js";
+import { AuthProvider } from "./AuthContext.js";
 export const URL = process.env.APIURL;
 
 function App() {
-  
   return (
     <>
       <GlobalStyle />
       <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/intro" element={<Introduce />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/roadmap" element={<Roadmap />} />
-          <Route path="/majortrack" element={<SelecMajor />} />
-          <Route path="/selectsearch" element={<SelectSearch />} />
-          <Route path="/selectcommon" element={<SelectCommon />} />
+        <AuthProvider>
+          <Header />
+          <Routes>
+            <Route path="/intro" element={<Introduce />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/roadmap" element={<Roadmap />} />
+            <Route path="/majortrack" element={<SelecMajor />} />
+            <Route path="/afterdefault" element={<SelectMajor2 />} />
+            <Route path="/selectsearch" element={<SelectSearch />} />
+            <Route path="/selectcommon" element={<SelectCommon />} />
 
-          <Route path="/selectchoice" element={<SelectChoice />} />
+            <Route path="/selectchoice" element={<SelectChoice />} />
 
-          <Route path="/selectcsegicho" element={<SelectCseGicho />} />
-          <Route path="/selectmgtgicho" element={<SelectMgtGicho />} />
-          <Route path="/selectecogicho" element={<SelectEcoGicho />} />
+            <Route path="/selectcsegicho" element={<SelectCseGicho />} />
+            <Route path="/selectmgtgicho" element={<SelectMgtGicho />} />
+            <Route path="/selectecogicho" element={<SelectEcoGicho />} />
 
-          <Route path="/selectecoduty" element={<SelectEcoDuty />} />
-          <Route path="/selectcseduty" element={<SelectCseDuty />} />
-          <Route path="/selectmgtduty" element={<SelectMgtDuty />} />
+            <Route path="/selectecoduty" element={<SelectEcoDuty />} />
+            <Route path="/selectcseduty" element={<SelectCseDuty />} />
+            <Route path="/selectmgtduty" element={<SelectMgtDuty />} />
 
-          <Route
-            path="/selectecodutychoice"
-            element={<SelectEcoDutyChoice />}
-          />
-          <Route
-            path="/selectcsedutychoice"
-            element={<SelectCseDutyChoice />}
-          />
-          <Route
-            path="/selectmgtdutychoice"
-            element={<SelectmgtDutyChoice />}
-          />
+            <Route
+              path="/selectecodutychoice"
+              element={<SelectEcoDutyChoice />}
+            />
+            <Route
+              path="/selectcsedutychoice"
+              element={<SelectCseDutyChoice />}
+            />
+            <Route
+              path="/selectmgtdutychoice"
+              element={<SelectmgtDutyChoice />}
+            />
 
-          <Route path="/selectcsechoice" element={<SelectCseChoice />} />
-          <Route path="/selectecochoice" element={<SelectEcoChoice />} />
-          <Route path="/selectmgtchoice" element={<SelectMgtChoice />} />
+            <Route path="/selectcsechoice" element={<SelectCseChoice />} />
+            <Route path="/selectecochoice" element={<SelectEcoChoice />} />
+            <Route path="/selectmgtchoice" element={<SelectMgtChoice />} />
 
-          <Route path="/selectsubcsegicho" element={<SelectSubCseGicho />} />
-          <Route path="/selectsubmgtgicho" element={<SelectSubMgtGicho />} />
-          <Route path="/selectsubecogicho" element={<SelectSubEcoGicho />} />
+            <Route path="/selectsubcsegicho" element={<SelectSubCseGicho />} />
+            <Route path="/selectsubmgtgicho" element={<SelectSubMgtGicho />} />
+            <Route path="/selectsubecogicho" element={<SelectSubEcoGicho />} />
 
-          <Route path="/selectsubcseduty" element={<SelectSubCseDuty />} />
-          <Route path="/selectsubmgtduty" element={<SelectSubMgtDuty />} />
-          <Route path="/selectsubecoduty" element={<SelectSubEcoDuty />} />
+            <Route path="/selectsubcseduty" element={<SelectSubCseDuty />} />
+            <Route path="/selectsubmgtduty" element={<SelectSubMgtDuty />} />
+            <Route path="/selectsubecoduty" element={<SelectSubEcoDuty />} />
 
-          <Route
-            path="/selectsubcsedutychoice"
-            element={<SelectSubCseDutyChoice />}
-          />
-          <Route
-            path="/selectsubmgtdutychoice"
-            element={<SelectSubmgtDutyChoice />}
-          />
-          <Route
-            path="/selectsubecodutychoice"
-            element={<SelectSubEcoDutyChoice />}
-          />
+            <Route
+              path="/selectsubcsedutychoice"
+              element={<SelectSubCseDutyChoice />}
+            />
+            <Route
+              path="/selectsubmgtdutychoice"
+              element={<SelectSubmgtDutyChoice />}
+            />
+            <Route
+              path="/selectsubecodutychoice"
+              element={<SelectSubEcoDutyChoice />}
+            />
 
-          <Route path="/selectsubcsechoice" element={<SelectSubCseChoice />} />
-          <Route path="/selectsubmgtchoice" element={<SelectSubMgtChoice />} />
-          <Route path="/selectsubecochoice" element={<SelectSubEcoChoice />} />
+            <Route
+              path="/selectsubcsechoice"
+              element={<SelectSubCseChoice />}
+            />
+            <Route
+              path="/selectsubmgtchoice"
+              element={<SelectSubMgtChoice />}
+            />
+            <Route
+              path="/selectsubecochoice"
+              element={<SelectSubEcoChoice />}
+            />
 
-          <Route path="/status" element={<CurrentStatus />} />
-          <Route path="/roadmapcreate" element={<CreateRoadmapDetails />} />
-          <Route
-            path="/roadmapdefaultcreate"
-            element={<CreateDefaultRoadmapDetails />}
-          />
-        </Routes>
+            <Route path="/status" element={<CurrentStatus />} />
+            <Route path="/roadmapcreate" element={<CreateRoadmapDetails />} />
+            <Route
+              path="/roadmapdefaultcreate"
+              element={<CreateDefaultRoadmapDetails />}
+            />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </>
   );

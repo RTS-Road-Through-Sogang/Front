@@ -263,6 +263,8 @@ const CreateDefaultRoadmapDetails = () => {
     );
   };
 
+  console.log(usersMajor);
+  console.log(usersSubmajor);
   console.log("선택한 과목: ", selectedLectures);
 
   // const [creatingRoadmap, setCreatingRoadmap] = useState(false);
@@ -430,7 +432,11 @@ const CreateDefaultRoadmapDetails = () => {
         await delay(100); // 100ms 간격으로 작업을 실행하도록 지연시간 추가
       }
 
-      console.log("모든 API 요청이 성공적으로 완료되었습니다!");
+      // 모든 API 요청이 완료되면 1초 후에 alert을 띄우고 페이지 이동
+      setTimeout(() => {
+        alert("로드맵 저장 완료! 전체 로드맵 페이지로 이동하기");
+        window.location.href = "/roadmap"; // "/roadmap" 페이지로 이동
+      }, 1000);
     } catch (error) {
       console.error("Error creating roadmap:", error);
     }
