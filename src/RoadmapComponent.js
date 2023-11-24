@@ -61,7 +61,7 @@ const Semester = ({ semester, courses, deg, z }) => {
       <CourseWrapper>
         <CourseTopBox>
           {/* {semester} */}
-          <SemesterText>{semester}</SemesterText>
+          <SemesterText className="top">{semester}</SemesterText>
         </CourseTopBox>
 
         <CourseBottomBox>
@@ -195,7 +195,7 @@ const RoadmapDetail = ({ detail }) => {
       <CoursesContainer
         ref={ref}
         style={{
-          transform: `rotateY(-${currentDeg}deg)`,
+          transform: `rotateY(${-currentDeg}deg)`,
           transition: "0.45s",
         }}
       >
@@ -341,7 +341,7 @@ const RoadmapComponent = ({ data }) => {
         <Button
           className="setting"
           style={{ color: "white" }}
-          onClick={goEditDefault}
+          // onClick={goEditDefault}
         >
           <FontAwesomeIcon
             icon={faGear}
@@ -753,15 +753,16 @@ const Modal = styled.div`
   color: #453e3e;
   // border: 0.2rem solid #ababab;
   font-size: 0.9rem;
-  padding: 3em 1.2em 2em 1.2em;
+  padding: 2em 1.2em 2em 1.2em;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   div {
     // margin-bottom: 1em;
     text-align: left;
     overflow: hidden;
-    white-space: nowrap;
+    // white-space: nowrap;
     text-overflow: ellipsis;
     font-family: "Noto Sans KR";
+    margin-bottom: 2px;
   }
 `;
 const Hovermessage = styled.div`
@@ -783,15 +784,19 @@ const SemesterText = styled.span`
   font-weight: 650;
   position: relative;
   cursor: pointer;
-  &:hover ${Hovermessage} {
-    display: block;
-    position: absolute;
-    top: -150%;
-    right: 100%;
-    width: 70%;
-    height: 500%;
-    // z-index: 999;
+  &.top {
+    // cursor: default;
+    // user-select: none;
   }
+  // &:hover ${Hovermessage} {
+  //   display: block;
+  //   position: absolute;
+  //   top: -150%;
+  //   right: 100%;
+  //   width: 70%;
+  //   height: 500%;
+  //   // z-index: 999;
+  // }
 `;
 
 const MoveButton = styled.div`
