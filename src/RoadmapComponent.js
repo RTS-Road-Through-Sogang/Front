@@ -341,7 +341,7 @@ const RoadmapComponent = ({ data }) => {
         <Button
           className="setting"
           style={{ color: "white" }}
-          onClick={goEditDefault}
+          // onClick={goEditDefault}
         >
           <FontAwesomeIcon
             icon={faGear}
