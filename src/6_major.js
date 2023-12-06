@@ -24,6 +24,7 @@ sessionStorage.setItem("ex_complete_select", com);
 sessionStorage.setItem("ex_major_select", maj);
 sessionStorage.setItem("ex_sub_select", sub_select);
 
+//부전공 선택 시 전체 수강해야할 학점 배열
 const point1 = [
   {
     points: {
@@ -45,7 +46,7 @@ const point1 = [
     },
   },
 ];
-
+//부전공 선택 안할 시 
 const point2 = [
   {
     points: {
@@ -57,6 +58,7 @@ const point2 = [
     },
   },
 ];
+//pk 값 설정
 const mgt_arr = [
   [1, 21, "다전공 1전공"],
   [2, 22, "다전공 1전공"],
@@ -100,10 +102,13 @@ const cse_arr = [
   [14, 21, "다전공 타전공"],
   [15, 21, "교직과정"],
 ];
+//각 알약 선택 관리
 const SelectContainer2 = ({ id, major, setSelect, select }) => {
   const [isclicked, setisclicked] = useState(false);
 
+//입학 연도 설정
   const major_year = localStorage.getItem("year");
+  //클릭시 선택, 취소
   const onClick = () => {
     setisclicked(!isclicked);
     if (isclicked) {
@@ -113,7 +118,7 @@ const SelectContainer2 = ({ id, major, setSelect, select }) => {
       setSelect([...select, major]);
     }
   };
-
+//pk 값 설정
   if (major == "컴퓨터공학") {
     if (major_year == 23) {
       localStorage.setItem("subpk", 4);
@@ -166,15 +171,17 @@ const SelecMajor = () => {
   const c = 194 - (100 / maxItem) * (maxItem - availableItem);
   const bg = `rgb(255, ${c}, ${c})`;
 
-  const maxSelect = [4, 1, 1, 3, 2];
-
+//전공 트랙 선택 관리
   const [select, setSelect] = useState("");
+  //부전공 선택 관리
   const [select1, setSelect1] = useState([]);
+
   const SelectContainer = (name, majorTitle) => {
-    setSelect(name.title);
+    setSelect(name.title); //전공 트랙 title select에 저장
     console.log(name.student_year.student_year);
 
-    localStorage.setItem("majorTrack", name.title);
+  //session에 기본 정보 저장
+    localStorage.setItem("majorTrack", name.title); 
     localStorage.setItem("year", name.student_year.student_year);
     if (majorTitle == "경영") {
       for (const record of mgt_arr) {
@@ -216,23 +223,21 @@ const SelecMajor = () => {
       }
     }
   };
-  const SelectContainer3 = (name, majorTitle) => {
-    setSelect1(name.title);
-
-    localStorage.setItem("submajorTrack", name);
-  };
+  
 
   const navigate = useNavigate();
   const goNext = () => {
     if (localStorage.getItem("submajorTrack")) {
+      //부전공 선택 시 총 페이지는 10페이지 (progress bar에서 사용)
       localStorage.setItem("bar", 10);
     } else {
+      //부전공 선택 안할 시 총 페이지는 6페이지 (progress bar에서 사용)
       localStorage.setItem("bar", 6);
     }
     navigate("/selectsearch");
   };
 
-  //axios
+  //axios해서 받아온 데이터 저장
   const [dataArray, setDataArray] = useState([]);
   useEffect(() => {
     const handleData = async () => {
@@ -252,6 +257,8 @@ const SelecMajor = () => {
     handleData();
   }, []);
   console.log(dataArray);
+
+  //major, major title이 존재할 경우 기본 학점 정보 세팅
   if (dataArray.major && dataArray.major.title) {
     const majorTitle = dataArray.major.title;
     localStorage.setItem("majorTitle", majorTitle);
@@ -263,6 +270,8 @@ const SelecMajor = () => {
       sessionStorage.setItem("complete_point", point1[0].points.complete_point);
       sessionStorage.setItem("major_point", point1[0].points.major_point);
     }
+
+    //처음에 navigate 이슈로 각 전공마다 case를 나눴는데 위에서 미리 처리해줘서 필요가 없어진듯..
     if (majorTitle == "경영") {
       return (
         <>

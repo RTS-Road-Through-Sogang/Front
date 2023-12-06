@@ -118,10 +118,17 @@ const SelectEcoDutyChoice = () => {
     sub_point = sessionStorage.getItem("sub_point");
   }
 
+  //여기만 명세서 형태가 다름.. 노션 보면 됨
+  //max select가 2개 필요함 (필수, 선택 총 2개)
   const maxSelect = dataArray.map((item) => item.duty_point);
   const maxSelect2 = dataArray.map((item) => item.duty_choice_point);
 
   const [select0, setSelect0] = useState([]); //전체 저장
+
+  //******앞으로 select[홀수]에는 duty가, select[짝수]에는 duty_choice가 저장될 것******
+  //maxSelect는 홀수, maxSelect2는 짝수
+  //c_select는 홀수, c_select2는 짝수 이렇게 생각하면 됨
+  //ex도 동일
   const [select1, setSelect1] = useState([]);
   const [select2, setSelect2] = useState([]);
   const [select3, setSelect3] = useState([]);
@@ -239,6 +246,7 @@ const SelectEcoDutyChoice = () => {
           select12.reduce((total, currentRow) => total + currentRow[1], 0)),
   ];
 
+  //c_select2도 2개 필요 위에 서술
   const c_select2 = [
     94 +
       (100 / maxSelect2[0]) *
@@ -334,25 +342,29 @@ const SelectEcoDutyChoice = () => {
                       <SmallBox>
                         <XSmaillBox>
                           {item.duty_lectures &&
-                            item.duty_lectures.map((lecture) => (
-                              <SelectContainer
-                                {...lecture}
-                                setSelect={setSelect[index * 2 - 1]}
-                                select={select[index * 2 - 1]}
-                                ex_select={ex_select[index * 2 - 1]}
-                                setSelectEX={setSelectEX[index * 2 - 1]}
-                                selectedData={selectedData}
-                                setSelect0={setSelect0}
-                                select0={select0}
-                                setSelectedData={setSelectedData}
-                              />
-                            ))}
+                            item.duty_lectures.map(
+                              (
+                                lecture //item_duty인 경우 홀수 select에 저장
+                              ) => (
+                                <SelectContainer
+                                  {...lecture}
+                                  setSelect={setSelect[index * 2 - 1]}
+                                  select={select[index * 2 - 1]}
+                                  ex_select={ex_select[index * 2 - 1]}
+                                  setSelectEX={setSelectEX[index * 2 - 1]}
+                                  selectedData={selectedData}
+                                  setSelect0={setSelect0}
+                                  select0={select0}
+                                  setSelectedData={setSelectedData}
+                                />
+                              )
+                            )}
                         </XSmaillBox>
                       </SmallBox>
                     </TitleText>
                   </Title>
                 )}
-                {item.duty_choice_point !== undefined && (
+                {item.duty_choice_point !== undefined && ( //item.duty_choice_point인 경우 짝수 select에 저장
                   <Title>
                     <Icon>
                       <FontAwesomeIcon
@@ -437,7 +449,7 @@ const SelectEcoDutyChoice = () => {
                       <BarText>{item.major_tech_title}</BarText>
                       <MiniBar>
                         <Mini
-                          width={
+                          width={ //여기 또한 select[홀수] select[짝수] 따로 관리해야함
                             (select[index * 2 - 1].reduce(
                               (total, currentRow) => total + currentRow[1],
                               0

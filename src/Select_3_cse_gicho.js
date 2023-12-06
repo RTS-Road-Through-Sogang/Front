@@ -186,10 +186,12 @@ const serializedArray = JSON.stringify(dataWithAdditionalInfo);
     });
     return acc;
   }, 0);
+  //전 페이지에서까지 선택한 selectedData 배열 속 전체 학점 계산
  const sumOfFirstElements2 = selectedData.reduce(
    (accumulator, item) => accumulator + item[1],
    0
- );
+  ); 
+  //이 페이지에서 선택한 select0 배열 속 전체 학점 계산
  const sumOfFirstElements3 = select0.reduce(
    (accumulator, item) => accumulator + item[1],
    0

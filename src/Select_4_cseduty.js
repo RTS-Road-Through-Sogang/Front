@@ -188,7 +188,7 @@ const SelectCseDuty = () => {
   let sum = sumOfFirstElements3;
   let sum2 = sumOfFirstElements2;
   let com = sum2 + sum;
-  let maj = major_select + sum;
+  let maj = major_select + sum; //여기서부터는 전공 학점 추가
   console.log(com, maj);
 
   sessionStorage.setItem("complete_select", com);
